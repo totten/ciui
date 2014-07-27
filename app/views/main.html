@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="col-md-4 configuration">
+
+    <fieldset>
+      <legend>Use Case</legend>
+
+      <label for="algo-inst">
+        <input type="radio" name="algo" value="inst" id="algo-inst" ng-model="cfg.algo"/>
+        Basic Installation
+      </label> <br/>
+      <label for="algo-sched">
+        <input type="radio" name="algo" value="sched" id="algo-sched" ng-model="cfg.algo"/>
+        Scheduled Test
+      </label> <br/>
+      <label for="algo-review">
+        <input type="radio" name="algo" value="review" id="algo-review" ng-model="cfg.algo"/>
+        Code Review Test
+      </label> <br/>
+
+    </fieldset>
+
+    <fieldset>
+      <legend>Build Strategy</legend>
+
+      <label for="build-buildkit">
+        <input type="radio" name="build" value="buildkit" id="build-buildkit" ng-model="cfg.build"/>
+        civicrm-buildkit
+      </label><br/>
+      <div class="explain" ng-show="cfg.build == 'buildkit'">
+        <a href="https://github.com/totten/civicrm-buildkit">buildkit</a> manages test,
+        demo, and training sites for civicrm.org. Built on drush, wp-cli, etal.
+      </div>
+      <div class="options" ng-show="cfg.build == 'buildkit'">
+        Build type:<br/>
+        <select ng-model="cfg.buildKit.type">
+          <option value="drupal-clean">drupal-clean</option>
+          <option value="drupal-demo">drupal-demo</option>
+          <option value="wp-demo">wp-demo</option>
+          <option value="wmff">wmff</option>
+        </select>
+      </div>
+
+      <label for="build-drush">
+        <input type="radio" name="build" value="drush" id="build-drush" ng-model="cfg.build"/>
+        drush
+      </label><br/>
+      <div class="explain" ng-show="cfg.build == 'drush'">
+        <a href="http://drush.ws">drush</a> is the Swiss Army knife of Drupal CLI
+      </div>
+
+      <label for="build-wpcli">
+        <input type="radio" name="build" value="wpcli" id="build-wpcli" ng-model="cfg.build"/>
+        wp-cli
+      </label><br/>
+      <div class="explain" ng-show="cfg.build == 'wpcli'">
+        <a href="http://wp-cli.org">wp-cli</a> is the Swiss Army knife of WordPress CLI
+      </div>
+    </fieldset>
+
+    <fieldset ng-show="cfg.algo == 'sched' || cfg.algo=='review'">
+      <legend>Test Suite</legend>
+      <label for="test-civi-phpunit">
+        <input type="checkbox" id="test-civi-phpunit" ng-model="cfg.testCiviPhpunit"/>
+        CiviCRM PHPUnit
+      </label><br/>
+
+      <div class="options" ng-show="cfg.testCiviPhpunit">
+        Execute test case:<br/>
+        <input ng-model="cfg.civiPhpunitTest"/>
+      </div>
+
+      <label for="test-civi-upgradetest">
+        <input type="checkbox" id="test-civi-upgradetest" ng-model="cfg.testCiviUpgradeTest"/>
+        CiviCRM UpgradeTest
+      </label><br/>
+
+      <div class="options" ng-show="cfg.testCiviUpgradeTest">
+        Perform upgrades with example DBs:<br/>
+        <input ng-model="cfg.upgradeTestVersions"/>
+      </div>
+
+      <label for="test-simpletest">
+        <input type="checkbox" id="test-simpletest" ng-model="cfg.testSimpleTest"/>
+        Drupal SimpleTest
+      </label><br/>
+
+      <div class="options" ng-show="cfg.testSimpleTest">
+        Execute test case:<br/>
+        <input ng-model="cfg.simpleTest"/>
+      </div>
+    </fieldset>
+  </div>
+
+
+  <fieldset class="col-md-8">
+    <legend>Pseudocode</legend>
+    <pre>
+downloadApplication();
+<span ng-show="cfg.algo=='review'">applyPatch();</span>
+installApplication();
+<span ng-show="cfg.algo == 'sched' || cfg.algo=='review'">executeTests();</span>
+<span ng-show="cfg.algo == 'sched' || cfg.algo=='review'">reportResults();</span>
+</pre>
+  </fieldset>
+
+  <fieldset class="col-md-8">
+    <legend>Example</legend>
+    <pre>
+## downloadApplication()
+{{downloadApplication()}}
+<span ng-show="cfg.algo=='review'">
+## applyPatch()
+{{applyPatch()}}
+</span>
+## installApplication()
+{{installApplication()}}
+<span ng-show="cfg.algo == 'sched' || cfg.algo=='review'">
+## executeTests()
+{{executeTests()}}
+
+## reportResults()
+</span></pre>
+  </fieldset>
+</div>
