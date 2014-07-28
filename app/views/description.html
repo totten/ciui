@@ -11,23 +11,28 @@
 </p>
 
 <p ng-show="cfg.algo == 'inst'">
-  <em>Basic Build</em> performs a download and install; the system is ready for
-  you to hack/code/test.
+  <em>Basic Build</em> downloads and installs CiviCRM along with a CMS. You can
+  hack/code/test on a basic build.
 </p>
 
 <p ng-show="cfg.algo == 'sched'">
-  <em>Scheduled Test</em> performs a clean installation and runs tests. It's
-  suitable for use as a scheduled job in Jenkins.
+  <em>Scheduled Test</em> is useful for continuous-integration. For example,
+  you might configure a <a href="http://jenkins-ci.org/">Jenkins</a> job to
+  periodically download CiviCRM and execute a test-suite.
 </p>
 
 <p ng-show="cfg.algo == 'review'">
-  <em>Code Review Test</em> performs a clean installation using
-  a proposed patch. It's suitable for integrating with Github or Gerrit code-review.
+  <em>Code Review Test</em> is useful for continuous-integration. For example,
+  if a developer submits a pull-request on <code>github.com</code>, then
+  <code>github.com</code> might notify your <a href="http://jenkins-ci.org/">Jenkins</a>
+  server. Jenkins will then download CiviCRM (with patches),
+  execute a test suite, and post the results on <code>github.com</code>.
 </p>
 
 <div class="alert alert-info" ng-show="!isCustom() && !isBogre()">
   In build type <code>{{cfg.buildkit.type}}</code>, the modules and
   libraries have been pre-selected by the fine folks at <a href="http://civicrm.org.">civicrm.org</a>.
+  For more options, see the configuration menu.
 </div>
 
 <div class="alert alert-info" ng-show="isCustom() && cfg.downloader == 'bash'">

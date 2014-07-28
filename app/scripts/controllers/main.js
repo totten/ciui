@@ -16,6 +16,7 @@ angular.module('ciuiApp')
       vagrant: false,
 
       buildkit: {
+        adminPass: 't0ps3cr3t',
         dir: '/srv/buildkit',
         type: 'drupal-clean',
         customType: 'my-new-type',
@@ -162,7 +163,7 @@ angular.module('ciuiApp')
     $scope.installApplication = function() {
       return "civibuild install " + cfg.buildkit.name + " \\\n" +
         '  --url \"' + cfg.buildkit.url + '\" \\\n' +
-        '  --admin-pass \"s3cr3t\"';
+        '  --admin-pass \"'+cfg.buildkit.adminPass+'\"';
     };
 
     $scope.executeTests = function() {
