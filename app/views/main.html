@@ -44,10 +44,6 @@
         civicrm-buildkit
       </label><br/>
 
-      <div class="explain" ng-show="cfg.build == 'buildkit'">
-        <a href="https://github.com/totten/civicrm-buildkit">buildkit</a> manages test,
-        demo, and training sites for civicrm.org. Built on drush, wp-cli, etal.
-      </div>
       <div class="options" ng-show="cfg.build == 'buildkit'">
         Build type:<br/>
         <select ng-model="cfg.buildkit.type">
@@ -63,21 +59,30 @@
 
       <label for="build-drush">
         <input type="radio" name="build" value="drush" id="build-drush" ng-model="cfg.build"/>
-        drush
+        <s class="text-muted">drush</s>
       </label><br/>
 
-      <div class="explain" ng-show="cfg.build == 'drush'">
-        <a href="http://drush.ws">drush</a> is the Swiss Army knife of Drupal CLI
-      </div>
-
-      <label for="build-wpcli">
-        <input type="radio" name="build" value="wpcli" id="build-wpcli" ng-model="cfg.build"/>
-        wp-cli
+      <label for="build-wp-cli">
+        <input type="radio" name="build" value="wp-cli" id="build-wp-cli" ng-model="cfg.build"/>
+        <s class="text-muted">wp-cli</s>
       </label><br/>
+    </fieldset>
 
-      <div class="explain" ng-show="cfg.build == 'wpcli'">
-        <a href="http://wp-cli.org">wp-cli</a> is the Swiss Army knife of WordPress CLI
-      </div>
+    <fieldset>
+      <legend>Build Descriptor</legend>
+
+      <label for="struct-bash">
+        <input type="radio" name="struct" value="bash" id="struct-bash" ng-model="cfg.struct"/>
+        bash
+      </label><br/>
+      <label for="struct-dmake">
+        <input type="radio" name="struct" value="dmake" id="struct-dmake" ng-model="cfg.struct"/>
+        Drush Make
+      </label><br/>
+      <label for="struct-boge">
+        <input type="radio" name="struct" value="boge" id="struct-boge" ng-model="cfg.struct"/>
+        BOGE
+      </label><br/>
     </fieldset>
 
     <fieldset ng-show="cfg.algo == 'sched' || cfg.algo=='review'">
@@ -137,14 +142,41 @@
   </div>
 
   <fieldset class="col-md-8">
-    <legend>About</legend>
-    <p ng-show="cfg.algo == 'inst'">Use <em>Basic Installation</em> if you plan to manually work with the site.</p>
+    <legend>Description</legend>
+    <p ng-show="cfg.algo == 'inst'">
+      <em>Basic Installation</em> performs a download and install; the system is ready for
+      you to hack/code/test.
+    </p>
 
-    <p ng-show="cfg.algo == 'sched'">Use <em>Scheduled Test</em> if you're configuring Jenkins to run tests on a fixed
-      schedule.</p>
+    <p ng-show="cfg.algo == 'sched'">
+      <em>Scheduled Test</em> performs a clean installation and runs tests. It's
+      suitable for use as a scheduled job in Jenkins.
+    </p>
 
-    <p ng-show="cfg.algo == 'review'">Use <em>Code Review Test</em> if you're configuring Jenkins to run tests as part
-      of Github or Gerrit code-review.</p>
+    <p ng-show="cfg.algo == 'review'">
+      <em>Code Review Test</em> performs a clean installation using
+      a proposed patch. It's suitable for integrating with Github or Gerrit code-review.
+    </p>
+
+    <p class="explain" ng-show="cfg.build == 'buildkit'">
+      <a href="https://github.com/totten/civicrm-buildkit">buildkit</a> manages test,
+      demo, and training sites for civicrm.org. Built on drush, wp-cli, etal.
+    </p>
+
+    <div class="explain" ng-show="cfg.build == 'drush'">
+      <a href="http://drush.ws">drush</a> is the Swiss Army knife of Drupal CLI
+    </div>
+    <div class="explain" ng-show="cfg.build == 'wp-cli'">
+      <a href="http://wp-cli.org">wp-cli</a> is the Swiss Army knife of WordPress CLI
+    </div>
+
+    <p class="explain error" ng-show="cfg.build == 'drush' || cfg.build == 'wp-cli'">
+      <b>PATCH-WELCOME:</b> "{{cfg.build}}" can be used within buildkit; however, when
+      used by itself, it doesn't manage the config-files and DBs required for
+      CiviCRM (runtime or testing). If you want to use these tools directly without
+      buildkit, then you'll need to address the implementation + workflow issues
+      for setting these up.
+    </p>
   </fieldset>
 
   <fieldset class="col-md-8">
@@ -153,7 +185,7 @@
   </fieldset>
 
   <fieldset class="col-md-8">
-    <legend>Example</legend>
+    <legend>Jenkins Shell Script</legend>
     <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
   </fieldset>
 
