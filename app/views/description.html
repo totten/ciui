@@ -18,15 +18,16 @@
 <p ng-show="cfg.algo == 'sched'">
   <em>Scheduled Test</em> is useful for continuous-integration. For example,
   you might configure a <a href="http://jenkins-ci.org/">Jenkins</a> job to
-  periodically download CiviCRM and execute a test-suite.
+  periodically download CiviCRM and execute the test-suite.
 </p>
 
 <p ng-show="cfg.algo == 'review'">
   <em>Code Review Test</em> is useful for continuous-integration. For example,
-  if a developer submits a pull-request on <code>github.com</code>, then
+  if a developer submits changes for code-review (e.g. by opening
+  a pull-request on <code>github.com</code>), then
   <code>github.com</code> might notify your <a href="http://jenkins-ci.org/">Jenkins</a>
   server. Jenkins will then download CiviCRM (with patches),
-  execute a test suite, and post the results on <code>github.com</code>.
+  execute the test suite, and post the results on <code>github.com</code>.
 </p>
 
 <div class="alert alert-info" ng-show="!isCustom() && !isBogre()">
@@ -51,4 +52,10 @@
   Some developers prefer to manually copy all code (CMS code, CiviCRM code, modules, themes,
   etc) into a single git repository (eg <code>{{cfg.bogre.url}}</code>). In BOGRE mode,
   buildkit will download that repository.
+</div>
+
+<div class="alert alert-warning" ng-show="isBogre()">
+  BOGRE can be useful for production sites where you only import production-ready
+  code, but if you wish to actively participate in the development community, then
+  BOGRE can be tiresome.
 </div>
