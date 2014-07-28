@@ -1,7 +1,9 @@
 <accordion>
-  <accordion-group is-open="true">
+  <accordion-group is-open="toggles.useCase">
     <accordion-heading>
       Use Case
+      <i class="pull-right glyphicon"
+         ng-class="{'glyphicon-chevron-down': toggles.useCase, 'glyphicon-chevron-right': !toggles.useCase}"></i>
     </accordion-heading>
     <label for="algo-inst">
       <input type="radio" name="algo" value="inst" id="algo-inst" ng-model="cfg.algo"/>
@@ -9,7 +11,7 @@
     </label> <br/>
     <label for="algo-pano">
       <input type="radio" name="algo" value="pano" id="algo-pano" ng-model="cfg.algo"/>
-      Panorama Build
+      Panoramic Build
     </label> <br/>
     <label for="algo-sched">
       <input type="radio" name="algo" value="sched" id="algo-sched" ng-model="cfg.algo"/>
@@ -21,9 +23,7 @@
     </label> <br/>
 
   </accordion-group>
-</accordion>
 
-<accordion>
   <accordion-group is-open="toggles.buildType" ng-hide="cfg.algo == 'pano'">
     <accordion-heading>
       Build Type
@@ -43,7 +43,7 @@
 
     <label for="type-drupal-bogre">
       <input type="radio" name="type" value="drupal-bogre" id="type-drupal-bogre" ng-model="cfg.buildkit.type"/>
-      drupal-bogre
+      drupal-bogre (<span class="error">TODO</span>)
     </label><br/>
 
     <div class="options" ng-show="cfg.buildkit.type == 'drupal-bogre'">
@@ -64,7 +64,7 @@
 
     <label for="type-wp-bogre">
       <input type="radio" name="type" value="wp-bogre" id="type-wp-bogre" ng-model="cfg.buildkit.type"/>
-      wp-bogre
+      wp-bogre (<span class="error">TODO</span>)
     </label><br/>
 
     <div class="options" ng-show="cfg.buildkit.type == 'wp-bogre'">
@@ -80,7 +80,7 @@
 
     <label for="type-custom">
       <input type="radio" name="type" value="CUSTOM" id="type-custom" ng-model="cfg.buildkit.type"/>
-      <em>(Custom)</em>
+      <em>(Custom)</em> (<span class="error">TODO</span>)
     </label><br/>
 
     <div class="options" ng-show="cfg.buildkit.type == 'CUSTOM'">
@@ -130,28 +130,34 @@
          ng-class="{'glyphicon-chevron-down': toggles.buildOptions, 'glyphicon-chevron-right': !toggles.buildOptions}"></i>
     </accordion-heading>
 
-    <div class="options">
-      <div ng-hide="cfg.algo == 'pano'">
-        <label for="buildkit-name">
-          Name:
-          <input type="text" id="buildkit-name" ng-model="cfg.buildkit.name"/>
-        </label>
-      </div>
-
-      <div ng-hide="cfg.algo == 'pano'">
-        <label for="buildkit-url">
-          URL:
-          <input type="text" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'pano'"/>
-        </label>
-      </div>
-
-      <div>
-        <label for="buildkit-admin-pass">
-          Admin Pass:
-          <input type="text" id="buildkit-admin-pass" ng-model="cfg.buildkit.adminPass"/>
-        </label>
-      </div>
+    <div ng-hide="cfg.algo == 'pano'">
+      <label for="buildkit-name">
+        Name:<br/>
+        <input type="text" id="buildkit-name" ng-model="cfg.buildkit.name"/>
+      </label>
     </div>
+
+    <div ng-hide="cfg.algo == 'pano'">
+      <label for="buildkit-url">
+        URL:<br/>
+        <input type="text" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'pano'"/>
+      </label>
+    </div>
+
+    <div>
+      <label for="buildkit-admin-pass">
+        Admin Pass:<br/>
+        <input type="text" id="buildkit-admin-pass" ng-model="cfg.buildkit.adminPass"/>
+      </label>
+    </div>
+
+    <div>
+      <label for="buildkit-dir">
+        Buildkit Dir:<br/>
+        <input type="text" id="buildkit-dir" ng-model="cfg.buildkit.dir"/>
+      </label>
+    </div>
+
   </accordion-group>
 
   <accordion-group is-open="toggles.testSuite" ng-show="cfg.algo == 'sched' || cfg.algo=='review'">

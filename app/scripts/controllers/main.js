@@ -46,11 +46,14 @@ angular.module('ciuiApp')
       codeReview: {
         type: 'github',
         path: 'sites/all/modules/mymodule'
-      },
+      }
 
-      toggles: {}
     };
     $scope.cfg = cfg;
+
+    $scope.toggles = {
+      useCase: true
+    };
 
     $scope.algoName = function() {
       switch (cfg.algo) {
