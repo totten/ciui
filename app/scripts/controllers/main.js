@@ -20,7 +20,7 @@ angular.module('ciuiApp')
         dir: '/srv/buildkit',
         type: 'drupal-clean',
         civiVer: 'master',
-        customType: 'my-new-type',
+        customType: 'my-custom-type',
         url: 'http://localhost:8000',
         name: 'mytestbuild'
       },
