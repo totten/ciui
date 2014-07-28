@@ -14,7 +14,7 @@
 
   <div class="col-md-8">
     <fieldset>
-      <legend>Description</legend>
+      <legend>Summary</legend>
       <div ng-include="'views/description.html'"></div>
     </fieldset>
 
@@ -26,10 +26,21 @@
           <i class="glyphicon glyphicon-download"></i>
           Get Buildkit
         </tab-heading>
-        <p>
-          On the local workstation or any test servers, first install buildkit.
-        </p>
         <pre class="prettyprint lang-bash" prettyprint-code="installBuildkit()"></pre>
+        <h4>Discussion</h4>
+
+        <p>
+          Buildkit can be installed anywhere you want to build/test Civi.
+          So you might install buildkit on a local dev machine, inside
+          a Vagrantbox, or on a dedicated test server.
+        </p>
+
+        <p>
+          Please pay attention to <code>amp config</code> and <code>amp test</code>.
+          They may ask you to perform some setup tasks (such as editing the
+          Apache configuration and restarting Apache).
+        </p>
+
       </tab>
       <tab ng-show="isCustom()">
         <tab-heading>
@@ -43,7 +54,7 @@
       <tab>
         <tab-heading>
           <i class="glyphicon glyphicon-cog"></i>
-          <span ng-show="cfg.algo == 'inst'">Build Site</span>
+          <span ng-show="cfg.algo == 'inst'">Build a Site</span>
           <span ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">Configure Jenkins</span>
         </tab-heading>
 

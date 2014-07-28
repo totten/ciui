@@ -195,12 +195,10 @@ angular.module('ciuiApp')
     };
 
     $scope.installBuildkit = function() {
-      return "git clone \"https://github.com/civicrm/civicrm-buildkit.git\"\n" +
-        "cd civicrm-buildkit/bin\n" +
-        "./civi-download-tools\n" +
-        "./amp config\n" +
-        "## At this point, check to make sure you follow the instructions output by amp config,\n" +
-        "## which involve adding a line to your Apache configuration file\n" +
-        "./amp test\n";
+      return "git clone \"https://github.com/civicrm/civicrm-buildkit.git\" \"" +cfg.buildkit.dir +"\"\n" +
+        "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n" +
+        "civi-download-tools\n" +
+        "amp config\n" +
+        "amp test\n";
     };
   });
