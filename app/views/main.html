@@ -37,6 +37,22 @@
     </fieldset>
 
     <fieldset>
+      <legend>CMS</legend>
+      <label for="cms-drupal">
+        <input type="radio" name="cms" value="drupal" id="cms-drupal" ng-model="cfg.cms"/>
+        Drupal
+      </label><br/>
+      <label for="cms-joomla">
+        <input type="radio" name="cms" value="joomla" id="cms-joomla" ng-model="cfg.cms" disabled/>
+        <s class="text-muted">Joomla</s>
+      </label><br/>
+      <label for="cms-wp">
+        <input type="radio" name="cms" value="wp" id="cms-wp" ng-model="cfg.cms"/>
+        WordPress
+      </label><br/>
+    </fieldset>
+
+    <fieldset>
       <legend>Downloads</legend>
 
       <label for="downloader-bash">
@@ -47,6 +63,14 @@
         <input type="radio" name="downloader" value="bogre" id="downloader-bogre" ng-model="cfg.downloader"/>
         bogre
       </label><br/>
+
+      <div class="options" ng-show="cfg.downloader == 'bogre'">
+        <label for="bogre-url">
+          Git URL:
+          <input id="bogre-url" ng-model="cfg.bogre.url"/>
+        </label>
+      </div>
+
       <label for="downloader-dmake">
         <input type="radio" name="downloader" value="dmake" id="downloader-dmake" ng-model="cfg.downloader"/>
         drush make
@@ -127,17 +151,17 @@
     </p>
 
     <div class="explain" ng-show="cfg.downloader == 'bash'">
-      To specify the mix of modules and libraries to download for this
-      build, we will write a bash script using a series of commands
-      (such as <code>git clone</code>, <code>drush dl</code>, or <code>wp plugin install</code>).
+      To pick your particular mix of addons, write a bash script
+      using a series of commands (such as <code>git clone</code>, <code>drush dl</code>,
+      or <code>wp plugin install</code>).
     </div>
     <div class="explain" ng-show="cfg.downloader == 'dmake'">
-      To specify the mix of modules and libraries to download for this
-      build, we will use a <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
+      To pick your particular mix of modules and libraries, write a
+      <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
     </div>
     <div class="explain" ng-show="cfg.downloader == 'bogre'">
-      To specify the mix of modules and libraries to download for this
-      buid, we will manually curate a Big Old Git Repo of Everything (BOGRE).
+      To pick your particular mix of modules and libraries, copy all
+      the code into a Big Old Git Repo of Everything (BOGRE).
     </div>
 
   </fieldset>
@@ -155,10 +179,6 @@
   <fieldset class="col-md-12">
     <legend>Notes</legend>
     <ul>
-      <li ng-show="cfg.build == 'buildkit'">
-        The build-type "{{ cfg.buildkit.type }}" is included by default.
-        You can create a custom type by copying "app/config/{{ cfg.buildkit.type }}" to "app/config/my-new-type".
-      </li>
     </ul>
   </fieldset>
 

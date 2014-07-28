@@ -12,12 +12,17 @@ angular.module('ciuiApp')
     var cfg = {
       algo: 'sched',
       build: 'buildkit',
+      cms: 'drupal',
       downloader: 'bash',
 
       buildkit: {
         dir: '/srv/buildkit',
         type: 'drupal-clean',
         name: 'mytest'
+      },
+
+      bogre: {
+        url: 'https://github.com/me/bigrepo.git'
       },
 
       civiPhpunit: {
@@ -62,8 +67,14 @@ angular.module('ciuiApp')
     };
 
     $scope.downloadApplication = function() {
-      return "civibuild download " + cfg.buildkit.name + " \\\n" +
-        '  --type ' + cfg.buildkit.type;
+      if (cfg.downloader == 'bogre') {
+        return "env BOGRE=\"" + cfg.bogre.url + "\" \\\n" +
+          "  civibuild download " + cfg.buildkit.name + " \\\n" +
+          '  --type ' + cfg.cms + '-bogre';
+      } else {
+        return "civibuild download " + cfg.buildkit.name + " \\\n" +
+          '  --type ' + cfg.cms + "-demo";
+      }
     };
 
     $scope.applyPatch = function() {
