@@ -32,6 +32,11 @@ angular.module('ciuiApp')
       simpleTest: {
         enable: false,
         test: "TODO"
+      },
+
+      codeReview: {
+        type: 'github',
+        path: 'sites/all/modules/mymodule'
       }
     };
     $scope.cfg = cfg;
@@ -69,9 +74,10 @@ angular.module('ciuiApp')
             '  --type ' + cfg.buildkit.type;
         case 'drush':
           return "drush -y make --working-copy \\\n" +
-            "  myfile.make /var/www/mytest";
+            "  \"myfile.make\" \\\n" +
+            "  \"/var/www/mytest\"";
         case 'wpcli':
-          return "mkdir /var/www/mytest\n" +
+          return "mkdir \"/var/www/mytest\"\n" +
             "pushd \"/var/www/mytest\"\n" +
             "  wp core download\n" +
             "popd";
@@ -79,9 +85,16 @@ angular.module('ciuiApp')
     };
 
     $scope.applyPatch = function () {
-      return "pushd \"" + $scope.civiRoot() + "\"\n" +
-        "  git checkout thepatch\n" +
-        "popd"
+      switch (cfg.codeReview.type) {
+        case 'github':
+          return "pushd \"" + $scope.civiRoot() + "\"\n" +
+            "  # git checkout thepatch fromgithub\n" +
+            "popd"
+        case 'gerrit':
+          return "pushd \"" + $scope.civiRoot() + "\"\n" +
+            "  # git checkout thepatch fromgerrit\n" +
+            "popd"
+      }
     };
 
     $scope.installApplication = function () {
@@ -92,12 +105,12 @@ angular.module('ciuiApp')
             '  --admin-pass \"s3cr3t\"';
         case 'drush':
           return "drush site-install ...\n" +
-            "# FIXME: This doesn't install Civi config files or DB! Maybe use buildkit...";
+            "# UH OH: This doesn't install Civi (config files, test files, DB, etc)! Maybe use buildkit...";
         case 'wpcli':
           return "pushd \"/var/www/mytest\"\n" +
-            "  wp core download\n" +
+            "  wp core install\n" +
             "popd\n" +
-            "# FIXME: This doesn't install Civi config files or DB! Maybe use buildkit...";
+            "# UH OH: This doesn't install Civi (config files, test files, DB, etc)! Maybe use buildkit...";
       }
     };
 
@@ -117,15 +130,15 @@ angular.module('ciuiApp')
           r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
         }
         else {
-          r = r + "## skipped: CiviCRM UpgradeTest and " + cfg.build + " are not compatible\n";
+          r = r + "## skipped: CiviCRM UpgradeTest with " + cfg.build + " is not supported\n";
         }
       }
       if (cfg.simpleTest.enable) {
         if (cfg.build == 'buildkit' || cfg.build == 'drush') {
-          r = r + 'TODO drush test...' + cfg.simpleTest.test + "\n";
+          r = r + '## FIXME: drush test...' + cfg.simpleTest.test + "\n";
         }
         else {
-          r = r + "## skipped: Drupal SimpleTest and " + cfg.build + " are not compatible\n";
+          r = r + "## skipped: Drupal SimpleTest with " + cfg.build + " is not supported\n";
         }
       }
       return r;

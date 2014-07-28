@@ -1,3 +1,20 @@
+<div class="row jumbotron">
+  <p>
+    Working with CiviCRM in a continuous-integration environment can be tricky.
+  </p>
+
+  <p>
+    You need to build a full working environment (CMS + Civi + add-ons)
+    and then run a mix of tests. There's a tyranny of choice for each
+    step.
+  </p>
+
+  <p>
+    This simulator helps to demonstrate what the CI code might look like
+    based on different design decisions.
+  </p>
+</div>
+
 <div class="row">
   <div class="col-md-4 configuration">
 
@@ -20,12 +37,13 @@
     </fieldset>
 
     <fieldset>
-      <legend>Build Strategy</legend>
+      <legend>Build Tool</legend>
 
       <label for="build-buildkit">
         <input type="radio" name="build" value="buildkit" id="build-buildkit" ng-model="cfg.build"/>
         civicrm-buildkit
       </label><br/>
+
       <div class="explain" ng-show="cfg.build == 'buildkit'">
         <a href="https://github.com/totten/civicrm-buildkit">buildkit</a> manages test,
         demo, and training sites for civicrm.org. Built on drush, wp-cli, etal.
@@ -40,13 +58,14 @@
         </select><br/>
 
         Build name:<br/>
-        <input ng-model="cfg.buildkit.name" />
+        <input ng-model="cfg.buildkit.name"/>
       </div>
 
       <label for="build-drush">
         <input type="radio" name="build" value="drush" id="build-drush" ng-model="cfg.build"/>
         drush
       </label><br/>
+
       <div class="explain" ng-show="cfg.build == 'drush'">
         <a href="http://drush.ws">drush</a> is the Swiss Army knife of Drupal CLI
       </div>
@@ -55,6 +74,7 @@
         <input type="radio" name="build" value="wpcli" id="build-wpcli" ng-model="cfg.build"/>
         wp-cli
       </label><br/>
+
       <div class="explain" ng-show="cfg.build == 'wpcli'">
         <a href="http://wp-cli.org">wp-cli</a> is the Swiss Army knife of WordPress CLI
       </div>
@@ -92,13 +112,39 @@
         <input ng-model="cfg.simpleTest.test"/>
       </div>
     </fieldset>
+
+    <fieldset ng-show="cfg.algo=='review'">
+      <legend>Code Review</legend>
+      <label for="codereview-type-github">
+        <input type="radio" name="codereview-type" value="github" id="codereview-type-github"
+               ng-model="cfg.codeReview.type"/>
+        GitHub
+      </label><br/>
+
+      <label for="codereview-type-gerrit">
+        <input type="radio" name="codereview-type" value="gerrit" id="codereview-type-gerrit"
+               ng-model="cfg.codeReview.type"/>
+        Gerrit
+      </label><br/>
+
+      <!--
+      <label for="codereview-repo-path">
+        Path: <input id="codereview-repo-path" ng-model="cfg.codeReview.path"/>
+      </label>
+      -->
+
+    </fieldset>
   </div>
 
   <fieldset class="col-md-8">
     <legend>About</legend>
     <p ng-show="cfg.algo == 'inst'">Use <em>Basic Installation</em> if you plan to manually work with the site.</p>
-    <p ng-show="cfg.algo == 'sched'">Use <em>Scheduled Test</em> if you're configuring Jenkins to run tests on a fixed schedule.</p>
-    <p ng-show="cfg.algo == 'review'">Use <em>Code Review Test</em> if you're configuring Jenkins to run tests as part of Github or Gerrit code-review.</p>
+
+    <p ng-show="cfg.algo == 'sched'">Use <em>Scheduled Test</em> if you're configuring Jenkins to run tests on a fixed
+      schedule.</p>
+
+    <p ng-show="cfg.algo == 'review'">Use <em>Code Review Test</em> if you're configuring Jenkins to run tests as part
+      of Github or Gerrit code-review.</p>
   </fieldset>
 
   <fieldset class="col-md-8">
@@ -110,4 +156,18 @@
     <legend>Example</legend>
     <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
   </fieldset>
+
+  <fieldset class="col-md-12">
+    <legend>Notes</legend>
+    <ul>
+      <li ng-show="cfg.build == 'buildkit'">
+        The build-type "{{ cfg.buildkit.type }}" is included by default.
+        You can create a custom type by copying "app/config/{{ cfg.buildkit.type }}" to "app/config/my-new-type".
+      </li>
+      <li ng-show="cfg.build == 'drush'">
+        You need to write a drush "makefile'.
+      </li>
+    </ul>
+  </fieldset>
+
 </div>
