@@ -12,7 +12,7 @@ angular.module('ciuiApp')
     var cfg = {
       algo: 'sched',
       build: 'buildkit',
-      struct: 'bash',
+      downloader: 'bash',
 
       buildkit: {
         dir: '/srv/buildkit',
@@ -54,14 +54,7 @@ angular.module('ciuiApp')
     };
 
     $scope.civiRoot = function() {
-      switch (cfg.build) {
-        case 'buildkit':
-          return cfg.buildkit.dir + '/build/' + cfg.buildkit.name + '/sites/all/modules/civicrm';
-        case 'drush':
-          return "/var/www/mytest/sites/all/modules/civicrm";
-        case 'wp-cli':
-          return "/var/www/mytest/wp-content/plugins/civicrm/civicrm";
-      }
+      return cfg.buildkit.dir + '/build/' + cfg.buildkit.name + '/sites/all/modules/civicrm';
     };
 
     $scope.junitDir = function() {
@@ -69,27 +62,8 @@ angular.module('ciuiApp')
     };
 
     $scope.downloadApplication = function() {
-      switch (cfg.build) {
-        case 'buildkit':
-          return "civibuild download " + cfg.buildkit.name + " \\\n" +
-            '  --type ' + cfg.buildkit.type;
-        case 'drush':
-          return "drush -y dl drupal \\\n" +
-            "  --destination=\"/var/www\" \\\n" +
-            "  --drupal-project-rename=\"mytest\"\n" +
-            "mkdir -p \"/var/www/mytest/sites/all/modules\"\n" +
-            "git clone -b master \"https://github.com/civicrm/civicrm-core.git\" \\\n" +
-            "  \"/var/www/mytest/sites/all/modules/civicrm\"\n" +
-            "git clone -b master \"https://github.com/civicrm/civicrm-drupal.git\" \\\n" +
-            "  \"/var/www/mytest/sites/all/modules/civicrm/drupal\"\n" +
-            "git clone -b master \"https://github.com/civicrm/civicrm-packages.git\" \\\n" +
-            "  \"/var/www/mytest/sites/all/modules/civicrm/packages\"";
-        case 'wp-cli':
-          return "mkdir \"/var/www/mytest\"\n" +
-            "pushd \"/var/www/mytest\"\n" +
-            "  wp core download\n" +
-            "popd";
-      }
+      return "civibuild download " + cfg.buildkit.name + " \\\n" +
+        '  --type ' + cfg.buildkit.type;
     };
 
     $scope.applyPatch = function() {
@@ -113,18 +87,6 @@ angular.module('ciuiApp')
           return "civibuild install " + cfg.buildkit.name + " \\\n" +
             '  --url \"http://localhost:8000\" \\\n' +
             '  --admin-pass \"s3cr3t\"';
-        case 'drush':
-          return "pushd \"/var/www/mytest\"\n" +
-            "  drush site-install ...\n" +
-            "popd\n" +
-            "# FIXME: The build tool (drush) does not currently support generation of the CiviCRM config\n" +
-            "# files (civicrm.settings.php, setup.conf, CiviSeleniumSettings, etc) or CiviCRM DB.";
-        case 'wp-cli':
-          return "pushd \"/var/www/mytest\"\n" +
-            "  wp core install\n" +
-            "popd\n" +
-            "# FIXME: The build tool (drush) does not currently support generation of the CiviCRM config\n" +
-            "# files (civicrm.settings.php, setup.conf, CiviSeleniumSettings, etc) or CiviCRM DB.";
       }
     };
 
@@ -148,7 +110,7 @@ angular.module('ciuiApp')
         }
       }
       if (cfg.simpleTest.enable) {
-        if (cfg.build == 'buildkit' || cfg.build == 'drush') {
+        if (cfg.build == 'buildkit') {
           r = r + '## FIXME: drush test...' + cfg.simpleTest.test + "\n";
         }
         else {

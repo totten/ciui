@@ -4,14 +4,14 @@
   </p>
 
   <p>
-    You need to build a full working environment (CMS + Civi + add-ons)
-    and then run a mix of tests. There's a tyranny of choice for each
-    step.
+    You need to build a full working environment (CMS + Civi + add-ons;
+    with multiple DBs and config files) and then run a mix of tests.
   </p>
 
   <p>
-    This simulator helps to demonstrate what the CI code might look like
-    based on different design decisions.
+    This simulator demonstrates how to achieve various configurations
+    using <a href="https://github.com/totten/civicrm-buildkit">civicrm-buildkit</a>.
+    Buildkit manages test, demo, and training sites for civicrm.org.
   </p>
 </div>
 
@@ -37,51 +37,19 @@
     </fieldset>
 
     <fieldset>
-      <legend>Build Tool</legend>
+      <legend>Downloads</legend>
 
-      <label for="build-buildkit">
-        <input type="radio" name="build" value="buildkit" id="build-buildkit" ng-model="cfg.build"/>
-        civicrm-buildkit
-      </label><br/>
-
-      <div class="options" ng-show="cfg.build == 'buildkit'">
-        Build type:<br/>
-        <select ng-model="cfg.buildkit.type">
-          <option value="drupal-clean">drupal-clean</option>
-          <option value="drupal-demo">drupal-demo</option>
-          <option value="wp-demo">wp-demo</option>
-          <option value="wmff">wmff</option>
-        </select><br/>
-
-        Build name:<br/>
-        <input ng-model="cfg.buildkit.name"/>
-      </div>
-
-      <label for="build-drush">
-        <input type="radio" name="build" value="drush" id="build-drush" ng-model="cfg.build"/>
-        <s class="text-muted">drush</s>
-      </label><br/>
-
-      <label for="build-wp-cli">
-        <input type="radio" name="build" value="wp-cli" id="build-wp-cli" ng-model="cfg.build"/>
-        <s class="text-muted">wp-cli</s>
-      </label><br/>
-    </fieldset>
-
-    <fieldset>
-      <legend>Build Descriptor</legend>
-
-      <label for="struct-bash">
-        <input type="radio" name="struct" value="bash" id="struct-bash" ng-model="cfg.struct"/>
+      <label for="downloader-bash">
+        <input type="radio" name="downloader" value="bash" id="downloader-bash" ng-model="cfg.downloader"/>
         bash
       </label><br/>
-      <label for="struct-dmake">
-        <input type="radio" name="struct" value="dmake" id="struct-dmake" ng-model="cfg.struct"/>
-        Drush Make
+      <label for="downloader-bogre">
+        <input type="radio" name="downloader" value="bogre" id="downloader-bogre" ng-model="cfg.downloader"/>
+        bogre
       </label><br/>
-      <label for="struct-boge">
-        <input type="radio" name="struct" value="boge" id="struct-boge" ng-model="cfg.struct"/>
-        BOGE
+      <label for="downloader-dmake">
+        <input type="radio" name="downloader" value="dmake" id="downloader-dmake" ng-model="cfg.downloader"/>
+        drush make
       </label><br/>
     </fieldset>
 
@@ -158,25 +126,20 @@
       a proposed patch. It's suitable for integrating with Github or Gerrit code-review.
     </p>
 
-    <p class="explain" ng-show="cfg.build == 'buildkit'">
-      <a href="https://github.com/totten/civicrm-buildkit">buildkit</a> manages test,
-      demo, and training sites for civicrm.org. Built on drush, wp-cli, etal.
-    </p>
-
-    <div class="explain" ng-show="cfg.build == 'drush'">
-      <a href="http://drush.ws">drush</a> is the Swiss Army knife of Drupal CLI
+    <div class="explain" ng-show="cfg.downloader == 'bash'">
+      To specify the mix of modules and libraries to download for this
+      build, we will write a bash script using a series of commands
+      (such as <code>git clone</code>, <code>drush dl</code>, or <code>wp plugin install</code>).
     </div>
-    <div class="explain" ng-show="cfg.build == 'wp-cli'">
-      <a href="http://wp-cli.org">wp-cli</a> is the Swiss Army knife of WordPress CLI
+    <div class="explain" ng-show="cfg.downloader == 'dmake'">
+      To specify the mix of modules and libraries to download for this
+      build, we will use a <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
+    </div>
+    <div class="explain" ng-show="cfg.downloader == 'bogre'">
+      To specify the mix of modules and libraries to download for this
+      buid, we will manually curate a Big Old Git Repo of Everything (BOGRE).
     </div>
 
-    <p class="explain error" ng-show="cfg.build == 'drush' || cfg.build == 'wp-cli'">
-      <b>PATCH-WELCOME:</b> "{{cfg.build}}" can be used within buildkit; however, when
-      used by itself, it doesn't manage the config-files and DBs required for
-      CiviCRM (runtime or testing). If you want to use these tools directly without
-      buildkit, then you'll need to address the implementation + workflow issues
-      for setting these up.
-    </p>
   </fieldset>
 
   <fieldset class="col-md-8">
@@ -195,9 +158,6 @@
       <li ng-show="cfg.build == 'buildkit'">
         The build-type "{{ cfg.buildkit.type }}" is included by default.
         You can create a custom type by copying "app/config/{{ cfg.buildkit.type }}" to "app/config/my-new-type".
-      </li>
-      <li ng-show="cfg.build == 'drush'">
-        You need to write a drush "makefile'.
       </li>
     </ul>
   </fieldset>
