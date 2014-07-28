@@ -1,5 +1,13 @@
-<p class="explain error" ng-show="isCustom() && cfg.cms != 'drupal' && cfg.downloader == 'dmake'">
+<p class="alert alert-danger" ng-show="isCustom() && cfg.cms != 'drupal' && cfg.downloader == 'dmake'">
   <code>drush make</code> only works with Drupal.
+</p>
+
+<p class="alert alert-danger" ng-show="cfg.civiUpgradeTest.enable && !isDrupal()">
+  CiviCRM UpgradeTest only works with Drupal.
+</p>
+
+<p class="alert alert-danger" ng-show="cfg.simpleTest.enable && !isDrupal()">
+  Drupal SimpleTest only works with Drupal.
 </p>
 
 <p ng-show="cfg.algo == 'inst'">
@@ -17,25 +25,25 @@
   a proposed patch. It's suitable for integrating with Github or Gerrit code-review.
 </p>
 
-<div class="explain" ng-show="!isCustom() && !isBogre()">
+<div class="alert alert-info" ng-show="!isCustom() && !isBogre()">
   The mix of modules and libraries in <code>{{cfg.buildkit.type}}</code> has been picked out by the fine
   folks at <a href="http://civicrm.org.">civicrm.org</a>.
 </div>
 
-<div class="explain" ng-show="isCustom() && cfg.downloader == 'bash'">
+<div class="alert alert-info" ng-show="isCustom() && cfg.downloader == 'bash'">
   To pick modules and libraries for <code>{{buildkitType()}}</code>, we will write a bash script
   with commands like <code>git clone</code>, <code>drush dl</code>,
   or <code>wp plugin install</code>.
 </div>
 
-<div class="explain" ng-show="isCustom() && cfg.downloader == 'dmake'">
+<div class="alert alert-info" ng-show="isCustom() && cfg.downloader == 'dmake'">
   To pick modules and libraries for <code>{{buildkitType()}}</code>, we will write a
   <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
 </div>
 
-<div class="explain" ng-show="isBogre()">
-  <u>Big Old Git Repository of Everything</u>:
-  You should copy all desired code (CMS code, CiviCRM code, modules, themes, etc) into a
-  single git repository (eg <code>{{cfg.bogre.url}}</code>). Buildkit will download that
-  repository (and nothing else).
+<div class="alert alert-info" ng-show="isBogre()">
+  <u>Big Old Git Repository of Everything (BOGRE)</u>:
+  Some developers prefer to manually copy all code (CMS code, CiviCRM code, modules, themes,
+  etc) into a single git repository (eg <code>{{cfg.bogre.url}}</code>). Buildkit can download
+  that repository.
 </div>

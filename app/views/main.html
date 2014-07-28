@@ -27,6 +27,12 @@
           Get Buildkit
         </tab-heading>
         <pre class="prettyprint lang-bash" prettyprint-code="installBuildkit()"></pre>
+        <span style="float:right;">
+          <label for="vagrant">
+            <input type="checkbox" id="vagrant" ng-model="cfg.vagrant"/>
+            Use Vagrant
+          </label>
+        </span>
         <h4>Discussion</h4>
 
         <p>
@@ -59,6 +65,15 @@
         </tab-heading>
 
         <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
+
+        <p ng-show="cfg.vagrant" class="alert alert-warning">
+          You previously indicated that you want to use Vagrant. All commands must run
+          <em>inside</em> the Vagrantbox.
+          <span ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">
+            Configuring Jenkins to work with Vagrant
+            (or any other virtualization scheme) is outside the scope of <em>Buildkit Explorer</em>.
+          </span>
+        </p>
       </tab>
     </tabset>
   </div>

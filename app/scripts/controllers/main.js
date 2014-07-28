@@ -13,6 +13,7 @@ angular.module('ciuiApp')
       algo: 'inst',
       cms: 'drupal',
       downloader: 'bash',
+      vagrant: false,
 
       buildkit: {
         dir: '/srv/buildkit',
@@ -146,20 +147,12 @@ angular.module('ciuiApp')
           "    \"" + cfg.civiPhpunit.test + "\"\n";
         r = r + "popd\n";
       }
-      if (cfg.civiUpgradeTest.enable) {
-        if ($scope.isDrupal()) {
-          r = r + "civibuild upgrade-test " + cfg.buildkit.name + " " + cfg.civiUpgradeTest.versions + "\n";
-          r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
-        } else {
-          r = r + "## SKIP: CiviCRM UpgradeTest is not supported in this configuration.\n"
-        }
+      if (cfg.civiUpgradeTest.enable && $scope.isDrupal()) {
+        r = r + "civibuild upgrade-test " + cfg.buildkit.name + " " + cfg.civiUpgradeTest.versions + "\n";
+        r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
       }
-      if (cfg.simpleTest.enable) {
-        if ($scope.isDrupal()) {
-          r = r + '## FIXME: drush test...' + cfg.simpleTest.test + "\n";
-        } else {
-          r = r + "## SKIP: Drupal SimpleTest is not supported in this configuration.\n"
-        }
+      if (cfg.simpleTest.enable && $scope.isDrupal()) {
+        r = r + '## FIXME: drush test...' + cfg.simpleTest.test + "\n";
       }
       return r;
     };
@@ -172,7 +165,9 @@ angular.module('ciuiApp')
 
     $scope.createExampleCode = function() {
       var r = '';
-      r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
+      if (!cfg.vagrant) {
+        r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
+      }
       r = r + "## Download application\n"
         + $scope.downloadApplication() + "\n"
         + "\n";
@@ -195,10 +190,19 @@ angular.module('ciuiApp')
     };
 
     $scope.installBuildkit = function() {
-      return "git clone \"https://github.com/civicrm/civicrm-buildkit.git\" \"" +cfg.buildkit.dir +"\"\n" +
-        "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n" +
-        "civi-download-tools\n" +
-        "amp config\n" +
-        "amp test\n";
+      var r = '';
+      r = r + "git clone \"https://github.com/civicrm/civicrm-buildkit.git\" \"" + cfg.buildkit.dir + "\"\n";
+      if (!cfg.vagrant) {
+        r = r +
+          "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n" +
+          "civi-download-tools\n" +
+          "amp config\n" +
+          "amp test\n";
+      } else {
+        r = r + "cd \"" + cfg.buildkit.dir + "/vagrant/precise32-standalone\"\n" +
+          "vagrant up\n" +
+          "vagrant ssh\n"
+      }
+      return r;
     };
   });
