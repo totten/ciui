@@ -59,8 +59,26 @@ angular.module('ciuiApp')
       }
     };
 
+    // Misnomer: Root of the build (like buildkit's WEB_ROOT)
+    $scope.webRoot = function() {
+      return cfg.buildkit.dir + '/build/' + cfg.buildkit.name
+    };
+
+    // Public document root of the CMS (like buildkit's CMS_ROOT)
+    $scope.cmsRoot = function() {
+      if ($scope.isBogre() && cfg.bogre.subdir) {
+        return $scope.webRoot() + '/' + cfg.bogre.subdir;
+      } else {
+        return $scope.webRoot();
+      }
+    };
+
     $scope.civiRoot = function() {
-      return cfg.buildkit.dir + '/build/' + cfg.buildkit.name + '/sites/all/modules/civicrm';
+      if ($scope.isDrupal()) {
+        return $scope.cmsRoot() + '/sites/all/modules/civicrm';
+      } else {
+        return $scope.cmsRoot() + '/wp-content/plugins/civicrm/civicrm';
+      }
     };
 
     $scope.junitDir = function() {
@@ -103,7 +121,10 @@ angular.module('ciuiApp')
       var env = [];
 
       if ($scope.isBogre()) {
-        env.push('BOGRE=\"' + cfg.bogre.url + '\"');
+        env.push('BOGRE_URL=\"' + cfg.bogre.url + '\"');
+        if (cfg.bogre.subdir) {
+          env.push('BOGRE_SUBDIR=\"'+cfg.bogre.subdir+'\"');
+        }
       }
 
       if (env.length > 0) {
@@ -116,16 +137,20 @@ angular.module('ciuiApp')
       }
     };
 
+    $scope.codeReviewPath = function() {
+      return ($scope.isBogre()) ? $scope.webRoot() : $scope.civiRoot();
+    };
+
     $scope.applyPatch = function() {
       switch (cfg.codeReview.type) {
         case 'github':
-          return "pushd \"" + $scope.civiRoot() + "\"\n" +
+          return "pushd \"" + $scope.codeReviewPath() + "\"\n" +
             "  git fetch origin \"+refs/pull/*:refs/remotes/origin/pr/*\"\n" +
             "  git checkout \"$sha1\"\n" +
             "popd"
 
         case 'gerrit':
-          return "pushd \"" + $scope.civiRoot() + "\"\n" +
+          return "pushd \"" + $scope.codeReviewPath() + "\"\n" +
             "  # git checkout thepatch fromgerrit\n" +
             "popd"
       }
