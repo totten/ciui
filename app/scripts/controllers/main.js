@@ -11,7 +11,6 @@ angular.module('ciuiApp')
   .controller('MainCtrl', function($scope) {
     var cfg = {
       algo: 'inst',
-      build: 'buildkit',
       cms: 'drupal',
       downloader: 'bash',
 
@@ -81,6 +80,16 @@ angular.module('ciuiApp')
       return false;
     };
 
+    $scope.isDrupal = function() {
+      if (cfg.buildkit.type.startsWith('drupal-')) {
+        return true;
+      }
+      if ($scope.isCustom() && cfg.cms == 'drupal') {
+        return true;
+      }
+      return false;
+    };
+
     $scope.buildkitType = function() {
       if ($scope.isCustom()) {
         return cfg.buildkit.customType;
@@ -122,12 +131,9 @@ angular.module('ciuiApp')
     };
 
     $scope.installApplication = function() {
-      switch (cfg.build) {
-        case 'buildkit':
-          return "civibuild install " + cfg.buildkit.name + " \\\n" +
-            '  --url \"http://localhost:8000\" \\\n' +
-            '  --admin-pass \"s3cr3t\"';
-      }
+      return "civibuild install " + cfg.buildkit.name + " \\\n" +
+        '  --url \"http://localhost:8000\" \\\n' +
+        '  --admin-pass \"s3cr3t\"';
     };
 
     $scope.executeTests = function() {
@@ -141,20 +147,18 @@ angular.module('ciuiApp')
         r = r + "popd\n";
       }
       if (cfg.civiUpgradeTest.enable) {
-        if (cfg.build == 'buildkit') {
+        if ($scope.isDrupal()) {
           r = r + "civibuild upgrade-test " + cfg.buildkit.name + " " + cfg.civiUpgradeTest.versions + "\n";
           r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
-        }
-        else {
-          r = r + "## skipped: CiviCRM UpgradeTest with " + cfg.build + " is not supported\n";
+        } else {
+          r = r + "## SKIP: CiviCRM UpgradeTest is not supported in this configuration.\n"
         }
       }
       if (cfg.simpleTest.enable) {
-        if (cfg.build == 'buildkit') {
+        if ($scope.isDrupal()) {
           r = r + '## FIXME: drush test...' + cfg.simpleTest.test + "\n";
-        }
-        else {
-          r = r + "## skipped: Drupal SimpleTest with " + cfg.build + " is not supported\n";
+        } else {
+          r = r + "## SKIP: Drupal SimpleTest is not supported in this configuration.\n"
         }
       }
       return r;
@@ -182,9 +186,7 @@ angular.module('ciuiApp')
 
     $scope.createExampleCode = function() {
       var r = '';
-      if (cfg.build == 'buildkit') {
-        r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
-      }
+      r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
       r = r + "## downloadApplication()\n"
         + $scope.downloadApplication() + "\n"
         + "\n";

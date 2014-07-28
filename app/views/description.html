@@ -3,7 +3,7 @@
 </p>
 
 <p ng-show="cfg.algo == 'inst'">
-  <em>Basic Installation</em> performs a download and install; the system is ready for
+  <em>Basic Build</em> performs a download and install; the system is ready for
   you to hack/code/test.
 </p>
 
@@ -23,19 +23,19 @@
 </div>
 
 <div class="explain" ng-show="isCustom() && cfg.downloader == 'bash'">
-  To pick modules and libraries for <code>{{buildkitType()}}</code>, write a bash script
-  using a series of commands (such as <code>git clone</code>, <code>drush dl</code>,
-  or <code>wp plugin install</code>).
+  To pick modules and libraries for <code>{{buildkitType()}}</code>, we will write a bash script
+  with commands like <code>git clone</code>, <code>drush dl</code>,
+  or <code>wp plugin install</code>.
 </div>
 
 <div class="explain" ng-show="isCustom() && cfg.downloader == 'dmake'">
-  To pick modules and libraries for <code>{{buildkitType()}}</code>, write a
+  To pick modules and libraries for <code>{{buildkitType()}}</code>, we will write a
   <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
 </div>
 
 <div class="explain" ng-show="isBogre()">
   <u>Big Old Git Repository of Everything</u>:
   You should copy all desired code (CMS code, CiviCRM code, modules, themes, etc) into a
-  single git repository (<code>{{cfg.bogre.url}}</code>). Buildkit will download that
+  single git repository (eg <code>{{cfg.bogre.url}}</code>). Buildkit will download that
   repository (and nothing else).
 </div>
