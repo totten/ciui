@@ -1,0 +1,41 @@
+<p class="explain error" ng-show="isCustom() && cfg.cms != 'drupal' && cfg.downloader == 'dmake'">
+  <code>drush make</code> only works with Drupal.
+</p>
+
+<p ng-show="cfg.algo == 'inst'">
+  <em>Basic Installation</em> performs a download and install; the system is ready for
+  you to hack/code/test.
+</p>
+
+<p ng-show="cfg.algo == 'sched'">
+  <em>Scheduled Test</em> performs a clean installation and runs tests. It's
+  suitable for use as a scheduled job in Jenkins.
+</p>
+
+<p ng-show="cfg.algo == 'review'">
+  <em>Code Review Test</em> performs a clean installation using
+  a proposed patch. It's suitable for integrating with Github or Gerrit code-review.
+</p>
+
+<div class="explain" ng-show="!isCustom() && !isBogre()">
+  The mix of modules and libraries in <code>{{cfg.buildkit.type}}</code> has been picked out by the fine
+  folks at <a href="http://civicrm.org.">civicrm.org</a>.
+</div>
+
+<div class="explain" ng-show="isCustom() && cfg.downloader == 'bash'">
+  To pick modules and libraries for <code>{{buildkitType()}}</code>, write a bash script
+  using a series of commands (such as <code>git clone</code>, <code>drush dl</code>,
+  or <code>wp plugin install</code>).
+</div>
+
+<div class="explain" ng-show="isCustom() && cfg.downloader == 'dmake'">
+  To pick modules and libraries for <code>{{buildkitType()}}</code>, write a
+  <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
+</div>
+
+<div class="explain" ng-show="isBogre()">
+  <u>Big Old Git Repository of Everything</u>:
+  You should copy all desired code (CMS code, CiviCRM code, modules, themes, etc) into a
+  single git repository (<code>{{cfg.bogre.url}}</code>). Buildkit will download that
+  repository (and nothing else).
+</div>
