@@ -10,6 +10,7 @@
  */
 angular
   .module('ciuiApp', [
+    'ui.bootstrap',
     'ngRoute'
   ])
   .config(function ($routeProvider) {

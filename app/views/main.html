@@ -12,24 +12,53 @@
     <div ng-include="'views/config.html'"></div>
   </div>
 
-  <fieldset class="col-md-8">
-    <legend>Description</legend>
-    <div ng-include="'views/description.html'"></div>
-  </fieldset>
+  <div class="col-md-8">
+    <fieldset>
+      <legend>Description</legend>
+      <div ng-include="'views/description.html'"></div>
+    </fieldset>
 
-  <fieldset class="col-md-8">
-    <legend>Pseudocode</legend>
-    <pre class="prettyprint lang-javascript" prettyprint-code="createPseudocode()"></pre>
-  </fieldset>
+    <br/>
 
-  <fieldset class="col-md-8">
-    <legend>Jenkins Shell Script</legend>
-    <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
-  </fieldset>
+    <tabset>
+      <tab>
+        <tab-heading>
+          <i class="glyphicon glyphicon-download"></i>
+          Get Buildkit
+        </tab-heading>
+        <p>
+          On the local workstation or any test servers, first install buildkit.
+        </p>
+        <pre class="prettyprint lang-bash" prettyprint-code="installBuildkit()"></pre>
+      </tab>
+      <tab ng-show="isCustom()">
+        <tab-heading>
+          <i class="glyphicon glyphicon-wrench"></i>
+          Create Build Type
+        </tab-heading>
+        <p ng-show="isCustom()">
+          FIXME
+        </p>
+      </tab>
+      <tab>
+        <tab-heading>
+          <i class="glyphicon glyphicon-cog"></i>
+          <span ng-show="cfg.algo == 'inst'">Build Site</span>
+          <span ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">Configure Jenkins</span>
+        </tab-heading>
 
-  <fieldset class="col-md-12">
-    <legend>Notes</legend>
-    <ul>
-    </ul>
-  </fieldset>
+        <fieldset ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">
+          <legend>Pseudocode</legend>
+          <pre class="prettyprint lang-javascript" prettyprint-code="createPseudocode()"></pre>
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            <span ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">Jenkins Shell Script</span>
+          </legend>
+          <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
+        </fieldset>
+      </tab>
+    </tabset>
+  </div>
 </div>
