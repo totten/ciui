@@ -47,17 +47,7 @@
           <span ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">Configure Jenkins</span>
         </tab-heading>
 
-        <fieldset ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">
-          <legend>Pseudocode</legend>
-          <pre class="prettyprint lang-javascript" prettyprint-code="createPseudocode()"></pre>
-        </fieldset>
-
-        <fieldset>
-          <legend>
-            <span ng-show="cfg.algo == 'sched' || cfg.algo == 'review'">Jenkins Shell Script</span>
-          </legend>
-          <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
-        </fieldset>
+        <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
       </tab>
     </tabset>
   </div>

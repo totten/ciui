@@ -170,38 +170,24 @@ angular.module('ciuiApp')
       return r;
     }
 
-    $scope.createPseudocode = function() {
-      var r = '';
-      r = r + "downloadApplication();\n";
-      if (cfg.algo == 'review') {
-        r = r + "applyPatch();\n";
-      }
-      r = r + "installApplication();\n";
-      if (cfg.algo == 'sched' || cfg.algo == 'review') {
-        r = r + "executeTests();\n";
-        r = r + "reportResults();\n";
-      }
-      return r;
-    };
-
     $scope.createExampleCode = function() {
       var r = '';
       r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
-      r = r + "## downloadApplication()\n"
+      r = r + "## Download application\n"
         + $scope.downloadApplication() + "\n"
         + "\n";
       if (cfg.algo == 'review') {
-        r = r + "## applyPatch()\n"
+        r = r + "## Apply patch\n"
           + $scope.applyPatch() + "\n"
           + "\n";
       }
-      r = r + "## installApplication()\n"
+      r = r + "## Install application\n"
         + $scope.installApplication() + "\n"
         + "\n";
       if (cfg.algo == 'sched' || cfg.algo == 'review') {
-        r = r + "## executeTests()\n"
+        r = r + "## Execute tests\n"
           + $scope.executeTests() + "\n"
-          + "## reportResults()\n"
+          + "## Report results\n"
           + $scope.reportResults() + "\n"
           + "\n";
       }
