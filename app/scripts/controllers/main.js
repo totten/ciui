@@ -9,27 +9,35 @@
  */
 angular.module('ciuiApp')
   .controller('MainCtrl', function ($scope) {
-    $scope.cfg = {
+    var cfg = {
       algo: 'sched',
       build: 'buildkit',
 
-      buildKit: {
+      buildkit: {
+        dir: '/srv/buildkit',
         type: 'drupal-clean',
         name: 'mytest'
       },
 
-      testCiviPhpunit: true,
-      civiPhpunitTest: 'CRM_AllTests',
+      civiPhpunit: {
+        enable: true,
+        test: 'CRM_AllTests'
+      },
 
-      testCiviUpgradeTest: false,
-      upgradeTestVersions: '4.2.0* 4.3.0*',
+      civiUpgradeTest: {
+        enable: false,
+        versions: '4.2.0* 4.3.0*'
+      },
 
-      testSimpleTest: false,
-      simpleTest: "TODO"
+      simpleTest: {
+        enable: false,
+        test: "TODO"
+      }
     };
+    $scope.cfg = cfg;
 
     $scope.algoName = function () {
-      switch ($scope.cfg.algo) {
+      switch (cfg.algo) {
         case 'inst':
           return 'basicInstall';
         case 'sched':
@@ -40,9 +48,9 @@ angular.module('ciuiApp')
     };
 
     $scope.civiRoot = function () {
-      switch ($scope.cfg.build) {
+      switch (cfg.build) {
         case 'buildkit':
-          return '~/src/buildkit/build/mytest/sites/all/modules/civicrm';
+          return cfg.buildkit.dir + '/build/' + cfg.buildkit.name + '/sites/all/modules/civicrm';
         case 'drush':
           return "/var/www/mytest/sites/all/modules/civicrm";
         case 'wpcli':
@@ -55,67 +63,117 @@ angular.module('ciuiApp')
     };
 
     $scope.downloadApplication = function () {
-      switch ($scope.cfg.build) {
+      switch (cfg.build) {
         case 'buildkit':
-          return 'civibuild download mytest \\\n' +
-            '  --type ' + $scope.cfg.buildKit.type;
+          return "civibuild download " + cfg.buildkit.name + " \\\n" +
+            '  --type ' + cfg.buildkit.type;
         case 'drush':
           return "drush -y make --working-copy \\\n" +
             "  myfile.make /var/www/mytest";
         case 'wpcli':
           return "mkdir /var/www/mytest\n" +
-            "cd /var/www/mytest\nwp core download";
+            "pushd \"/var/www/mytest\"\n" +
+            "  wp core download\n" +
+            "popd";
       }
     };
 
     $scope.applyPatch = function () {
-      return "pushd " + $scope.civiRoot() + "\n" +
+      return "pushd \"" + $scope.civiRoot() + "\"\n" +
         "  git checkout thepatch\n" +
         "popd"
     };
 
     $scope.installApplication = function () {
-      switch ($scope.cfg.build) {
+      switch (cfg.build) {
         case 'buildkit':
-          return 'civibuild install mytest \\\n' +
-            '  --url http://localhost:8000 \\\n' +
-            '  --admin-pass s3cr3t';
+          return "civibuild install " + cfg.buildkit.name + " \\\n" +
+            '  --url \"http://localhost:8000\" \\\n' +
+            '  --admin-pass \"s3cr3t\"';
         case 'drush':
-          return "drush site-install \\\n" +
-            "  myfile.make \\\n" +
-            "  /var/www/mytest\n" +
-            "";
+          return "drush site-install ...\n" +
+            "# FIXME: This doesn't install Civi config files or DB! Maybe use buildkit...";
         case 'wpcli':
-          return "mkdir /var/www/mytest\n" +
-            "cd /var/www/mytest\n" +
-            "wp core download";
+          return "pushd \"/var/www/mytest\"\n" +
+            "  wp core download\n" +
+            "popd\n" +
+            "# FIXME: This doesn't install Civi config files or DB! Maybe use buildkit...";
       }
     };
 
     $scope.executeTests = function () {
       var r = '';
-      if ($scope.cfg.testCiviPhpunit) {
-        r = r + 'pushd ' + $scope.civiRoot() + "/tools\n";
-        r = r + "  ./scripts/phpunit --log-junit=" + $scope.junitDir() + "/civi-phpunit.xml \\\n" +
-          "    " + $scope.cfg.civiPhpunitTest + "\n";
+      r = r + "[ -d \"" + $scope.junitDir() + "\" ] && rm -rf \"" + $scope.junitDir() + "\"\n";
+      r = r + "mkdir \"" + $scope.junitDir() + "\"\n";
+      if (cfg.civiPhpunit.enable) {
+        r = r + 'pushd \"' + $scope.civiRoot() + "/tools\"\n";
+        r = r + "  ./scripts/phpunit --log-junit=\"" + $scope.junitDir() + "/civi-phpunit.xml\" \\\n" +
+          "    \"" + cfg.civiPhpunit.test + "\"\n";
         r = r + "popd\n";
       }
-      if ($scope.cfg.testCiviUpgradeTest) {
-        if ($scope.cfg.build == 'buildkit') {
-          r = r + "civibuild upgrade-test mytest " + $scope.cfg.upgradeTestVersions + "\n";
+      if (cfg.civiUpgradeTest.enable) {
+        if (cfg.build == 'buildkit') {
+          r = r + "civibuild upgrade-test " + cfg.buildkit.name + " " + cfg.civiUpgradeTest.versions + "\n";
+          r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
         }
         else {
-          r = r + "## skipped: CiviCRM UpgradeTest does not work with " + $scope.cfg.build + "\n";
+          r = r + "## skipped: CiviCRM UpgradeTest and " + cfg.build + " are not compatible\n";
         }
       }
-      if ($scope.cfg.testSimpleTest) {
-        if ($scope.cfg.build == 'buildkit' || $scope.cfg.build == 'drush') {
-          r = r + 'TODO drush test...'
+      if (cfg.simpleTest.enable) {
+        if (cfg.build == 'buildkit' || cfg.build == 'drush') {
+          r = r + 'TODO drush test...' + cfg.simpleTest.test + "\n";
         }
         else {
-          r = r + "## skipped: Drupal SimpleTest does not work with " + $scope.cfg.build + "\n";
+          r = r + "## skipped: Drupal SimpleTest and " + cfg.build + " are not compatible\n";
         }
       }
       return r;
     };
+
+    $scope.reportResults = function () {
+      var r = '';
+      r = r + "## Jenkins should be configured to read JUnit XML from " + $scope.junitDir();
+      return r;
+    }
+
+    $scope.createPseudocode = function () {
+      var r = '';
+      r = r + "downloadApplication();\n";
+      if (cfg.algo == 'review') {
+        r = r + "applyPatch();\n";
+      }
+      r = r + "installApplication();\n";
+      if (cfg.algo == 'sched' || cfg.algo == 'review') {
+        r = r + "executeTests();\n";
+        r = r + "reportResults();\n";
+      }
+      return r;
+    };
+
+    $scope.createExampleCode = function () {
+      var r = '';
+      if (cfg.build == 'buildkit') {
+        r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
+      }
+      r = r + "## downloadApplication()\n"
+        + $scope.downloadApplication() + "\n"
+        + "\n";
+      if (cfg.algo == 'review') {
+        r = r + "## applyPatch()\n"
+          + $scope.applyPatch() + "\n"
+          + "\n";
+      }
+      r = r + "## installApplication()\n"
+        + $scope.installApplication() + "\n"
+        + "\n";
+      if (cfg.algo == 'sched' || cfg.algo == 'review') {
+        r = r + "## executeTests()\n"
+          + $scope.executeTests() + "\n"
+          + "## reportResults()\n"
+          + $scope.reportResults() + "\n"
+          + "\n";
+      }
+      return r;
+    }
   });

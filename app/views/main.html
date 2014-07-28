@@ -32,12 +32,15 @@
       </div>
       <div class="options" ng-show="cfg.build == 'buildkit'">
         Build type:<br/>
-        <select ng-model="cfg.buildKit.type">
+        <select ng-model="cfg.buildkit.type">
           <option value="drupal-clean">drupal-clean</option>
           <option value="drupal-demo">drupal-demo</option>
           <option value="wp-demo">wp-demo</option>
           <option value="wmff">wmff</option>
-        </select>
+        </select><br/>
+
+        Build name:<br/>
+        <input ng-model="cfg.buildkit.name" />
       </div>
 
       <label for="build-drush">
@@ -60,65 +63,51 @@
     <fieldset ng-show="cfg.algo == 'sched' || cfg.algo=='review'">
       <legend>Test Suite</legend>
       <label for="test-civi-phpunit">
-        <input type="checkbox" id="test-civi-phpunit" ng-model="cfg.testCiviPhpunit"/>
+        <input type="checkbox" id="test-civi-phpunit" ng-model="cfg.civiPhpunit.enable"/>
         CiviCRM PHPUnit
       </label><br/>
 
-      <div class="options" ng-show="cfg.testCiviPhpunit">
+      <div class="options" ng-show="cfg.civiPhpunit.enable">
         Execute test case:<br/>
-        <input ng-model="cfg.civiPhpunitTest"/>
+        <input ng-model="cfg.civiPhpunit.test"/>
       </div>
 
       <label for="test-civi-upgradetest">
-        <input type="checkbox" id="test-civi-upgradetest" ng-model="cfg.testCiviUpgradeTest"/>
+        <input type="checkbox" id="test-civi-upgradetest" ng-model="cfg.civiUpgradeTest.enable"/>
         CiviCRM UpgradeTest
       </label><br/>
 
-      <div class="options" ng-show="cfg.testCiviUpgradeTest">
+      <div class="options" ng-show="cfg.civiUpgradeTest.enable">
         Perform upgrades with example DBs:<br/>
-        <input ng-model="cfg.upgradeTestVersions"/>
+        <input ng-model="cfg.civiUpgradeTest.versions"/>
       </div>
 
       <label for="test-simpletest">
-        <input type="checkbox" id="test-simpletest" ng-model="cfg.testSimpleTest"/>
+        <input type="checkbox" id="test-simpletest" ng-model="cfg.simpleTest.enable"/>
         Drupal SimpleTest
       </label><br/>
 
-      <div class="options" ng-show="cfg.testSimpleTest">
+      <div class="options" ng-show="cfg.simpleTest.enable">
         Execute test case:<br/>
-        <input ng-model="cfg.simpleTest"/>
+        <input ng-model="cfg.simpleTest.test"/>
       </div>
     </fieldset>
   </div>
 
+  <fieldset class="col-md-8">
+    <legend>About</legend>
+    <p ng-show="cfg.algo == 'inst'">Use <em>Basic Installation</em> if you plan to manually work with the site.</p>
+    <p ng-show="cfg.algo == 'sched'">Use <em>Scheduled Test</em> if you're configuring Jenkins to run tests on a fixed schedule.</p>
+    <p ng-show="cfg.algo == 'review'">Use <em>Code Review Test</em> if you're configuring Jenkins to run tests as part of Github or Gerrit code-review.</p>
+  </fieldset>
 
   <fieldset class="col-md-8">
     <legend>Pseudocode</legend>
-    <pre>
-downloadApplication();
-<span ng-show="cfg.algo=='review'">applyPatch();</span>
-installApplication();
-<span ng-show="cfg.algo == 'sched' || cfg.algo=='review'">executeTests();</span>
-<span ng-show="cfg.algo == 'sched' || cfg.algo=='review'">reportResults();</span>
-</pre>
+    <pre class="prettyprint lang-javascript" prettyprint-code="createPseudocode()"></pre>
   </fieldset>
 
   <fieldset class="col-md-8">
     <legend>Example</legend>
-    <pre>
-## downloadApplication()
-{{downloadApplication()}}
-<span ng-show="cfg.algo=='review'">
-## applyPatch()
-{{applyPatch()}}
-</span>
-## installApplication()
-{{installApplication()}}
-<span ng-show="cfg.algo == 'sched' || cfg.algo=='review'">
-## executeTests()
-{{executeTests()}}
-
-## reportResults()
-</span></pre>
+    <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
   </fieldset>
 </div>

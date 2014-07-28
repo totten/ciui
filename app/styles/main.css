@@ -59,12 +59,14 @@ body {
     margin: 0em 3em;
     padding: 0.5em;
     background: #afa;
+    border-radius: 5px;
 }
 
 .options {
     margin: 0em 3em;
     padding: 0.5em;
-    background: #fdf;
+    background: #eec;
+    border-radius: 5px;
 }
 
 .configuration h4 {
