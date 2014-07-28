@@ -10,7 +10,7 @@
 angular.module('ciuiApp')
   .controller('MainCtrl', function($scope) {
     var cfg = {
-      algo: 'sched',
+      algo: 'inst',
       build: 'buildkit',
       cms: 'drupal',
       downloader: 'bash',
@@ -18,6 +18,7 @@ angular.module('ciuiApp')
       buildkit: {
         dir: '/srv/buildkit',
         type: 'drupal-clean',
+        customType: 'my-new-type',
         name: 'mytest'
       },
 
@@ -66,14 +67,42 @@ angular.module('ciuiApp')
       return '$WORKDIR/junit';
     };
 
+    $scope.isCustom = function() {
+      return cfg.buildkit.type == 'CUSTOM';
+    };
+
+    $scope.isBogre = function() {
+      if (cfg.buildkit.type == 'drupal-bogre' || cfg.buildkit.type == 'wp-bogre') {
+        return true;
+      }
+      if ($scope.isCustom()) {
+        return cfg.downloader == 'bogre';
+      }
+      return false;
+    };
+
+    $scope.buildkitType = function() {
+      if ($scope.isCustom()) {
+        return cfg.buildkit.customType;
+      } else {
+        return cfg.buildkit.type;
+      }
+    };
+
     $scope.downloadApplication = function() {
-      if (cfg.downloader == 'bogre') {
-        return "env BOGRE=\"" + cfg.bogre.url + "\" \\\n" +
+      var env = [];
+
+      if ($scope.isBogre()) {
+        env.push('BOGRE=\"' + cfg.bogre.url + '\"');
+      }
+
+      if (env.length > 0) {
+        return "env " + env.join(" \\\n  ") + " \\\n" +
           "  civibuild download " + cfg.buildkit.name + " \\\n" +
-          '  --type ' + cfg.cms + '-bogre';
+          '  --type \"' + $scope.buildkitType() + "\"";
       } else {
         return "civibuild download " + cfg.buildkit.name + " \\\n" +
-          '  --type ' + cfg.cms + "-demo";
+          '  --type \"' + $scope.buildkitType() + "\"";
       }
     };
 

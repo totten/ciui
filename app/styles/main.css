@@ -55,6 +55,11 @@ body {
   margin-top: 28px;
 }
 
+.explain.error {
+    background: #fdd;
+    color: #000;
+}
+
 .explain {
     margin: 0em 3em 0.5em 3em;
     padding: 0.5em;
