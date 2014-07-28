@@ -121,6 +121,38 @@ angular.module('ciuiApp')
       }
     };
 
+    $scope.createPanoramaBuild = function() {
+      var r = '';
+      r = r + '## Download and install Drupal with Civi 4.4\n' +
+        'civibuild create d44 \\\n' +
+        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        '  --civi-ver "4.4" \\\n' +
+        '  --type "drupal-demo" \\\n' +
+        '  --url "http://d44.localhost"\n';
+      r = r + '\n';
+      r = r + '## Download and install Drupal with Civi (master)\n' +
+        'civibuild create dmaster \\\n' +
+        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        '  --civi-ver "master" \\\n' +
+        '  --type "drupal-demo" \\\n' +
+        '  --url "http://dmaster.localhost"\n';
+      r = r + '\n';
+      r = r + '## Download and install WordPress with Civi 4.4\n' +
+        'civibuild create wp44 \\\n' +
+        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        '  --civi-ver "4.4" \\\n' +
+        '  --type "wp-demo" \\\n' +
+        '  --url "http://wp44.localhost"\n';
+      r = r + '\n';
+      r = r + '## Download and install WordPress with Civi (master)\n' +
+        'civibuild create wpmaster \\\n' +
+        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        '  --civi-ver "master" \\\n' +
+        '  --type "drupal-clean" \\\n' +
+        '  --url "http://wpmaster.localhost"\n';
+      return r;
+    };
+
     $scope.downloadApplication = function() {
       var env = [];
 
@@ -163,7 +195,7 @@ angular.module('ciuiApp')
     $scope.installApplication = function() {
       return "civibuild install " + cfg.buildkit.name + " \\\n" +
         '  --url \"' + cfg.buildkit.url + '\" \\\n' +
-        '  --admin-pass \"'+cfg.buildkit.adminPass+'\"';
+        '  --admin-pass \"' + cfg.buildkit.adminPass + '\"';
     };
 
     $scope.executeTests = function() {
@@ -197,17 +229,21 @@ angular.module('ciuiApp')
       if (!cfg.vagrant) {
         r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
       }
-      r = r + "## Download application\n"
-        + $scope.downloadApplication() + "\n"
-        + "\n";
-      if (cfg.algo == 'review') {
-        r = r + "## Apply patch\n"
-          + $scope.applyPatch() + "\n"
+      if (cfg.algo == 'pano') {
+        r = r + $scope.createPanoramaBuild();
+      } else {
+        r = r + "## Download application\n"
+          + $scope.downloadApplication() + "\n"
+          + "\n";
+        if (cfg.algo == 'review') {
+          r = r + "## Apply patch\n"
+            + $scope.applyPatch() + "\n"
+            + "\n";
+        }
+        r = r + "## Install application\n"
+          + $scope.installApplication() + "\n"
           + "\n";
       }
-      r = r + "## Install application\n"
-        + $scope.installApplication() + "\n"
-        + "\n";
       if (cfg.algo == 'sched' || cfg.algo == 'review') {
         r = r + "## Execute tests\n"
           + $scope.executeTests() + "\n"

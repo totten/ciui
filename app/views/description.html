@@ -15,6 +15,12 @@
   hack/code/test on a basic build.
 </p>
 
+<p ng-show="cfg.algo == 'pano'">
+  <em>Panorama Build</em> downloads and installs multiple versions of
+  CiviCRM (using the standard demo configurations). This is useful if you
+  frequently work with different versions of Civi.
+</p>
+
 <p ng-show="cfg.algo == 'sched'">
   <em>Scheduled Test</em> is useful for continuous-integration. For example,
   you might configure a <a href="http://jenkins-ci.org/">Jenkins</a> job to
@@ -30,31 +36,31 @@
   execute the test suite, and post the results on <code>github.com</code>.
 </p>
 
-<div class="alert alert-info" ng-show="!isCustom() && !isBogre()">
+<div class="alert alert-info" ng-show="cfg.algo != 'pano' && !isCustom() && !isBogre()">
   In build type <code>{{cfg.buildkit.type}}</code>, the modules and
   libraries have been pre-selected by the fine folks at <a href="http://civicrm.org.">civicrm.org</a>.
   For more options, see the configuration menu.
 </div>
 
-<div class="alert alert-info" ng-show="isCustom() && cfg.downloader == 'bash'">
+<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom() && cfg.downloader == 'bash'">
   To pick modules and libraries for <code>{{buildkitType()}}</code>, we need to write a bash script
   with commands like <code>git clone</code>, <code>drush dl</code>,
   or <code>wp plugin install</code>.
 </div>
 
-<div class="alert alert-info" ng-show="isCustom() && cfg.downloader == 'dmake'">
+<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom() && cfg.downloader == 'dmake'">
   To pick modules and libraries for <code>{{buildkitType()}}</code>, we need to write a
   <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
 </div>
 
-<div class="alert alert-info" ng-show="isBogre()">
+<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isBogre()">
   <u>Big Old Git Repository of Everything</u>:
   Some developers prefer to manually copy all code (CMS code, CiviCRM code, modules, themes,
   etc) into a single git repository (eg <code>{{cfg.bogre.url}}</code>). In BOGRE mode,
   buildkit will download that repository.
 </div>
 
-<div class="alert alert-warning" ng-show="isBogre()">
+<div class="alert alert-warning" ng-show="cfg.algo != 'pano' && isBogre()">
   BOGRE can be useful for production sites where you only import production-ready
   code, but if you wish to actively participate in the development community, then
   BOGRE can be tiresome.

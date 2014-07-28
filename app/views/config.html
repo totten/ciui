@@ -7,6 +7,10 @@
       <input type="radio" name="algo" value="inst" id="algo-inst" ng-model="cfg.algo"/>
       Basic Build
     </label> <br/>
+    <label for="algo-pano">
+      <input type="radio" name="algo" value="pano" id="algo-pano" ng-model="cfg.algo"/>
+      Panorama Build
+    </label> <br/>
     <label for="algo-sched">
       <input type="radio" name="algo" value="sched" id="algo-sched" ng-model="cfg.algo"/>
       Scheduled Test
@@ -20,10 +24,11 @@
 </accordion>
 
 <accordion>
-  <accordion-group is-open="toggles.buildType">
+  <accordion-group is-open="toggles.buildType" ng-hide="cfg.algo == 'pano'">
     <accordion-heading>
       Build Type
-      <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': toggles.buildType, 'glyphicon-chevron-right': !toggles.buildType}"></i>
+      <i class="pull-right glyphicon"
+         ng-class="{'glyphicon-chevron-down': toggles.buildType, 'glyphicon-chevron-right': !toggles.buildType}"></i>
     </accordion-heading>
 
     <label for="type-drupal-clean">
@@ -121,31 +126,39 @@
   <accordion-group is-open="toggles.buildOptions">
     <accordion-heading>
       Build Options
-      <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': toggles.buildOptions, 'glyphicon-chevron-right': !toggles.buildOptions}"></i>
+      <i class="pull-right glyphicon"
+         ng-class="{'glyphicon-chevron-down': toggles.buildOptions, 'glyphicon-chevron-right': !toggles.buildOptions}"></i>
     </accordion-heading>
 
     <div class="options">
-      <label for="buildkit-name">
-        Name:
-        <input type="text" id="buildkit-name" ng-model="cfg.buildkit.name"/>
-      </label><br/>
+      <div ng-hide="cfg.algo == 'pano'">
+        <label for="buildkit-name">
+          Name:
+          <input type="text" id="buildkit-name" ng-model="cfg.buildkit.name"/>
+        </label>
+      </div>
 
-      <label for="buildkit-url">
-        URL:
-        <input type="text" id="buildkit-url" ng-model="cfg.buildkit.url"/>
-      </label><br/>
+      <div ng-hide="cfg.algo == 'pano'">
+        <label for="buildkit-url">
+          URL:
+          <input type="text" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'pano'"/>
+        </label>
+      </div>
 
-      <label for="buildkit-admin-pass">
-        Admin Pass:
-        <input type="text" id="buildkit-admin-pass" ng-model="cfg.buildkit.adminPass"/>
-      </label><br/>
+      <div>
+        <label for="buildkit-admin-pass">
+          Admin Pass:
+          <input type="text" id="buildkit-admin-pass" ng-model="cfg.buildkit.adminPass"/>
+        </label>
+      </div>
     </div>
   </accordion-group>
 
   <accordion-group is-open="toggles.testSuite" ng-show="cfg.algo == 'sched' || cfg.algo=='review'">
     <accordion-heading>
       Test Suite
-      <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': toggles.testSuite, 'glyphicon-chevron-right': !toggles.testSuite}"></i>
+      <i class="pull-right glyphicon"
+         ng-class="{'glyphicon-chevron-down': toggles.testSuite, 'glyphicon-chevron-right': !toggles.testSuite}"></i>
     </accordion-heading>
 
     <label for="test-civi-phpunit">
@@ -182,7 +195,8 @@
   <accordion-group is-open="toggles.codeReview" ng-show="cfg.algo=='review'">
     <accordion-heading>
       Code Review
-      <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': toggles.codeReview, 'glyphicon-chevron-right': !toggles.codeReview}"></i>
+      <i class="pull-right glyphicon"
+         ng-class="{'glyphicon-chevron-down': toggles.codeReview, 'glyphicon-chevron-right': !toggles.codeReview}"></i>
     </accordion-heading>
 
     <label for="codereview-type-github">
