@@ -19,7 +19,8 @@ angular.module('ciuiApp')
         dir: '/srv/buildkit',
         type: 'drupal-clean',
         customType: 'my-new-type',
-        name: 'mytest'
+        url: 'http://localhost:8080',
+        name: 'mytestbuild'
       },
 
       bogre: {
@@ -44,7 +45,9 @@ angular.module('ciuiApp')
       codeReview: {
         type: 'github',
         path: 'sites/all/modules/mymodule'
-      }
+      },
+
+      toggles: {}
     };
     $scope.cfg = cfg;
 
@@ -123,7 +126,7 @@ angular.module('ciuiApp')
       if ($scope.isBogre()) {
         env.push('BOGRE_URL=\"' + cfg.bogre.url + '\"');
         if (cfg.bogre.subdir) {
-          env.push('BOGRE_SUBDIR=\"'+cfg.bogre.subdir+'\"');
+          env.push('BOGRE_SUBDIR=\"' + cfg.bogre.subdir + '\"');
         }
       }
 
@@ -158,7 +161,7 @@ angular.module('ciuiApp')
 
     $scope.installApplication = function() {
       return "civibuild install " + cfg.buildkit.name + " \\\n" +
-        '  --url \"http://localhost:8000\" \\\n' +
+        '  --url \"' + cfg.buildkit.url + '\" \\\n' +
         '  --admin-pass \"s3cr3t\"';
     };
 
