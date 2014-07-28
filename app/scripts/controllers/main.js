@@ -19,8 +19,9 @@ angular.module('ciuiApp')
         adminPass: 't0ps3cr3t',
         dir: '/srv/buildkit',
         type: 'drupal-clean',
+        civiVer: 'master',
         customType: 'my-new-type',
-        url: 'http://localhost:8080',
+        url: 'http://localhost:8000',
         name: 'mytestbuild'
       },
 
@@ -166,14 +167,19 @@ angular.module('ciuiApp')
         }
       }
 
+      var r = '';
       if (env.length > 0) {
-        return "env " + env.join(" \\\n  ") + " \\\n" +
-          "  civibuild download " + cfg.buildkit.name + " \\\n" +
-          '  --type \"' + $scope.buildkitType() + "\"";
+        r = r + "env " + env.join(" \\\n  ") + " \\\n" +
+          "  civibuild download " + cfg.buildkit.name + " \\\n";
       } else {
-        return "civibuild download " + cfg.buildkit.name + " \\\n" +
-          '  --type \"' + $scope.buildkitType() + "\"";
+        r = r + "civibuild download " + cfg.buildkit.name + " \\\n";
       }
+      if (!$scope.isBogre()) {
+        r = r + "  --civi-ver \"" + cfg.buildkit.civiVer + "\" \\\n";
+      }
+
+      r = r + '  --type \"' + $scope.buildkitType() + "\"";
+      return r;
     };
 
     $scope.codeReviewPath = function() {

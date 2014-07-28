@@ -42,7 +42,7 @@
           a Vagrantbox, or on a dedicated test server.
         </p>
 
-        <p ng-hide="cfg.vagrant">
+        <p ng-hide="cfg.vagrant" class="alert alert-warning">
           Please pay attention to <code>amp config</code> and <code>amp test</code>.
           They may ask you to perform some setup tasks (such as editing the
           Apache configuration and restarting Apache).
@@ -71,7 +71,7 @@
         <h4>Discussion</h4>
 
         <p class="alert alert-warning">
-          Buildkit cannot modify DNS or /etc/hosts. You must update these yourself.
+          Buildkit cannot modify DNS or <code>/etc/hosts</code>. You must update these yourself.
           <br/><br/>
           If you use Vagrant (or any other virtualization scheme), buildkit cannot
           modify network routes or port mappings. You must update these yourself.

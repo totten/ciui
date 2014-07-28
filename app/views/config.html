@@ -144,6 +144,17 @@
       </label>
     </div>
 
+    <div ng-hide="cfg.algo == 'pano' || isBogre()">
+      <label for="buildkit-civiVer">
+        Civi Version:<br/>
+        <select id="buildkit-civiVer" ng-model="cfg.buildkit.civiVer">
+          <option value="4.3">4.3</option>
+          <option value="4.4">4.4</option>
+          <option value="master">master</option>
+        </select>
+      </label>
+    </div>
+
     <div>
       <label for="buildkit-admin-pass">
         Admin Pass:<br/>
