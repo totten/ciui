@@ -1,0 +1,54 @@
+<p>
+  <em>Scheduled Test</em> is a simple form of <em>continuous integration</em>.
+  In this use-case, we will
+  configure a job which runs every few hours and executes a test-suite with the
+  latest version of our application. This can summarized with a little pseudo-code:
+</p>
+
+<pre class="prettyprint lang-javascript" prettyprint-code="scheduledTestPseudocode()">
+  </pre>
+
+<p>
+  This pseudo-code may appear simple but reflects a key issue: testing with
+  CiviCRM requires a complete, installed application (with config files and
+  databases properly created). We use this approach for a few basic reasons:
+</p>
+
+<ul>
+  <li>
+    <em>All</em> of CiviCRM's test suites are compatible with this approach.
+  </li>
+  <li>
+    <em>Some</em> of CiviCRM's test suites (such as "WebTests") <em>require</em> this approach.
+  </li>
+  <li>
+    Automating <code>downloadApplication()</code> and <code>installApplication()</code>
+    is useful for multiple purposes (including continuous-testing; reproducing test failures;
+    creating demo and training sites; and setting up local development sites).
+  </li>
+</ul>
+
+<p>
+  To implement <em>Scheduled Test</em>, we will obtain configure two tools -- Jenkins
+  and Buildkit.
+</p>
+
+<div class="nextbar">
+  <button class="btn btn-success" ng-click="tabToggles.getJenkins = true">Next</button>
+</div>
+
+
+<!--
+tests execute every few hours. This doesn’t require much configuration, and it
+runs the full test-suite. However, it
+only tests code that has already been approved and merged into the official codebase.
+Once a change has been merged,
+developers must be responsive to regressions (e.g. identifying which change caused the
+regression; reverting it;
+writing another patch).
+
+
+useful for continuous-integration. For example,
+you might configure a <a href="http://jenkins-ci.org/">Jenkins</a> job to
+periodically download CiviCRM and execute the test-suite.
+-->

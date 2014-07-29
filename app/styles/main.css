@@ -102,3 +102,8 @@ body {
 
 /* angular-ui-bootstrap */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.nextbar {
+    text-align: center;
+    margin: 1.5em;
+}

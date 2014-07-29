@@ -1,0 +1,19 @@
+<pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
+
+<h4>Discussion</h4>
+
+<p class="alert alert-warning">
+  Buildkit cannot modify DNS or <code>/etc/hosts</code>. You must update these yourself.
+  <br/><br/>
+  If you use Vagrant (or any other virtualization scheme), buildkit cannot
+  modify network routes or port mappings. You must update these yourself.
+</p>
+
+<p ng-show="cfg.vagrant" class="alert alert-warning">
+  You previously indicated that you want to use Vagrant. All commands must run
+  <em>inside</em> the Vagrantbox.
+  <span ng-show="isJenkins()">
+    Configuring Jenkins to work with Vagrant
+    (or any other virtualization scheme) is outside the scope of <em>Buildkit Explorer</em>.
+  </span>
+</p>

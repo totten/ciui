@@ -1,0 +1,27 @@
+TODO
+
+<p ng-show="cfg.downloader == 'bash'">
+  we must automatically download our
+  preferred libraries and modules. To do this, we will create a <code>bash</code> script
+  with commands like <code>git clone</code>, <code>drush dl</code>,
+  or <code>wp plugin install</code>.
+</p>
+
+<div class="alert alert-info" ng-show="cfg.downloader == 'dmake'">
+  For build type <code>{{buildkitType()}}</code>, we must automatically download our
+  preferred libraries and modules. To do this, we will create a
+  <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
+</div>
+
+<div class="alert alert-info" ng-show="isBogre()">
+  <u>Big Old Git Repository of Everything</u>:
+  Some developers prefer to manually copy all code (CMS code, CiviCRM code, modules, themes,
+  etc) into a single git repository (eg <code>{{cfg.bogre.url}}</code>). In BOGRE mode,
+  buildkit will download that repository.
+</div>
+
+<div class="alert alert-warning" ng-show="isBogre()">
+  BOGRE may be useful for production sites where you only import production-ready
+  code, but if you wish to actively participate in the development community, then
+  BOGRE can be tiresome.
+</div>

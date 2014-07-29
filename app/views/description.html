@@ -10,85 +10,20 @@
   Drupal SimpleTest only works with Drupal.
 </p>
 
-<p ng-show="cfg.algo == 'inst'">
-  <em>Basic Build</em> downloads and installs CiviCRM along with a CMS. You can
-  hack/code/test on a basic build.
-</p>
-
-<p ng-show="cfg.algo == 'pano'">
-  <em>Panoramic Build</em> downloads and installs multiple versions of
-  CiviCRM (using the standard demo configurations). This is useful if you
-  frequently work with different versions of Civi.
-</p>
-
-<div ng-show="cfg.algo == 'sched'">
-  <p>
-    <em>Scheduled Test</em> is the simplest form of <em>continuous integration</em>: we will
-    configure a job which runs every few hours and executes a test-suite. This can summarized
-    with a little pseudo-code:
-  </p>
-
-  <pre class="prettyprint lang-javascript" prettyprint-code="scheduledTestPseudocode()">
-  </pre>
-
-  <p>
-    If we were practicing monks in the monastery of Unix minimalism, we might
-    setup <em>Scheduled Test</em> using traditional <a href="http://en.wikipedia.org/wiki/Cron">cron</a>.
-    It's great to understand our process well enough that we can do it with cron (or anything else),
-    but in practice it's more convenient to use a <em>continuous integration server</em>.
-  </p>
-
-  tests execute every few hours. This doesn’t require much configuration, and it
-  runs the full test-suite. However, it
-  only tests code that has already been approved and merged into the official codebase.
-  Once a change has been merged,
-  developers must be responsive to regressions (e.g. identifying which change caused the
-  regression; reverting it;
-  writing another patch).
-
-
-  useful for continuous-integration. For example,
-  you might configure a <a href="http://jenkins-ci.org/">Jenkins</a> job to
-  periodically download CiviCRM and execute the test-suite.
-</div>
-
-<p ng-show="cfg.algo == 'review'">
-  <em>Code Review Test</em> is useful for continuous-integration. For example,
-  if a developer submits changes for code-review (e.g. by opening
-  a pull-request on <code>github.com</code>), then
-  <code>github.com</code> might notify your <a href="http://jenkins-ci.org/">Jenkins</a>
-  server. Jenkins will then download CiviCRM (with patches),
-  execute the test suite, and post the results on <code>github.com</code>.
-</p>
-
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && !isCustom() && !isBogre()">
-  In build type <code>{{cfg.buildkit.type}}</code>, the modules and
-  libraries have been pre-selected by the fine folks at <a href="http://civicrm.org.">civicrm.org</a>.
+  The selected build type, <code>{{cfg.buildkit.type}}</code>, downloads a CMS and
+  several add-ons. The list of modules and libraries was chosen by the fine folks at
+  <a href="http://civicrm.org.">civicrm.org</a>.
   For more options, see the configuration menu.
 </div>
 
-<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom() && cfg.downloader == 'bash'">
-  For build type <code>{{buildkitType()}}</code>, we must automatically download our
-  preferred libraries and modules. To do this, we will create a <code>bash</code> script
-  with commands like <code>git clone</code>, <code>drush dl</code>,
-  or <code>wp plugin install</code>.
+<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom()">
+  The selected build type, <code>{{buildkitType()}}</code>, is a custom type.
+  We will spend some time defining this custom type.
 </div>
 
-<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom() && cfg.downloader == 'dmake'">
-  For build type <code>{{buildkitType()}}</code>, we must automatically download our
-  preferred libraries and modules. To do this, we will create a
-  <a href="http://drush.ws/docs/make.txt"><code>drush make</code> file</a>.
-</div>
+<div ng-show="cfg.algo == 'inst'" ng-include="'views/summary-inst.html'"></div>
+<div ng-show="cfg.algo == 'pano'" ng-include="'views/summary-pano.html'"></div>
+<div ng-show="cfg.algo == 'sched'" ng-include="'views/summary-sched.html'"></div>
+<div ng-show="cfg.algo == 'review'" ng-include="'views/summary-review.html'"></div>
 
-<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isBogre()">
-  <u>Big Old Git Repository of Everything</u>:
-  Some developers prefer to manually copy all code (CMS code, CiviCRM code, modules, themes,
-  etc) into a single git repository (eg <code>{{cfg.bogre.url}}</code>). In BOGRE mode,
-  buildkit will download that repository.
-</div>
-
-<div class="alert alert-warning" ng-show="cfg.algo != 'pano' && isBogre()">
-  BOGRE may be useful for production sites where you only import production-ready
-  code, but if you wish to actively participate in the development community, then
-  BOGRE can be tiresome.
-</div>

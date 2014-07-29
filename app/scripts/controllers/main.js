@@ -56,6 +56,9 @@ angular.module('ciuiApp')
       useCase: true
     };
 
+    $scope.tabToggles = {
+    };
+
     $scope.algoName = function() {
       switch (cfg.algo) {
         case 'inst':
