@@ -4,7 +4,7 @@
   If we were practicing monks in the monastery of Unix minimalism, we might
   setup continuous integration using traditional
   <code><a href="http://en.wikipedia.org/wiki/Cron">cron</a></code>.
-  It's great to understand our process well enough that we can do it with cron (or anything else),
+  It's great to understand our process well enough that we can do it with <code>cron</code> (or anything else),
   but in practice it's more convenient to use a <em>continuous integration server</em>.
 </p>
 
@@ -15,14 +15,14 @@
 
 <ul>
   <li>
-    Cron runs locally on a single server. CI goes further -- by running jobs on a cluster of servers.
+    <code>cron</code> runs locally on a single server. CI goes further -- by running jobs on a cluster of servers.
   </li>
   <li>
-    Cron initiates a job based on a fixed schedule. CI goes further -- by triggering jobs whenever
+    <code>cron</code> initiates a job based on a fixed schedule. CI goes further -- by triggering jobs whenever
     code changes (in git/svn) or whenever a team-member submits a request on the website.
   </li>
   <li>
-    With cron, one can implement
+    With <code>cron</code>, one can implement
     <span ng-show="cfg.algo == 'sched'"><code>scheduledTest()</code>,</span>
     <span ng-show="cfg.algo == 'review'"><code>onSubmitCodeReview()</code>,</span>
     <code>downloadApplication()</code>,
@@ -31,18 +31,13 @@
     <code>executeTests()</code>,
     and
     <code>reportResults()</code>
-    using bash. CI goes further -- by also providing a <em tooltip="Graphical User Interface">GUI</em> or
+    using <code>bash</code>. CI goes further -- by also providing a <em tooltip="Graphical User Interface">GUI</em> or
     <em tooltip="Domain Specific Language">DSL</em> to define these steps. (The GUI or DSL may be more or less powerful
-    than bash --
+    than <code>bash</code> --
     depending on the implementation and your goals.)
   </li>
   <li>
-    Cron sends email to an administrator when a job fails. CI goes further -- by customizing
-    email content and by targeting emails to developers (in addition to or in lieu of the
-    administrator).
-  </li>
-  <li>
-    Cron stores a crude log about past jobs. CI goes further -- by storing and indexing detailed
+    <code>cron</code> stores a crude log about past jobs. CI goes further -- by storing and indexing detailed
     logs for each job, allowing each job to customize the log-rotations, etc.
   </li>
 </ul>
@@ -56,7 +51,7 @@
   <a href="http://www.jetbrains.com/teamcity/">TeamCity</a>,
   and <a href="http://travis-ci.com/">Travis</a>). We focus on the
   popular, open-source <a href="">Jenkins</a> CI.
-  It's powerful/flexible and has a large
+  It's powerful and flexible, and it has a large
   ecosystem of plugins, documentation, binary packages, etc. One
   can install it on any server or use a SaaS provider (such as
   <a href="http://cloudbees.com">CloudBees</a>).

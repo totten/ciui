@@ -1,7 +1,7 @@
 <p>
   <em>Code Review Test</em> is another variation on <em>continuous integration</em>
-  which makes sense when your project requires review of any code changes. This
-  scenario involves a sequence of steps:
+  which makes sense when your project requires upfront review of any code changes.
+  This scenario involves a sequence of steps:
 </p>
 
 <ol>
@@ -10,20 +10,29 @@
     or to one of your own extensions/modules/themes).
   </li>
   <li>
-    The developer submits the change for code-review by opening a
-    pull-request on <code>github.com</code>.
+    The developer submits the change for code-review
+    <span ng-show="cfg.codeReview.type == 'github'">by opening a pull-request on <code>github.com</code>.</span>
+    <span ng-show="cfg.codeReview.type == 'gerrit'">by calling Gerrit's <code>git review</code>.</span>
   </li>
   <li>
-    <code>github.com</code> notifies your <a href="http://jenkins-ci.org/">Jenkins</a> server
+    <span ng-show="cfg.codeReview.type == 'github'"><code>github.com</code></span>
+    <span ng-show="cfg.codeReview.type == 'gerrit'">Gerrit</span>
+    notifies your <a href="http://jenkins-ci.org/">Jenkins</a> server
     of a pending change.
   </li>
   <li>
     Jenkins downloads the application (and the proposed change), executes the tests,
-    and posts the results back to <code>github.com</code>.
+    and posts the results back to
+    <span ng-show="cfg.codeReview.type == 'github'"><code>github.com</code>.</span>
+    <span ng-show="cfg.codeReview.type == 'gerrit'">Gerrit.</span>
   </li>
   <li>
     The original developer (or any other developers) can see the test results
-    on <code>github.com</code> and make a decision about whether to merge the results.
+    on
+    <span ng-show="cfg.codeReview.type == 'github'"><code>github.com</code></span>
+    <span ng-show="cfg.codeReview.type == 'gerrit'">Gerrit</span>
+    and make a decision about whether to
+    {{ cfg.codeReview.type == 'github' ? 'merge the pull-request' : 'approve the change' }}.
   </li>
 </ol>
 
@@ -36,7 +45,9 @@
 <p>
   This closely resembles the <code>scheduledTest()</code> pseudo-code from <em>Scheduled Test</em>.
   As before, it produces a complete, installed application (including various modules, add-ons,
-  config files, and databases). However, it requires on additional step: the
-  <code>applyPatch()</code> step fetches the proposed changes from code-review system (such as
-  <code>github.com</code>) and applies them to the build.
+  config files, and databases). However, it requires one additional step: the
+  <code>applyPatch()</code> step fetches the proposed changes from
+  <span ng-show="cfg.codeReview.type == 'github'"><code>github.com</code></span>
+  <span ng-show="cfg.codeReview.type == 'gerrit'">Gerrit</span>
+  and applies them to the build.
 </p>
