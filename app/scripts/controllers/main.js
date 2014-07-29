@@ -285,4 +285,11 @@ angular.module('ciuiApp')
       }
       return r;
     };
+
+    $scope.scheduledTestPseudocode = function() {
+      return "downloadApplication();\n" +
+        "installApplication();\n" +
+        "executeTests();\n" +
+        "reportResults();";
+    }
   });
