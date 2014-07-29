@@ -197,6 +197,8 @@ angular.module('ciuiApp')
         case 'gerrit':
           return "pushd \"" + $scope.codeReviewPath() + "\"\n" +
             "  # git checkout thepatch fromgerrit\n" +
+            "  git fetch https://gerrit.example.org/r/foo/myproject refs/changes/07/141607/2\n" +
+            "  git checkout FETCH_HEAD" +
             "popd"
       }
     };
