@@ -1,12 +1,132 @@
+<h4>Why Get Jenkins?</h4>
+
 <p>
   If we were practicing monks in the monastery of Unix minimalism, we might
-  setup <em>Scheduled Test</em> using traditional <a href="http://en.wikipedia.org/wiki/Cron">cron</a>.
+  setup continuous integration using traditional
+  <code><a href="http://en.wikipedia.org/wiki/Cron">cron</a></code>.
   It's great to understand our process well enough that we can do it with cron (or anything else),
   but in practice it's more convenient to use a <em>continuous integration server</em>.
 </p>
 
-TODO
-http://jenkins-ci.org/
-https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins
-https://wiki.jenkins-ci.org/display/JENKINS/GitHub+pull+request+builder+plugin
-https://wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger
+<p>
+  A continuous integration server generally begins with basic <em>job management</em>
+  functionality like <code>cron</code> and <code>bash</code> -- but does a bit more. For example:
+</p>
+
+<ul>
+  <li>
+    Cron runs locally on a single server. CI goes further -- by running jobs on a cluster of servers.
+  </li>
+  <li>
+    Cron initiates a job based on a fixed schedule. CI goes further -- by triggering jobs whenever
+    code changes (in git/svn) or whenever a team-member submits a request on the website.
+  </li>
+  <li>
+    With cron, one can implement
+    <span ng-show="cfg.algo == 'sched'"><code>scheduledTest()</code>,</span>
+    <span ng-show="cfg.algo == 'review'"><code>codeReviewTest()</code>,</span>
+    <code>downloadApplication()</code>,
+    <span ng-show="cfg.algo == 'review'"><code>applyPatch()</code>,</span>
+    <code>installApplication()</code>,
+    <code>executeTests()</code>,
+    and
+    <code>reportResults()</code>
+    using bash. CI goes further -- by also providing a <em tooltip="Graphical User Interface">GUI</em> or
+    <em tooltip="Domain Specific Language">DSL</em> to define these steps. (The GUI or DSL may be more or less powerful
+    than bash --
+    depending on the implementation and your goals.)
+  </li>
+  <li>
+    Cron sends email to an administrator when a job fails. CI goes further -- by customizing
+    email content and by targeting emails to developers (in addition to or in lieu of the
+    administrator).
+  </li>
+  <li>
+    Cron stores a crude log about past jobs. CI goes further -- by storing and indexing detailed
+    logs for each job, allowing each job to customize the log-rotations, etc.
+  </li>
+</ul>
+
+<p>
+  There are many powerful CI servers (such as
+  <a href="https://www.atlassian.com/software/bamboo">Bamboo</a>,
+  <a href="http://buildbot.net/">Buildbot</a>,
+  <a href="http://cruisecontrolrb.thoughtworks.com/">CruiseControl</a>,
+  <a href="http://hudson-ci.org/">Hudson</a>,
+  <a href="http://www.jetbrains.com/teamcity/">TeamCity</a>,
+  and <a href="http://travis-ci.com/">Travis</a>). We focus on the
+  popular, open-source <a href="">Jenkins</a> CI.
+  It's powerful/flexible and has a large
+  ecosystem of plugins, documentation, binary packages, etc. One
+  can install it on any server or use a SaaS provider (such as
+  <a href="http://cloudbees.com">CloudBees</a>).
+</p>
+
+<div class="alert alert-info">
+  <p>For a basic idea of what the user interface looks like in a Jenkins CI
+    server, you can visit civicrm.org's Jenkins site:</p>
+
+  <center>
+    <code><a href="https://test.civicrm.org/">https://test.civicrm.org/</a></code>
+  </center>
+</div>
+
+<h4>Pick a Server</h4>
+
+<p>
+  We'll need a server to install Jenkins on. Picking a server on the public Internet
+  will make it easier to publicize/share results of the tests and to integrate
+  with third-party services (such as a Github or Gerrit code-review system).
+  Using a local workstation or local virtual machine will probably work, too.
+</p>
+
+<p>
+  For your first project, it is easiest to run Jenkins on a single server rather
+  than a cluster. Although Jenkins supports multiple servers, it will take more
+  extra administrative work to setup -- and is outside scope of this tutorial.
+</p>
+
+<p>
+  Since there's only one server, make sure it meets the minimum requirements
+  for running Drupal and CiviCRM (PHP version, MySQL version, RAM, etc).
+</p>
+
+<h4>Install Jenkins</h4>
+
+<p>
+  For download links and full instructions, see:
+</p>
+
+<center>
+  <code><a href="http://jenkins-ci.org/">http://jenkins-ci.org/</a></code>
+  <br/>
+  <code><a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins">https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins</a></code>
+</center>
+
+<p>
+  Once you've installed Jenkins and opened it in a web browser, navigate to
+  "<em>Manage Jenkins => Manage Plugins</em>" and install the plugins, such as:
+</p>
+
+<ul>
+  <li>
+    <a href="https://wiki.jenkins-ci.org/display/JENKINS/xUnit+Plugin">xUnit Plugin</a>
+  </li>
+  <li>
+    <a href="http://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin">HTML Publisher Plugin</a>
+  </li>
+  <li>
+    <a href="https://wiki.jenkins-ci.org/display/JENKINS/GitHub+pull+request+builder+plugin">
+      Github Pull Request Builder
+    </a>
+    <span class="text-muted"
+          ng-show="cfg.algo != 'review' || cfg.codeReview.type != 'github'">(if you use GitHub)</span>
+  </li>
+  <li>
+    <a href="https://wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger">
+      Gerrit Trigger Plugin
+    </a>
+    <span class="text-muted"
+          ng-show="cfg.algo != 'review' || cfg.codeReview.type != 'gerrit'">(if you use Gerrit)</span>
+  </li>
+</ul>

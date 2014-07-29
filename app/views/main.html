@@ -19,7 +19,7 @@
           <i class="glyphicon glyphicon-home"></i>
           Summary
         </tab-heading>
-        <div ng-include="'views/description.html'"></div>
+        <div class="alert" ng-include="'views/description.html'"></div>
         <div class="nextbar" ng-show="hasNext()">
           <button class="btn btn-success" ng-click="goNext()">Next</button>
         </div>
@@ -30,7 +30,7 @@
           <i class="glyphicon glyphicon-download"></i>
           Get Jenkins
         </tab-heading>
-        <div ng-show="isJenkins()" ng-include="'views/get-jenkins.html'"></div>
+        <div class="alert" ng-show="isJenkins()" ng-include="'views/get-jenkins.html'"></div>
         <div class="nextbar" ng-show="hasNext()">
           <button class="btn btn-success" ng-click="goNext()">Next</button>
         </div>
@@ -41,7 +41,7 @@
           <i class="glyphicon glyphicon-download"></i>
           Get Buildkit
         </tab-heading>
-        <div ng-include="'views/get-buildkit.html'"></div>
+        <div class="alert" ng-include="'views/get-buildkit.html'"></div>
         <div class="nextbar">
           <div class="nextbar" ng-show="hasNext()">
             <button class="btn btn-success" ng-click="goNext()">Next</button>
@@ -54,7 +54,7 @@
           <i class="glyphicon glyphicon-wrench"></i>
           Define Build Type
         </tab-heading>
-        <div ng-show="cfg.algo != 'pano' && isCustom()" ng-include="'views/define-build-type.html'"></div>
+        <div class="alert" ng-show="cfg.algo != 'pano' && isCustom()" ng-include="'views/define-build-type.html'"></div>
         <div class="nextbar" ng-show="hasNext()">
           <button class="btn btn-success" ng-click="goNext()">Next</button>
         </div>
@@ -67,7 +67,7 @@
           <span ng-show="cfg.algo == 'pano'">Build Sites</span>
           <span ng-show="isJenkins()">Configure Jenkins</span>
         </tab-heading>
-        <div ng-include="'views/build-site.html'"></div>
+        <div class="alert" ng-include="'views/build-site.html'"></div>
         <div class="nextbar" ng-show="hasNext()">
           <button class="btn btn-success" ng-click="goNext()">Next</button>
         </div>

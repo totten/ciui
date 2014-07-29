@@ -10,6 +10,11 @@
   Drupal SimpleTest only works with Drupal.
 </p>
 
+<div ng-show="cfg.algo == 'inst'" ng-include="'views/summary-inst.html'"></div>
+<div ng-show="cfg.algo == 'pano'" ng-include="'views/summary-pano.html'"></div>
+<div ng-show="cfg.algo == 'sched'" ng-include="'views/summary-sched.html'"></div>
+<div ng-show="cfg.algo == 'review'" ng-include="'views/summary-review.html'"></div>
+
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && !isCustom() && !isBogre()">
   The selected build type, <code>{{cfg.buildkit.type}}</code>, downloads a CMS and
   several add-ons. The list of modules and libraries was chosen by the fine folks at
@@ -21,9 +26,3 @@
   The selected build type, <code>{{buildkitType()}}</code>, is a custom type.
   We will spend some time defining this custom type.
 </div>
-
-<div ng-show="cfg.algo == 'inst'" ng-include="'views/summary-inst.html'"></div>
-<div ng-show="cfg.algo == 'pano'" ng-include="'views/summary-pano.html'"></div>
-<div ng-show="cfg.algo == 'sched'" ng-include="'views/summary-sched.html'"></div>
-<div ng-show="cfg.algo == 'review'" ng-include="'views/summary-review.html'"></div>
-

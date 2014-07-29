@@ -291,10 +291,12 @@ angular.module('ciuiApp')
     };
 
     $scope.scheduledTestPseudocode = function() {
-      return "downloadApplication();\n" +
-        "installApplication();\n" +
-        "executeTests();\n" +
-        "reportResults();";
+      return "function scheduledTest() {\n" +
+        "  downloadApplication();\n" +
+        "  installApplication();\n" +
+        "  executeTests();\n" +
+        "  reportResults();\n" +
+        "}";
     };
 
     $scope.tabList = function () {
@@ -312,10 +314,16 @@ angular.module('ciuiApp')
 
     $scope.goNext = function() {
       var steps = $scope.tabList();
-      while (!$scope.tabToggles[steps[0]]) {
+      var first = steps[0];
+      while (steps.length > 0 && !$scope.tabToggles[steps[0]]) {
         steps.shift();
       }
-      delete $scope.tabToggles[steps.shift()];
-      $scope.tabToggles[steps.shift()] = true;
+      if (steps.length > 1) {
+        delete $scope.tabToggles[steps.shift()];
+        $scope.tabToggles[steps.shift()] = true;
+      } else {
+        $scope.tabToggles = {};
+        $scope.tabToggles[first] = true;
+      }
     }
   });
