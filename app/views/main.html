@@ -20,14 +20,20 @@
           Summary
         </tab-heading>
         <div ng-include="'views/description.html'"></div>
+        <div class="nextbar" ng-show="hasNext()">
+          <button class="btn btn-success" ng-click="goNext()">Next</button>
+        </div>
       </tab>
 
-      <tab ng-show="isJenkins()" active="tabToggles.getJenkins">
+      <tab active="tabToggles.getJenkins" ng-show="isJenkins()">
         <tab-heading>
           <i class="glyphicon glyphicon-download"></i>
           Get Jenkins
         </tab-heading>
         <div ng-show="isJenkins()" ng-include="'views/get-jenkins.html'"></div>
+        <div class="nextbar" ng-show="hasNext()">
+          <button class="btn btn-success" ng-click="goNext()">Next</button>
+        </div>
       </tab>
 
       <tab active="tabToggles.getBuildkit">
@@ -36,15 +42,25 @@
           Get Buildkit
         </tab-heading>
         <div ng-include="'views/get-buildkit.html'"></div>
+        <div class="nextbar">
+          <div class="nextbar" ng-show="hasNext()">
+            <button class="btn btn-success" ng-click="goNext()">Next</button>
+          </div>
+        </div>
       </tab>
-      <tab ng-show="cfg.algo != 'pano' && isCustom()">
+
+      <tab active="tabToggles.defineBuildType" ng-show="cfg.algo != 'pano' && isCustom()">
         <tab-heading>
           <i class="glyphicon glyphicon-wrench"></i>
           Define Build Type
         </tab-heading>
         <div ng-show="cfg.algo != 'pano' && isCustom()" ng-include="'views/define-build-type.html'"></div>
+        <div class="nextbar" ng-show="hasNext()">
+          <button class="btn btn-success" ng-click="goNext()">Next</button>
+        </div>
       </tab>
-      <tab>
+
+      <tab active="tabToggles.buildSite">
         <tab-heading>
           <i class="glyphicon glyphicon-cog"></i>
           <span ng-show="cfg.algo == 'inst'">Build a Site</span>
@@ -52,6 +68,9 @@
           <span ng-show="isJenkins()">Configure Jenkins</span>
         </tab-heading>
         <div ng-include="'views/build-site.html'"></div>
+        <div class="nextbar" ng-show="hasNext()">
+          <button class="btn btn-success" ng-click="goNext()">Next</button>
+        </div>
       </tab>
     </tabset>
   </div>

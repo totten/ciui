@@ -57,6 +57,7 @@ angular.module('ciuiApp')
     };
 
     $scope.tabToggles = {
+      summary: true
     };
 
     $scope.algoName = function() {
@@ -294,5 +295,27 @@ angular.module('ciuiApp')
         "installApplication();\n" +
         "executeTests();\n" +
         "reportResults();";
+    };
+
+    $scope.tabList = function () {
+      var steps = ['summary'];
+      if  ($scope.isJenkins()) steps.push('getJenkins');
+      steps.push('getBuildkit');
+      if (cfg.algo != 'pano' && $scope.isCustom()) steps.push('defineBuildType');
+      steps.push('buildSite');
+      return steps;
+    };
+
+    $scope.hasNext = function() {
+      return !$scope.tabToggles.buildSite;
+    };
+
+    $scope.goNext = function() {
+      var steps = $scope.tabList();
+      while (!$scope.tabToggles[steps[0]]) {
+        steps.shift();
+      }
+      delete $scope.tabToggles[steps.shift()];
+      $scope.tabToggles[steps.shift()] = true;
     }
   });
