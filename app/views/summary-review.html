@@ -1,8 +1,42 @@
 <p>
-  <em>Code Review Test</em> is useful for continuous-integration. For example,
-  if a developer submits changes for code-review (e.g. by opening
-  a pull-request on <code>github.com</code>), then
-  <code>github.com</code> might notify your <a href="http://jenkins-ci.org/">Jenkins</a>
-  server. Jenkins will then download CiviCRM (with patches),
-  execute the test suite, and post the results on <code>github.com</code>.
+  <em>Code Review Test</em> is another variation on <em>continuous integration</em>
+  which makes sense when your project requires review of any code changes. This
+  scenario involves a sequence of steps:
+</p>
+
+<ol>
+  <li>
+    A developer prepares a change to the codebase (eg to the civicrm-core code
+    or to one of your own extensions/modules/themes).
+  </li>
+  <li>
+    The developer submits the change for code-review by opening a
+    pull-request on <code>github.com</code>.
+  </li>
+  <li>
+    <code>github.com</code> notifies your <a href="http://jenkins-ci.org/">Jenkins</a> server
+    of a pending change.
+  </li>
+  <li>
+    Jenkins downloads the application (and the proposed change), executes the tests,
+    and posts the results back to <code>github.com</code>.
+  </li>
+  <li>
+    The original developer (or any other developers) can see the test results
+    on <code>github.com</code> and make a decision about whether to merge the results.
+  </li>
+</ol>
+
+<p>
+  We will focus on automating the work done by Jenkins -- which can be summarized with some pseudo-code:
+</p>
+
+<pre class="prettyprint lang-javascript" prettyprint-code="onSubmitCodeReviewPseudocode()"></pre>
+
+<p>
+  This closely resembles the <code>scheduledTest()</code> pseudo-code from <em>Scheduled Test</em>.
+  As before, it produces a complete, installed application (including various modules, add-ons,
+  config files, and databases). However, it requires on additional step: the
+  <code>applyPatch()</code> step fetches the proposed changes from code-review system (such as
+  <code>github.com</code>) and applies them to the build.
 </p>

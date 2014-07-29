@@ -16,13 +16,15 @@
 <div ng-show="cfg.algo == 'review'" ng-include="'views/summary-review.html'"></div>
 
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && !isCustom() && !isBogre()">
-  The selected build type, <code>{{cfg.buildkit.type}}</code>, downloads a CMS and
-  several add-ons. The list of modules and libraries was chosen by the fine folks at
+  When downloading the application, we will use the selected build type,
+  <code>{{cfg.buildkit.type}}</code>, to determine which CMS and add-ons to load.
+  This particular list of add-ons was chosen by the fine folks at
   <a href="http://civicrm.org.">civicrm.org</a>.
   For more options, see the configuration menu.
 </div>
 
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom()">
-  The selected build type, <code>{{buildkitType()}}</code>, is a custom type.
-  We will spend some time defining this custom type.
+  When downloading the application, we will use the selected build type,
+  <code>{{buildkitType()}}</code>, to determine which CMS and add-ons to load.
+  This is a custom build type, so we will need to define it in more depth.
 </div>

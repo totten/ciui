@@ -299,6 +299,16 @@ angular.module('ciuiApp')
         "}";
     };
 
+    $scope.onSubmitCodeReviewPseudocode = function() {
+      return "function onSubmitCodeReview() {\n" +
+        "  downloadApplication();\n" +
+        "  applyPatch();\n" +
+        "  installApplication();\n" +
+        "  executeTests();\n" +
+        "  reportResults();\n" +
+        "}";
+    };
+
     $scope.tabList = function () {
       var steps = ['summary'];
       if  ($scope.isJenkins()) steps.push('getJenkins');
