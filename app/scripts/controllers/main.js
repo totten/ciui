@@ -117,6 +117,10 @@ angular.module('ciuiApp')
       return false;
     };
 
+    $scope.isJenkins = function() {
+      return cfg.algo == 'sched' || cfg.algo == 'review';
+    };
+
     $scope.buildkitType = function() {
       if ($scope.isCustom()) {
         return cfg.buildkit.customType;
@@ -255,7 +259,7 @@ angular.module('ciuiApp')
           + $scope.installApplication() + "\n"
           + "\n";
       }
-      if (cfg.algo == 'sched' || cfg.algo == 'review') {
+      if ($scope.isJenkins()) {
         r = r + "## Execute tests\n"
           + $scope.executeTests() + "\n"
           + "## Report results\n"
