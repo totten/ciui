@@ -7,19 +7,19 @@
     </accordion-heading>
     <label for="algo-inst">
       <input type="radio" name="algo" value="inst" id="algo-inst" ng-model="cfg.algo"/>
-      Basic Build
+      <span tooltip="Download and install CiviCRM + CMS">Basic Build</span>
     </label> <br/>
     <label for="algo-pano">
       <input type="radio" name="algo" value="pano" id="algo-pano" ng-model="cfg.algo"/>
-      Panoramic Build
+      <span tooltip="Download and install several major versions of CiviCRM">Panoramic Build</span>
     </label> <br/>
     <label for="algo-sched">
       <input type="radio" name="algo" value="sched" id="algo-sched" ng-model="cfg.algo"/>
-      Scheduled Test
+      <span tooltip="Automatically run tests every few hours">Scheduled Test</span>
     </label> <br/>
     <label for="algo-review">
       <input type="radio" name="algo" value="review" id="algo-review" ng-model="cfg.algo"/>
-      Code Review Test
+      <span tooltip="Automatically run tests when new code is submitted">Code Review Test</span>
     </label> <br/>
 
   </accordion-group>
@@ -33,22 +33,22 @@
 
     <label for="type-drupal-clean">
       <input type="radio" name="type" value="drupal-clean" id="type-drupal-clean" ng-model="cfg.buildkit.type"/>
-      drupal-clean
+      <span tooltip="Minimalist Drupal 7 + CiviCRM">drupal-clean</span>
     </label><br/>
 
     <label for="type-drupal-demo">
       <input type="radio" name="type" value="drupal-demo" id="type-drupal-demo" ng-model="cfg.buildkit.type"/>
-      drupal-demo
+      <span tooltip="Drupal 7 + CiviCRM (like drupal.demo.civicrm.org)">drupal-demo</span>
     </label><br/>
 
     <label for="type-wp-demo">
       <input type="radio" name="type" value="wp-demo" id="type-wp-demo" ng-model="cfg.buildkit.type"/>
-      wp-demo
+      <span tooltip="WordPress + CiviCRM (like wordpress.demo.civicrm.org)">wp-demo</span>
     </label><br/>
 
     <label for="type-custom">
       <input type="radio" name="type" value="CUSTOM" id="type-custom" ng-model="cfg.buildkit.type"/>
-      <em>(Custom)</em> (<span class="error">TODO</span>)
+      <em tooltip="Define a custom mix of files/modules/addons/versions">(Custom)</em> (<span class="error">TODO</span>)
     </label><br/>
 
     <div class="options" ng-show="cfg.buildkit.type == 'CUSTOM'">
