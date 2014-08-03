@@ -71,7 +71,7 @@
         <label>
           Download Via:
           <select ng-model="cfg.downloader">
-            <option value="bash">bash</option>
+            <option value="bash">bash script</option>
             <option value="bogre">aggregated git repo</option>
             <option value="dmake">drush make</option>
           </select>
@@ -172,8 +172,29 @@
     </label><br/>
 
     <div class="options" ng-show="cfg.simpleTest.enable">
-      Execute test case:<br/>
-      <input ng-model="cfg.simpleTest.test"/>
+      <div>
+        <select ng-model="cfg.simpleTest.mode">
+          <option value="all">All</option>
+          <option value="class">By Class</option>
+          <option value="file">By File</option>
+          <option value="group">By Group</option>
+        </select>
+      </div>
+
+      <div ng-show="cfg.simpleTest.mode == 'class'">
+        Execute test class:<br/>
+        <input ng-model="cfg.simpleTest.testClass"/>
+      </div>
+
+      <div ng-show="cfg.simpleTest.mode == 'file'">
+        Execute test file:<br/>
+        <input ng-model="cfg.simpleTest.testFile"/>
+      </div>
+
+      <div ng-show="cfg.simpleTest.mode == 'group'">
+        Execute test group:<br/>
+        <input ng-model="cfg.simpleTest.testGroup"/>
+      </div>
     </div>
   </accordion-group>
 

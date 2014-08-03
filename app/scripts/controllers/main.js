@@ -41,7 +41,10 @@ angular.module('ciuiApp')
 
       simpleTest: {
         enable: false,
-        test: "TODO"
+        mode: 'all',
+        testFile: "modules/node/node.test",
+        testClass: "NodeCreationTestCase",
+        testGroup: "Node"
       },
 
       codeReview: {
@@ -94,7 +97,7 @@ angular.module('ciuiApp')
     };
 
     $scope.junitDir = function() {
-      return '$WORKDIR/junit';
+      return '$WORKSPACE/junit';
     };
 
     $scope.isCustom = function() {
@@ -175,7 +178,7 @@ angular.module('ciuiApp')
         }
       }
 
-      var r = '';
+      var r ="## Download application (with civibuild)\n";
       if (env.length > 0) {
         r = r + "env " + env.join(" \\\n  ") + " \\\n" +
           "  civibuild download " + cfg.buildkit.name + " \\\n";
@@ -197,49 +200,82 @@ angular.module('ciuiApp')
     $scope.applyPatch = function() {
       switch (cfg.codeReview.type) {
         case 'github':
-          return "pushd \"" + $scope.codeReviewPath() + "\"\n" +
+          return "## Apply patch (from Github)\n" +
+            "pushd \"" + $scope.codeReviewPath() + "\"\n" +
             "  git fetch origin \"+refs/pull/*:refs/remotes/origin/pr/*\"\n" +
             "  git checkout \"$sha1\"\n" +
             "popd"
 
         case 'gerrit':
-          return "pushd \"" + $scope.codeReviewPath() + "\"\n" +
-            "  # git checkout thepatch fromgerrit\n" +
-            "  git fetch https://gerrit.example.org/r/foo/myproject refs/changes/07/141607/2\n" +
-            "  git checkout FETCH_HEAD" +
+          return "## Apply patch (from Gerrit)\n" +
+            "pushd \"" + $scope.codeReviewPath() + "\"\n" +
+            "  git fetch \"https://gerrit.example.org/r/foo/myproject\" \"refs/changes/07/141607/2\"\n" +
+            "  git checkout FETCH_HEAD\n" +
             "popd"
       }
     };
 
     $scope.installApplication = function() {
-      return "civibuild install " + cfg.buildkit.name + " \\\n" +
+      return "## Install application (with civibuild)\n" +
+        "civibuild install " + cfg.buildkit.name + " \\\n" +
         '  --url \"' + cfg.buildkit.url + '\" \\\n' +
         '  --admin-pass \"' + cfg.buildkit.adminPass + '\"';
     };
 
     $scope.executeTests = function() {
       var r = '';
-      r = r + "[ -d \"" + $scope.junitDir() + "\" ] && rm -rf \"" + $scope.junitDir() + "\"\n";
-      r = r + "mkdir \"" + $scope.junitDir() + "\"\n";
+
       if (cfg.civiPhpunit.enable) {
+        r = r + "## Execute tests (with CiviCRM's PHPUnit)\n";
         r = r + 'pushd \"' + $scope.civiRoot() + "/tools\"\n";
-        r = r + "  ./scripts/phpunit --log-junit=\"" + $scope.junitDir() + "/civi-phpunit.xml\" \\\n" +
+        r = r + "  ./scripts/phpunit \\\n" +
+          "    --log-junit=\"" + $scope.junitDir() + "/civi-phpunit.xml\" \\\n" +
           "    \"" + cfg.civiPhpunit.test + "\"\n";
         r = r + "popd\n";
+        r = r + "\n";
       }
       if (cfg.civiUpgradeTest.enable && $scope.isDrupal()) {
+        r = r + "## Execute tests (with CiviCRM's UpgradeTest)\n";
         r = r + "civibuild upgrade-test " + cfg.buildkit.name + " " + cfg.civiUpgradeTest.versions + "\n";
-        r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
+        //r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
+        r = r + "cp \"" + cfg.buildkit.dir + "/app/debug/$BLDNAME/civicrm-upgrade-test.xml\" \\\n" +
+          "  \"" + $scope.junitDir() + "/\"\n";
+        r = r + "\n";
       }
       if (cfg.simpleTest.enable && $scope.isDrupal()) {
-        r = r + '## FIXME: drush test...' + cfg.simpleTest.test + "\n";
+        r = r + "## Execute tests (with Drupal's SimpleTest)\n";
+        r = r + "pushd \"" + $scope.cmsRoot() + "\"\n";
+        r = r + "  drush -y en \"simpletest\"\n";
+        r = r + "  ## consider: sudo -u www-data \\\n";
+        r = r + "  php scripts/run-tests.sh \\\n" +
+          "    --url \"" + $scope.cfg.buildkit.url + "\" \\\n" +
+          "    --xml \"" + $scope.junitDir() + "/drupal-simpletest.xml\" \\\n";
+        switch (cfg.simpleTest.mode) {
+          case 'all':
+            r = r + "    --all\n";
+            break;
+          case 'file':
+            r = r + "    --file \"" + cfg.simpleTest.testFile + "\"\n";
+            break;
+          case 'class':
+            r = r + "    --class \"" + cfg.simpleTest.testClass + "\"\n";
+            break;
+          case 'group':
+            r = r + "    \"" + cfg.simpleTest.testGroup + "\"\n";
+            break;
+          default:
+            r = r + "    FIXME(unrecognized-test)\n";
+        }
+        //
+        r = r + "popd\n";
+        r = r + "\n";
       }
       return r;
     };
 
     $scope.reportResults = function() {
-      var r = '';
-      r = r + "## Jenkins should be configured to read JUnit XML from " + $scope.junitDir();
+      var r = "## Report results\n";
+      r = r + "# Jenkins should be configured to read JUnit XML from " + $scope.junitDir();
       return r;
     }
 
@@ -248,25 +284,26 @@ angular.module('ciuiApp')
       if (!cfg.vagrant) {
         r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
       }
+      if ($scope.isJenkins()) {
+        r = r + "## Cleanup (previous tests)\n" +
+          "[ -d \"" + $scope.junitDir() + "\" ] && rm -rf \"" + $scope.junitDir() + "\"\n" +
+          "mkdir \"" + $scope.junitDir() + "\"\n";
+        r = r + "\n";
+      }
       if (cfg.algo == 'pano') {
         r = r + $scope.createPanoramaBuild();
       } else {
-        r = r + "## Download application\n"
-          + $scope.downloadApplication() + "\n"
+        r = r + $scope.downloadApplication() + "\n"
           + "\n";
         if (cfg.algo == 'review') {
-          r = r + "## Apply patch\n"
-            + $scope.applyPatch() + "\n"
+          r = r + $scope.applyPatch() + "\n"
             + "\n";
         }
-        r = r + "## Install application\n"
-          + $scope.installApplication() + "\n"
+        r = r + $scope.installApplication() + "\n"
           + "\n";
       }
       if ($scope.isJenkins()) {
-        r = r + "## Execute tests\n"
-          + $scope.executeTests() + "\n"
-          + "## Report results\n"
+        r = r + $scope.executeTests()
           + $scope.reportResults() + "\n"
           + "\n";
       }
@@ -292,6 +329,7 @@ angular.module('ciuiApp')
 
     $scope.scheduledTestPseudocode = function() {
       return "function scheduledTest() {\n" +
+        "  cleanup();\n" +
         "  downloadApplication();\n" +
         "  installApplication();\n" +
         "  executeTests();\n" +
@@ -301,6 +339,7 @@ angular.module('ciuiApp')
 
     $scope.onSubmitCodeReviewPseudocode = function() {
       return "function onSubmitCodeReview() {\n" +
+        "  cleanup();\n" +
         "  downloadApplication();\n" +
         "  applyPatch();\n" +
         "  installApplication();\n" +
