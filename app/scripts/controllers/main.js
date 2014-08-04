@@ -76,7 +76,7 @@ angular.module('ciuiApp')
 
     // Misnomer: Root of the build (like buildkit's WEB_ROOT)
     $scope.webRoot = function() {
-      return cfg.buildkit.dir + '/build/' + cfg.buildkit.name
+      return cfg.buildkit.dir + '/build/' + $scope.buildkitName();
     };
 
     // Public document root of the CMS (like buildkit's CMS_ROOT)
@@ -128,6 +128,16 @@ angular.module('ciuiApp')
       return cfg.algo == 'sched' || cfg.algo == 'review';
     };
 
+    $scope.buildkitName = function() {
+      if (cfg.algo == 'inst') {
+        return cfg.buildkit.name;
+      } else if ($scope.isJenkins()) {
+        return "civi-jenkins-${EXECUTOR_NUMBER}";
+      } else {
+        return 'FIXME';
+      }
+    };
+
     $scope.buildkitType = function() {
       if ($scope.isCustom()) {
         return cfg.buildkit.customType;
@@ -136,31 +146,41 @@ angular.module('ciuiApp')
       }
     };
 
+    $scope.buildkitUrl = function() {
+      if (cfg.algo == 'inst') {
+        return cfg.buildkit.url;
+      } else if ($scope.isJenkins()) {
+        return "http://civi-jenkins-${EXECUTOR_NUMBER}.localhost";
+      } else {
+        return "http://FIXME";
+      }
+    };
+
     $scope.createPanoramaBuild = function() {
       var r = '';
       r = r + '## Download and install Drupal with Civi 4.4\n' +
-        'civibuild create d44 \\\n' +
+        'civibuild create \"d44\" \\\n' +
         '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
         '  --civi-ver "4.4" \\\n' +
         '  --type "drupal-demo" \\\n' +
         '  --url "http://d44.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install Drupal with Civi (master)\n' +
-        'civibuild create dmaster \\\n' +
+        'civibuild create \"dmaster\" \\\n' +
         '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
         '  --civi-ver "master" \\\n' +
         '  --type "drupal-demo" \\\n' +
         '  --url "http://dmaster.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install WordPress with Civi 4.4\n' +
-        'civibuild create wp44 \\\n' +
+        'civibuild create \"wp44\" \\\n' +
         '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
         '  --civi-ver "4.4" \\\n' +
         '  --type "wp-demo" \\\n' +
         '  --url "http://wp44.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install WordPress with Civi (master)\n' +
-        'civibuild create wpmaster \\\n' +
+        'civibuild create \"wpmaster\" \\\n' +
         '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
         '  --civi-ver "master" \\\n' +
         '  --type "drupal-clean" \\\n' +
@@ -181,9 +201,9 @@ angular.module('ciuiApp')
       var r ="## Download application (with civibuild)\n";
       if (env.length > 0) {
         r = r + "env " + env.join(" \\\n  ") + " \\\n" +
-          "  civibuild download " + cfg.buildkit.name + " \\\n";
+          "  civibuild download \"" + $scope.buildkitName() + "\" \\\n";
       } else {
-        r = r + "civibuild download " + cfg.buildkit.name + " \\\n";
+        r = r + "civibuild download \"" + $scope.buildkitName() + "\" \\\n";
       }
       if (!$scope.isBogre()) {
         r = r + "  --civi-ver \"" + cfg.buildkit.civiVer + "\" \\\n";
@@ -217,8 +237,8 @@ angular.module('ciuiApp')
 
     $scope.installApplication = function() {
       return "## Install application (with civibuild)\n" +
-        "civibuild install " + cfg.buildkit.name + " \\\n" +
-        '  --url \"' + cfg.buildkit.url + '\" \\\n' +
+        "civibuild install \"" + $scope.buildkitName() + "\" \\\n" +
+        '  --url \"' + $scope.buildkitUrl() + '\" \\\n' +
         '  --admin-pass \"' + cfg.buildkit.adminPass + '\"';
     };
 
@@ -236,7 +256,7 @@ angular.module('ciuiApp')
       }
       if (cfg.civiUpgradeTest.enable && $scope.isDrupal()) {
         r = r + "## Execute tests (with CiviCRM's UpgradeTest)\n";
-        r = r + "civibuild upgrade-test " + cfg.buildkit.name + " " + cfg.civiUpgradeTest.versions + "\n";
+        r = r + "civibuild upgrade-test \"" + $scope.buildkitName() + "\" " + cfg.civiUpgradeTest.versions + "\n";
         //r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
         r = r + "cp \"" + cfg.buildkit.dir + "/app/debug/$BLDNAME/civicrm-upgrade-test.xml\" \\\n" +
           "  \"" + $scope.junitDir() + "/\"\n";
@@ -248,7 +268,7 @@ angular.module('ciuiApp')
         r = r + "  drush -y en \"simpletest\"\n";
         r = r + "  ## consider: sudo -u www-data \\\n";
         r = r + "  php scripts/run-tests.sh \\\n" +
-          "    --url \"" + $scope.cfg.buildkit.url + "\" \\\n" +
+          "    --url \"" + $scope.buildkitUrl() + "\" \\\n" +
           "    --xml \"" + $scope.junitDir() + "/drupal-simpletest.xml\" \\\n";
         switch (cfg.simpleTest.mode) {
           case 'all':

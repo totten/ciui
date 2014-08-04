@@ -98,14 +98,14 @@
          ng-class="{'glyphicon-chevron-down': toggles.buildOptions, 'glyphicon-chevron-right': !toggles.buildOptions}"></i>
     </accordion-heading>
 
-    <div ng-hide="cfg.algo == 'pano'">
+    <div ng-show="cfg.algo == 'inst'">
       <label for="buildkit-name">
         Name:<br/>
         <input type="text" id="buildkit-name" ng-model="cfg.buildkit.name"/>
       </label>
     </div>
 
-    <div ng-hide="cfg.algo == 'pano'">
+    <div ng-show="cfg.algo == 'inst'">
       <label for="buildkit-url">
         URL:<br/>
         <input type="text" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'pano'"/>
