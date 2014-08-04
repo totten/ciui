@@ -237,6 +237,8 @@ angular.module('ciuiApp')
           return "## Apply patch (from Gerrit)\n" +
             "pushd \"" + $scope.codeReviewPath() + "\"\n" +
             "  git fetch \"" + cfg.gerrit.url + "\" \"FIXME\"\n" +
+            "  # FIXME: use some combination of $GERRIT_REFSPEC, $GERRIT_BRANCH, $GERRIT_BRANCH\n" +
+            "  # https://wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger\n" +
             "  git checkout FETCH_HEAD\n" +
             "popd"
       }
