@@ -73,6 +73,12 @@ body {
     border-radius: 5px;
 }
 
+.prettyprint-options-box {
+    margin: 0em -15px;
+    padding: 5px 15px;
+    background: #eec;
+}
+
 .configuration fieldset {
     padding-bottom: 1em;
 }

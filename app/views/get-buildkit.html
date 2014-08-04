@@ -1,11 +1,29 @@
-<pre class="prettyprint lang-bash" prettyprint-code="installBuildkit()"></pre>
+<div class="prettyprint-options-box">
+  <div class="pull-right">
+    <label for="sudo">
+      <input type="checkbox" id="sudo" ng-model="cfg.sudo"/>
+      <span tooltip="If creating the install dir requires escalated privileges, use sudo.">
+        Use sudo
+      </span>
+    </label>
 
-<span style="float:right;">
-  <label for="vagrant">
-    <input type="checkbox" id="vagrant" ng-model="cfg.vagrant"/>
-    Use Vagrant
-  </label>
-</span>
+    <label for="vagrant">
+      <input type="checkbox" id="vagrant" ng-model="cfg.vagrant"/>
+      <span tooltip="If you already use Vagrant, then you might try the experimental Vagrantbox for buildkit.">
+        Use vagrant
+      </span>
+    </label>
+  </div>
+
+  <div>
+    <label for="buildkit-dir-insitu">
+      Install to:
+      <input id="buildkit-dir-insitu" ng-model="cfg.buildkit.dir" />
+    </label>
+  </div>
+</div>
+
+<pre class="row prettyprint lang-bash" prettyprint-code="installBuildkit()"></pre>
 
 <h4>Discussion</h4>
 
