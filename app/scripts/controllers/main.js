@@ -201,7 +201,7 @@ angular.module('ciuiApp')
         }
       }
 
-      var r ="## Download application (with civibuild)\n";
+      var r = "## Download application (with civibuild)\n";
       if (env.length > 0) {
         r = r + "env " + env.join(" \\\n  ") + " \\\n" +
           "  civibuild download \"" + $scope.buildkitName() + "\" \\\n";
@@ -335,6 +335,15 @@ angular.module('ciuiApp')
 
     $scope.installBuildkit = function() {
       var r = '';
+//      if (!cfg.vagrant) {
+//        r = r + "sudo mkdir \"" + cfg.buildkit.dir + "\"\n";
+//        if ($scope.isJenkins()) {
+//          r = r + "sudo chown \"jenkins\" \"" + cfg.buildkit.dir + "\"\n";
+//          r = r + "sudo -u \"jenkins\" -H bash\n";
+//        } else {
+//          r = r + "sudo chown $(whoami) \"" + cfg.buildkit.dir + "\"\n";
+//        }
+//      }
       r = r + "git clone \"https://github.com/civicrm/civicrm-buildkit.git\" \"" + cfg.buildkit.dir + "\"\n";
       if (!cfg.vagrant) {
         r = r +
@@ -371,9 +380,9 @@ angular.module('ciuiApp')
         "}";
     };
 
-    $scope.tabList = function () {
+    $scope.tabList = function() {
       var steps = ['summary'];
-      if  ($scope.isJenkins()) steps.push('getJenkins');
+      if ($scope.isJenkins()) steps.push('getJenkins');
       steps.push('getBuildkit');
       if (cfg.algo != 'pano' && $scope.isCustom()) steps.push('defineBuildType');
       steps.push('buildSite');
