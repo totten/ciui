@@ -313,8 +313,13 @@ angular.module('ciuiApp')
       }
       if ($scope.isJenkins()) {
         r = r + "## Cleanup (previous tests)\n" +
-          "[ -d \"" + $scope.junitDir() + "\" ] && rm -rf \"" + $scope.junitDir() + "\"\n" +
-          "mkdir \"" + $scope.junitDir() + "\"\n";
+          "if [ -d \"" + $scope.junitDir() + "\" ]; then\n" +
+          "  rm -rf \"" + $scope.junitDir() + "\"\n" +
+          "fi\n" +
+          "mkdir \"" + $scope.junitDir() + "\"\n" +
+          "if [ -d \"" + $scope.webRoot() + "\" ]; then\n" +
+          "  civibuild destroy \"" + $scope.buildkitName() + "\"\n" +
+          "fi\n";
         r = r + "\n";
       }
       if (cfg.algo == 'pano') {
