@@ -55,7 +55,7 @@
       <div>
         <label>
           Build Type:
-          <input type="text" ng-model="cfg.buildkit.customType"/>
+          <input type="text" size="30" ng-model="cfg.buildkit.customType"/>
         </label>
       </div>
       <div>
@@ -101,14 +101,14 @@
     <div ng-show="cfg.algo == 'inst'">
       <label for="buildkit-name">
         Name:<br/>
-        <input type="text" id="buildkit-name" ng-model="cfg.buildkit.name"/>
+        <input type="text" size="30" id="buildkit-name" ng-model="cfg.buildkit.name"/>
       </label>
     </div>
 
     <div ng-show="cfg.algo == 'inst'">
       <label for="buildkit-url">
         URL:<br/>
-        <input type="text" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'pano'"/>
+        <input type="text" size="30" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'pano'"/>
       </label>
     </div>
 
@@ -126,7 +126,7 @@
     <div>
       <label for="buildkit-admin-pass">
         Admin Pass:<br/>
-        <input type="text" id="buildkit-admin-pass" ng-model="cfg.buildkit.adminPass"/>
+        <input type="text" size="30" id="buildkit-admin-pass" ng-model="cfg.buildkit.adminPass"/>
       </label>
     </div>
 
@@ -146,7 +146,7 @@
 
     <div class="options" ng-show="cfg.civiPhpunit.enable">
       Execute test case:<br/>
-      <input ng-model="cfg.civiPhpunit.test"/>
+      <input type="text" size="30" ng-model="cfg.civiPhpunit.test"/>
     </div>
 
     <label for="test-civi-upgradetest">
@@ -156,7 +156,7 @@
 
     <div class="options" ng-show="cfg.civiUpgradeTest.enable">
       Perform upgrades with example DBs:<br/>
-      <input ng-model="cfg.civiUpgradeTest.versions"/>
+      <input type="text" size="30" ng-model="cfg.civiUpgradeTest.versions"/>
     </div>
 
     <label for="test-simpletest">
@@ -176,17 +176,17 @@
 
       <div ng-show="cfg.simpleTest.mode == 'class'">
         Execute test class:<br/>
-        <input ng-model="cfg.simpleTest.testClass"/>
+        <input type="text" size="30" ng-model="cfg.simpleTest.testClass"/>
       </div>
 
       <div ng-show="cfg.simpleTest.mode == 'file'">
         Execute test file:<br/>
-        <input ng-model="cfg.simpleTest.testFile"/>
+        <input type="text" size="30" ng-model="cfg.simpleTest.testFile"/>
       </div>
 
       <div ng-show="cfg.simpleTest.mode == 'group'">
         Execute test group:<br/>
-        <input ng-model="cfg.simpleTest.testGroup"/>
+        <input type="text" size="30" ng-model="cfg.simpleTest.testGroup"/>
       </div>
     </div>
   </accordion-group>
@@ -201,7 +201,7 @@
     <div ng-show="!isBogre()">
       <label for="codereview-patch-base">
         <span tooltip="Base path to the repo for which patches are reviewed">Apply Patches For:</span><br/>
-        <input type="text" id="codereview-patch-base" ng-model="cfg.codeReview.path" />
+        <input type="text" size="30" id="codereview-patch-base" ng-model="cfg.codeReview.path" />
       </label>
     </div>
 
@@ -226,7 +226,7 @@
     <div class="options" ng-show="cfg.codeReview.type == 'gerrit'">
       <label for="gerrit-url">
         Gerrit Project URL:<br/>
-        <input type="text" id="gerrit-url" ng-model="cfg.gerrit.url" />
+        <input type="text" size="30" id="gerrit-url" ng-model="cfg.gerrit.url" />
       </label>
     </div>
 
