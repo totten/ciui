@@ -115,5 +115,9 @@ body {
 }
 
 span[tooltip], em[tooltip] {
-    border-bottom: 1px dashed black;
+    border-bottom: 1px dashed #ccc;
+}
+
+span[tooltip]:hover, em[tooltip]:hover {
+    border-bottom: 1px dashed #444;
 }
