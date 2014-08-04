@@ -261,7 +261,7 @@ angular.module('ciuiApp')
         r = r + "## Execute tests (with CiviCRM's UpgradeTest)\n";
         r = r + "civibuild upgrade-test \"" + $scope.buildkitName() + "\" " + cfg.civiUpgradeTest.versions + "\n";
         //r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
-        r = r + "cp \"" + cfg.buildkit.dir + "/app/debug/$BLDNAME/civicrm-upgrade-test.xml\" \\\n" +
+        r = r + "cp \"" + cfg.buildkit.dir + "/app/debug/" + $scope.buildkitName() + "/civicrm-upgrade-test.xml\" \\\n" +
           "  \"" + $scope.junitDir() + "/\"\n";
         r = r + "\n";
       }
