@@ -17,7 +17,7 @@ angular.module('ciuiApp')
 
       buildkit: {
         adminPass: 't0ps3cr3t',
-        dir: '/srv/buildkit',
+        dir: '/opt/buildkit',
         type: 'drupal-clean',
         civiVer: 'master',
         customType: 'my-custom-type',
