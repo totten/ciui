@@ -8,22 +8,18 @@
 <pre class="prettyprint lang-javascript" prettyprint-code="scheduledTestPseudocode()"></pre>
 
 <p>
-  The first two steps of the pseudo-code produce a complete, installed
-  application (including various modules, add-ons, config files, and databases). We
-  use this approach for a few basic reasons:
+  The first few steps of the pseudo-code produce a clean, complete, installed
+  application (including various modules, add-ons, config files, and databases). This
+  adds some overhead to <code>scheduledTest()</code>, but we never-the-less have good
+  reason to do a full installation:
 </p>
 
 <ul>
   <li>
-    <em>All</em> of CiviCRM's test suites are compatible with this approach.
+    <em>All</em> of CiviCRM's test suites are compatible with a full installation.
   </li>
   <li>
-    <em>Some</em> of CiviCRM's test suites (such as "WebTests") <em>require</em> this approach.
-  </li>
-  <li>
-    Automating <code>downloadApplication()</code> and <code>installApplication()</code>
-    is useful for multiple purposes (including continuous-testing; reproducing test failures;
-    creating demo and training sites; and setting up local development sites).
+    <em>Some</em> of CiviCRM's test suites (such as "WebTests") <em>require</em> a full installation.
   </li>
 </ul>
 
