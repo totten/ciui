@@ -18,7 +18,7 @@
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && !isCustom() && !isBogre()">
   When downloading the application, we will use the selected build type,
   <code>{{cfg.buildkit.type}}</code>, to determine which CMS and add-ons to load.
-  This particular list of add-ons was chosen by the fine folks at
+  For <code>{{cfg.buildkit.type}}</code>, the list of add-ons was chosen by the fine folks at
   <a href="http://civicrm.org.">civicrm.org</a>.
   For more options, see the configuration menu.
 </div>
@@ -26,5 +26,5 @@
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom()">
   When downloading the application, we will use the selected build type,
   <code>{{buildkitType()}}</code>, to determine which CMS and add-ons to load.
-  This is a custom build type, so we will need to define it in more depth.
+  <code>{{buildkitType()}}</code> is a custom build type, so we will need to define it in more depth.
 </div>
