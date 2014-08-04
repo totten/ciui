@@ -198,17 +198,37 @@
          ng-class="{'glyphicon-chevron-down': toggles.codeReview, 'glyphicon-chevron-right': !toggles.codeReview}"></i>
     </accordion-heading>
 
-    <label for="codereview-type-github">
-      <input type="radio" name="codereview-type" value="github" id="codereview-type-github"
-             ng-model="cfg.codeReview.type"/>
-      GitHub
-    </label><br/>
+    <div ng-show="!isBogre()">
+      <label for="codereview-patch-base">
+        <span tooltip="Base path to the repo for which patches are reviewed">Apply Patches For:</span><br/>
+        <input type="text" id="codereview-patch-base" ng-model="cfg.codeReview.path" />
+      </label>
+    </div>
 
-    <label for="codereview-type-gerrit">
-      <input type="radio" name="codereview-type" value="gerrit" id="codereview-type-gerrit"
-             ng-model="cfg.codeReview.type"/>
-      Gerrit
-    </label><br/>
+    <div>
+      <label>
+        <span tooltip="The code-review system which tracks pending patches">Load Patches From:</span>
+      </label><br/>
+
+      <label for="codereview-type-github">
+        <input type="radio" name="codereview-type" value="github" id="codereview-type-github"
+               ng-model="cfg.codeReview.type"/>
+        GitHub
+      </label><br/>
+
+      <label for="codereview-type-gerrit">
+        <input type="radio" name="codereview-type" value="gerrit" id="codereview-type-gerrit"
+               ng-model="cfg.codeReview.type"/>
+        Gerrit
+      </label><br/>
+    </div>
+
+    <div class="options" ng-show="cfg.codeReview.type == 'gerrit'">
+      <label for="gerrit-url">
+        Gerrit Project URL:<br/>
+        <input type="text" id="gerrit-url" ng-model="cfg.gerrit.url" />
+      </label>
+    </div>
 
     <!--
     <label for="codereview-repo-path">

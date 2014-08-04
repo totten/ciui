@@ -50,6 +50,10 @@ angular.module('ciuiApp')
       codeReview: {
         type: 'github',
         path: 'sites/all/modules/mymodule'
+      },
+
+      gerrit: {
+        url: 'https://gerrit.example.org/r/foo/myproject'
       }
 
     };
@@ -217,7 +221,7 @@ angular.module('ciuiApp')
     };
 
     $scope.codeReviewPath = function() {
-      return ($scope.isBogre()) ? $scope.webRoot() : $scope.civiRoot();
+      return $scope.webRoot() + ($scope.isBogre() ? '' : ('/' + cfg.codeReview.path));
     };
 
     $scope.applyPatch = function() {
@@ -232,7 +236,7 @@ angular.module('ciuiApp')
         case 'gerrit':
           return "## Apply patch (from Gerrit)\n" +
             "pushd \"" + $scope.codeReviewPath() + "\"\n" +
-            "  git fetch \"https://gerrit.example.org/r/foo/myproject\" \"refs/changes/07/141607/2\"\n" +
+            "  git fetch \"" + cfg.gerrit.url + "\" \"FIXME\"\n" +
             "  git checkout FETCH_HEAD\n" +
             "popd"
       }
