@@ -56,7 +56,10 @@ angular.module('ciuiApp')
     $scope.cfg = cfg;
 
     $scope.toggles = {
-      useCase: true
+      useCase: true,
+      aboutJenkins: false,
+      aboutBuildTypes: false,
+      pickServer: true
     };
 
     $scope.tabToggles = {

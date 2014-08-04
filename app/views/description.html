@@ -16,108 +16,147 @@
 <div ng-show="cfg.algo == 'review'" ng-include="'views/summary-review.html'"></div>
 
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && !isCustom() && !isBogre()">
-  <h4>About Build Types</h4>
-  When downloading the application, we will use the selected build type,
-  <code>{{cfg.buildkit.type}}</code>, to determine which CMS and add-ons to load.
-  For <code>{{cfg.buildkit.type}}</code>, the list of add-ons was chosen by the fine folks at
-  <a target="_blank" href="http://civicrm.org.">civicrm.org</a>.
-  For more options, see "Build Types" and "Build Options" in the configuration menu.
+  <a ng-click="toggles.aboutBuildTypes = !toggles.aboutBuildTypes">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.aboutBuildTypes, 'glyphicon-chevron-right': !toggles.aboutBuildTypes}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      About Build Type and Build Options
+    </h4>
+  </a>
+
+  <div collapse="!toggles.aboutBuildTypes">
+    When downloading the application, we will use the selected build type,
+    <code>{{cfg.buildkit.type}}</code>, to determine which CMS and add-ons to load.
+    For <code>{{cfg.buildkit.type}}</code>, the list of add-ons was chosen by the fine folks at
+    <a target="_blank" href="http://civicrm.org.">civicrm.org</a>.
+    For more options, see "Build Type" and "Build Options" in the configuration menu.
+  </div>
 </div>
 
 <div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom()">
-  <h4>About Build Types</h4>
-  When downloading the application, we will use the selected build type,
-  <code>{{buildkitType()}}</code>, to determine which CMS and add-ons to load.
-  <code>{{buildkitType()}}</code> is a custom build type, so we will need to define it in more depth.
+  <a ng-click="toggles.aboutBuildTypes = !toggles.aboutBuildTypes">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.aboutBuildTypes, 'glyphicon-chevron-right': !toggles.aboutBuildTypes}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      About Build Type and Build Options
+    </h4>
+  </a>
+
+  <div collapse="!toggles.aboutBuildTypes">
+    When downloading the application, we will use the selected build type,
+    <code>{{buildkitType()}}</code>, to determine which CMS and add-ons to load.
+    <code>{{buildkitType()}}</code> is a custom build type, so we will need to define it in more depth.
+  </div>
 </div>
 
 <div class="alert alert-info" ng-show="isJenkins()">
-  <h4>About Jenkins</h4>
+  <a ng-click="toggles.aboutJenkins = !toggles.aboutJenkins">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.aboutJenkins, 'glyphicon-chevron-right': !toggles.aboutJenkins}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      About Jenkins
+    </h4>
+  </a>
 
-  <p>
-    If we were practicing monks in the monastery of Unix minimalism, we might
-    setup continuous integration using traditional
-    <code><a target="_blank" href="http://en.wikipedia.org/wiki/Cron">cron</a></code>.
-    It's great to understand our process well enough that we can do it with <code>cron</code> (or anything else),
-    but in practice it's more convenient to use a <em>continuous integration server</em>.
-  </p>
+  <div collapse="!toggles.aboutJenkins">
+    <p>
+      If we were practicing monks in the monastery of Unix minimalism, we might
+      setup continuous integration using traditional
+      <code><a target="_blank" href="http://en.wikipedia.org/wiki/Cron">cron</a></code>.
+      It's great to understand our process well enough that we can do it with <code>cron</code> (or anything else),
+      but in practice it's more convenient to use a <em>continuous integration server</em>.
+    </p>
 
-  <p>
-    A continuous integration server generally begins with basic <em>job management</em>
-    functionality like <code>cron</code> and <code>bash</code> -- but does a bit more. For example:
-  </p>
+    <p>
+      A continuous integration server generally begins with basic <em>job management</em>
+      functionality like <code>cron</code> and <code>bash</code> -- but does a bit more. For example:
+    </p>
 
-  <ul>
-    <li>
-      <code>cron</code> runs locally on a single server. CI goes further -- by running jobs on a cluster of servers.
-    </li>
-    <li>
-      <code>cron</code> initiates a job based on a fixed schedule. CI goes further -- by triggering jobs whenever
-      code changes (in git/svn) or whenever a team-member submits a request on the website.
-    </li>
-    <li>
-      With <code>cron</code>, one can implement
-      <span ng-show="cfg.algo == 'sched'"><code>scheduledTest()</code>,</span>
-      <span ng-show="cfg.algo == 'review'"><code>onSubmitCodeReview()</code>,</span>
-      <code>downloadApplication()</code>,
-      <span ng-show="cfg.algo == 'review'"><code>applyPatch()</code>,</span>
-      <code>installApplication()</code>,
-      <code>executeTests()</code>,
-      and
-      <code>reportResults()</code>
-      using <code>bash</code>. CI goes further -- by also providing a <em tooltip="Graphical User Interface">GUI</em> or
-      <em tooltip="Domain Specific Language">DSL</em> to define these steps. (The GUI or DSL may be more or less powerful
-      than <code>bash</code> --
-      depending on the implementation and your goals.)
-    </li>
-    <li>
-      <code>cron</code> stores a crude log about past jobs. CI goes further -- by storing and indexing detailed
-      logs for each job, allowing each job to customize the log-rotations, etc.
-    </li>
-  </ul>
+    <ul>
+      <li>
+        <code>cron</code> runs locally on a single server. CI goes further -- by running jobs on a cluster of servers.
+      </li>
+      <li>
+        <code>cron</code> initiates a job based on a fixed schedule. CI goes further -- by triggering jobs whenever
+        code changes (in git/svn) or whenever a team-member submits a request on the website.
+      </li>
+      <li>
+        With <code>cron</code>, one can implement
+        <span ng-show="cfg.algo == 'sched'"><code>scheduledTest()</code>,</span>
+        <span ng-show="cfg.algo == 'review'"><code>onSubmitCodeReview()</code>,</span>
+        <code>downloadApplication()</code>,
+        <span ng-show="cfg.algo == 'review'"><code>applyPatch()</code>,</span>
+        <code>installApplication()</code>,
+        <code>executeTests()</code>,
+        and
+        <code>reportResults()</code>
+        using <code>bash</code>. CI goes further -- by also providing a <em tooltip="Graphical User Interface">GUI</em>
+        or
+        <em tooltip="Domain Specific Language">DSL</em> to define these steps. (The GUI or DSL may be more or less
+        powerful
+        than <code>bash</code> --
+        depending on the implementation and your goals.)
+      </li>
+      <li>
+        <code>cron</code> stores a crude log about past jobs. CI goes further -- by storing and indexing detailed
+        logs for each job, allowing each job to customize the log-rotations, etc.
+      </li>
+    </ul>
 
-  <p>
-    There are many powerful CI servers (such as
-    <a target="_blank" href="https://www.atlassian.com/software/bamboo">Bamboo</a>,
-    <a target="_blank" href="http://buildbot.net/">Buildbot</a>,
-    <a target="_blank" href="http://cruisecontrolrb.thoughtworks.com/">CruiseControl</a>,
-    <a target="_blank" href="http://hudson-ci.org/">Hudson</a>,
-    <a target="_blank" href="http://www.jetbrains.com/teamcity/">TeamCity</a>,
-    and <a target="_blank" href="http://travis-ci.com/">Travis</a>). We focus on the
-    popular, open-source <a target="_blank" href="http://jenkins-ci.org/">Jenkins</a> CI.
-    It's powerful and flexible, and it has a large
-    ecosystem of plugins, documentation, binary packages, etc. One
-    can install it on any server or use a SaaS provider (such as
-    <a target="_blank" href="http://cloudbees.com">CloudBees</a>).
-  </p>
+    <p>
+      There are many powerful CI servers (such as
+      <a target="_blank" href="https://www.atlassian.com/software/bamboo">Bamboo</a>,
+      <a target="_blank" href="http://buildbot.net/">Buildbot</a>,
+      <a target="_blank" href="http://cruisecontrolrb.thoughtworks.com/">CruiseControl</a>,
+      <a target="_blank" href="http://hudson-ci.org/">Hudson</a>,
+      <a target="_blank" href="http://www.jetbrains.com/teamcity/">TeamCity</a>,
+      and <a target="_blank" href="http://travis-ci.com/">Travis</a>). We focus on the
+      popular, open-source <a target="_blank" href="http://jenkins-ci.org/">Jenkins</a> CI.
+      It's powerful and flexible, and it has a large
+      ecosystem of plugins, documentation, binary packages, etc. One
+      can install it on any server or use a SaaS provider (such as
+      <a target="_blank" href="http://cloudbees.com">CloudBees</a>).
+    </p>
 
-  <p>For a basic idea of what the user interface looks like in a Jenkins CI
-    server, you can visit civicrm.org's Jenkins site:</p>
+    <p>For a basic idea of what the user interface looks like in a Jenkins CI
+      server, you can visit civicrm.org's Jenkins site:</p>
 
-  <center>
-    <code><a target="_blank" href="https://test.civicrm.org/">https://test.civicrm.org/</a></code>
-  </center>
-
+    <center>
+      <code><a target="_blank" href="https://test.civicrm.org/">https://test.civicrm.org/</a></code>
+    </center>
+  </div>
 </div>
 
 <div class="alert alert-success" ng-show="isJenkins()">
-  <h4>Pick a Server</h4>
+  <a ng-click="toggles.pickServer = !toggles.pickServer">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.pickServer, 'glyphicon-chevron-right': !toggles.pickServer}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-exclamation-sign"></i>&nbsp;
+      Pick a Server
+    </h4>
+  </a>
 
-  <p>
-    We'll need a server to install Jenkins on. Picking a server on the public Internet
-    will make it easier to publicize/share results of the tests and to integrate
-    with third-party services (such as a Github or Gerrit code-review system).
-    Using a local workstation or local virtual machine <em>may</em> also work.
-  </p>
+  <div collapse="!toggles.pickServer">
+    <p>
+      We'll need a server to install Jenkins on. Picking a server on the public Internet
+      will make it easier to publicize/share results of the tests and to integrate
+      with third-party services (such as a Github or Gerrit code-review system).
+      Using a local workstation or local virtual machine <em>may</em> also work.
+    </p>
 
-  <p>
-    For your <b>first project</b>, it is easiest to run everything -- Jenkins, buildkit, etc -- on a
-    <b>single server</b>. Jenkins does support multiple servers, but that requires more
-    administration/configuration -- and is outside the scope of this tutorial.
-  </p>
+    <p>
+      For your <b>first project</b>, it is easiest to run everything -- Jenkins, buildkit, etc -- on a
+      <b>single server</b>. Jenkins does support multiple servers, but that requires more
+      administration/configuration -- and is outside the scope of this tutorial.
+    </p>
 
-  <p>
-    Since there's only one server, make sure it meets the minimum requirements
-    for running Drupal and CiviCRM (PHP version, MySQL version, RAM, etc).
-  </p>
+    <p>
+      Since there's only one server, make sure it meets the minimum requirements
+      for running Drupal and CiviCRM (PHP version, MySQL version, RAM, etc).
+    </p>
+  </div>
 </div>
