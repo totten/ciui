@@ -53,11 +53,11 @@ angular.module('ciuiApp')
       },
 
       github: {
-        url: 'https://github.com/myuser/myproject'
+        url: $routeParams['github.url'] || 'https://github.com/myuser/myproject'
       },
 
       gerrit: {
-        url: 'https://gerrit.example.org/r/foo/myproject'
+        url: $routeParams['gerrit.url'] || 'https://gerrit.example.org/r/foo/myproject'
       }
 
     };
