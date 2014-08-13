@@ -142,7 +142,7 @@ angular.module('ciuiApp')
       if (cfg.algo == 'inst') {
         return cfg.buildkit.name;
       } else if ($scope.isJenkins()) {
-        return "civi-jenkins-${EXECUTOR_NUMBER}";
+        return "$BLDNAME";
       } else {
         return 'FIXME';
       }
@@ -160,7 +160,7 @@ angular.module('ciuiApp')
       if (cfg.algo == 'inst') {
         return cfg.buildkit.url;
       } else if ($scope.isJenkins()) {
-        return "http://civi-jenkins-${EXECUTOR_NUMBER}.localhost";
+        return "$BLDURL";
       } else {
         return "http://FIXME";
       }
@@ -248,10 +248,16 @@ angular.module('ciuiApp')
     };
 
     $scope.installApplication = function() {
+      var lines = [
+        "civibuild install \"" + $scope.buildkitName() + "\"",
+        '--url \"' + $scope.buildkitUrl() + '\"'
+        ];
+      if (cfg.buildkit.adminPass) {
+        lines.push('--admin-pass \"' + cfg.buildkit.adminPass + '\"')
+      }
+
       return "## Install application (with civibuild)\n" +
-        "civibuild install \"" + $scope.buildkitName() + "\" \\\n" +
-        '  --url \"' + $scope.buildkitUrl() + '\" \\\n' +
-        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' );
+        lines.join(" \\\n  ");
     };
 
     $scope.executeTests = function() {
@@ -312,10 +318,24 @@ angular.module('ciuiApp')
     }
 
     $scope.createExampleCode = function() {
-      var r = '';
+      var env = [];
       if (!cfg.vagrant) {
-        r = r + "export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n\n";
+        env.push("export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n");
       }
+      if ($scope.isJenkins()) {
+        env.push("export BLDNAME=\"jenkins-${EXECUTOR_NUMBER}\"\n");
+        env.push("export BLDURL=\"http://localhost:$((8100 + $EXECUTOR_NUMBER))\"\n");
+      }
+
+      var r = '';
+
+      if (env.length > 0) {
+        for (var envIdx = 0; envIdx < env.length; envIdx++) {
+          r = r + env[envIdx];
+        }
+        r = r + "\n";
+      }
+
       if ($scope.isJenkins()) {
         r = r + "## Cleanup (previous tests)\n" +
           "if [ -d \"" + $scope.junitDir() + "\" ]; then\n" +
