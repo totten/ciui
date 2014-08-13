@@ -14,10 +14,6 @@ angular
     'ngRoute'
   ])
   .config(function ($routeProvider, $locationProvider) {
-    $locationProvider
-      .html5Mode(true)
-      .hashPrefix('!')
-    ;
     $routeProvider
       .when('/welcome', {
         templateUrl: 'views/welcome.html',
@@ -44,10 +40,11 @@ angular
     $rootScope.mainTab = {};
     $rootScope.mainTab[$location.path()] = 1;
     $rootScope.gotoPage = function (href) {
+      if ($location.path() == href) return;
       for (var key in $rootScope.mainTab) {
         $rootScope.mainTab[key] = false;
       }
       $rootScope.mainTab[href] = true;
-      $location.path(href);
+      $location.url(href);
     };
   });
