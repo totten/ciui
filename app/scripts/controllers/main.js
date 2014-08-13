@@ -347,7 +347,7 @@ angular.module('ciuiApp')
           "fi\n";
         r = r + "\n";
       }
-      if (cfg.algo == 'pano') {
+      if (cfg.algo == 'multiver') {
         r = r + $scope.createPanoramaBuild();
       } else {
         r = r + $scope.downloadApplication() + "\n"
@@ -418,7 +418,7 @@ angular.module('ciuiApp')
       var steps = ['summary'];
       if ($scope.isJenkins()) steps.push('getJenkins');
       steps.push('getBuildkit');
-      if (cfg.algo != 'pano' && $scope.isCustom()) steps.push('defineBuildType');
+      if (cfg.algo != 'multiver' && $scope.isCustom()) steps.push('defineBuildType');
       steps.push('buildSite');
       return steps;
     };

@@ -9,8 +9,8 @@
       <input type="radio" name="algo" value="inst" id="algo-inst" ng-model="cfg.algo"/>
       <span tooltip="Download and install CiviCRM + CMS">Basic Build</span>
     </label> <br/>
-    <label for="algo-pano">
-      <input type="radio" name="algo" value="pano" id="algo-pano" ng-model="cfg.algo"/>
+    <label for="algo-multiver">
+      <input type="radio" name="algo" value="multiver" id="algo-multiver" ng-model="cfg.algo"/>
       <span tooltip="Download and install several major versions of CiviCRM">Multi-Version Build</span>
     </label> <br/>
     <label for="algo-sched">
@@ -24,7 +24,7 @@
 
   </accordion-group>
 
-  <accordion-group is-open="toggles.buildType" ng-hide="cfg.algo == 'pano'">
+  <accordion-group is-open="toggles.buildType" ng-hide="cfg.algo == 'multiver'">
     <accordion-heading>
       Build Type
       <i class="pull-right glyphicon"
@@ -108,11 +108,11 @@
     <div ng-show="cfg.algo == 'inst'">
       <label for="buildkit-url">
         URL:<br/>
-        <input type="text" size="30" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'pano'"/>
+        <input type="text" size="30" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'multiver'"/>
       </label>
     </div>
 
-    <div ng-hide="cfg.algo == 'pano' || isBogre()">
+    <div ng-hide="cfg.algo == 'multiver' || isBogre()">
       <label for="buildkit-civiVer">
         Civi Version:<br/>
         <select id="buildkit-civiVer" ng-model="cfg.buildkit.civiVer">

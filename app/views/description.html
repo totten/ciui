@@ -11,11 +11,11 @@
 </p>
 
 <div ng-show="cfg.algo == 'inst'" ng-include="'views/summary-inst.html'"></div>
-<div ng-show="cfg.algo == 'pano'" ng-include="'views/summary-pano.html'"></div>
+<div ng-show="cfg.algo == 'multiver'" ng-include="'views/summary-multiver.html'"></div>
 <div ng-show="cfg.algo == 'sched'" ng-include="'views/summary-sched.html'"></div>
 <div ng-show="cfg.algo == 'review'" ng-include="'views/summary-review.html'"></div>
 
-<div class="alert alert-info" ng-show="cfg.algo != 'pano' && !isCustom() && !isBogre()">
+<div class="alert alert-info" ng-show="cfg.algo != 'multiver' && !isCustom() && !isBogre()">
   <a ng-click="toggles.aboutBuildTypes = !toggles.aboutBuildTypes">
     <i class="pull-right glyphicon"
        ng-class="{'glyphicon-chevron-down': toggles.aboutBuildTypes, 'glyphicon-chevron-right': !toggles.aboutBuildTypes}"></i>
@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div class="alert alert-info" ng-show="cfg.algo != 'pano' && isCustom()">
+<div class="alert alert-info" ng-show="cfg.algo != 'multiver' && isCustom()">
   <a ng-click="toggles.aboutBuildTypes = !toggles.aboutBuildTypes">
     <i class="pull-right glyphicon"
        ng-class="{'glyphicon-chevron-down': toggles.aboutBuildTypes, 'glyphicon-chevron-right': !toggles.aboutBuildTypes}"></i>
