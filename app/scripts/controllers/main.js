@@ -16,7 +16,7 @@ angular.module('ciuiApp')
       vagrant: false,
 
       buildkit: {
-        adminPass: 't0ps3cr3t',
+        adminPass: 'n0ts3cr3t',
         dir: $routeParams['buildkit.dir'] || '/opt/buildkit',
         type: $routeParams['buildkit.type'] || 'drupal-clean',
         civiVer: $routeParams['buildkit.civiVer'] || 'master',
@@ -50,6 +50,10 @@ angular.module('ciuiApp')
       codeReview: {
         type: $routeParams['codeReview.type'] || 'github',
         path: $routeParams['codeReview.path'] || 'sites/all/modules/mymodule'
+      },
+
+      github: {
+        url: 'https://github.com/myuser/myproject'
       },
 
       gerrit: {
@@ -166,28 +170,28 @@ angular.module('ciuiApp')
       var r = '';
       r = r + '## Download and install Drupal with Civi 4.4\n' +
         'civibuild create \"d44\" \\\n' +
-        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
         '  --civi-ver "4.4" \\\n' +
         '  --type "drupal-demo" \\\n' +
         '  --url "http://d44.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install Drupal with Civi (master)\n' +
         'civibuild create \"dmaster\" \\\n' +
-        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
         '  --civi-ver "master" \\\n' +
         '  --type "drupal-demo" \\\n' +
         '  --url "http://dmaster.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install WordPress with Civi 4.4\n' +
         'civibuild create \"wp44\" \\\n' +
-        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
         '  --civi-ver "4.4" \\\n' +
         '  --type "wp-demo" \\\n' +
         '  --url "http://wp44.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install WordPress with Civi (master)\n' +
         'civibuild create \"wpmaster\" \\\n' +
-        '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
         '  --civi-ver "master" \\\n' +
         '  --type "drupal-clean" \\\n' +
         '  --url "http://wpmaster.localhost"\n';
@@ -247,7 +251,7 @@ angular.module('ciuiApp')
       return "## Install application (with civibuild)\n" +
         "civibuild install \"" + $scope.buildkitName() + "\" \\\n" +
         '  --url \"' + $scope.buildkitUrl() + '\" \\\n' +
-        '  --admin-pass \"' + cfg.buildkit.adminPass + '\"';
+        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' );
     };
 
     $scope.executeTests = function() {
