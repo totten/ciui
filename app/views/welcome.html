@@ -174,7 +174,7 @@
     <ul>
       <li>
         <b>drush</b>: Drush is awesome. The <code>drupal-clean</code> and <code>drupal-demo</code> build-types are
-        based on drush. Of course, drush doesn't work with WordPress or Joomla, and it doesn't install
+        based on drush. Of course, drush doesn't work with WordPress or Joomla, and it doesn't fully install
         CiviCRM from source. Thus, by itself, drush doesn't address the needs of buildkit.
       </li>
       <li>
@@ -187,7 +187,8 @@
         Apache, installing MySQL, creating system users, editing /etc/hosts. These issues are not addressed by buildkit,
         so I don't think there's much conflict. Arguably, there's some overlap because buildkit uses <code>amp</code>
         to administer databases and vhosts. One could rewrite buildkit in puppet or chef (instead of bash/php), but
-        you would lose real-world portability and require greater access-rights.
+        you would lose real-world portability and require greater access-rights. However, puppet/chef can call
+        shell commands, so you can use them to manage buildkit.
       </li>
     </ul>
   </div>
