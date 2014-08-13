@@ -8,21 +8,21 @@
  * Controller of the ciuiApp
  */
 angular.module('ciuiApp')
-  .controller('MainCtrl', function($scope) {
+  .controller('MainCtrl', function($scope, $routeParams) {
     var cfg = {
-      algo: 'inst',
-      cms: 'drupal',
+      algo: $routeParams['algo'] || 'inst',
+      cms: $routeParams['cms'] || 'drupal',
       downloader: 'bash',
       vagrant: false,
 
       buildkit: {
         adminPass: 't0ps3cr3t',
-        dir: '/opt/buildkit',
-        type: 'drupal-clean',
-        civiVer: 'master',
+        dir: $routeParams['buildkit.dir'] || '/opt/buildkit',
+        type: $routeParams['buildkit.type'] || 'drupal-clean',
+        civiVer: $routeParams['buildkit.civiVer'] || 'master',
         customType: 'my-custom-type',
         url: 'http://localhost:8000',
-        name: 'mytestbuild'
+        name: $routeParams['buildkit.name'] || 'mytestbuild'
       },
 
       bogre: {
@@ -30,13 +30,13 @@ angular.module('ciuiApp')
       },
 
       civiPhpunit: {
-        enable: true,
-        test: 'CRM_AllTests'
+        enable:  true,
+        test: $routeParams['civiPhpunit.test'] || 'CRM_AllTests'
       },
 
       civiUpgradeTest: {
-        enable: false,
-        versions: '4.2.0* 4.3.0*'
+        enable: $routeParams['civiUpgradeTest.versions'] ? true : false,
+        versions: $routeParams['civiUpgradeTest.versions'] || '4.2.0* 4.3.0*'
       },
 
       simpleTest: {
@@ -48,8 +48,8 @@ angular.module('ciuiApp')
       },
 
       codeReview: {
-        type: 'github',
-        path: 'sites/all/modules/mymodule'
+        type: $routeParams['codeReview.type'] || 'github',
+        path: $routeParams['codeReview.path'] || 'sites/all/modules/mymodule'
       },
 
       gerrit: {
@@ -66,9 +66,8 @@ angular.module('ciuiApp')
       pickServer: true
     };
 
-    $scope.tabToggles = {
-      summary: true
-    };
+    $scope.tabToggles = {};
+    $scope.tabToggles[$routeParams['tab'] || 'summary'] = true;
 
     $scope.algoName = function() {
       switch (cfg.algo) {
