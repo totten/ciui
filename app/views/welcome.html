@@ -1,1 +1,194 @@
-Hello
+<div class="alert bg-success">
+  <p>
+    Buildkit is a collection of tools and scripts for CiviCRM development.
+  </p>
+</div>
+
+<div class="alert">
+  <p>
+    Buildkit is useful for:
+  </p>
+
+  <ul>
+    <li>Setting up developer workstations (e.g. at sprints and trainings)</li>
+    <li>Executing tests in continuous-integration</li>
+    <li>Deploying demo, sandbox, and training sites with current code</li>
+  </ul>
+
+  To see how it works, proceed to the <a ng-click="gotoPage('/tutorials')">Tutorials</a>.
+</div>
+
+<div class="alert alert-info">
+  <a ng-click="toggles.whatsBuild = !toggles.whatsBuild">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.whatsBuild, 'glyphicon-chevron-right': !toggles.whatsBuild}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      What's a build?
+    </h4>
+  </a>
+
+  <div collapse="!toggles.whatsBuild">
+    <p>
+      CiviCRM (like most software) is an amalgamation of original code, libraries, applications, plugins, themes, etc.
+      Building is the process by which we download and install all these pieces.
+    </p>
+
+    <p>
+      Building for CiviCRM is challenging for a few reasons. (1) CiviCRM supports many different configurations.
+      For example, one configuration may combine Drupal, CiviCRM, some Drupal modules, and some CiviCRM extensions;
+      another configuration may combine Joomla, CiviCRM, some Joomla extensions, and some CiviCRM extensions. (2)
+      CiviCRM requires extra installation steps (creating extra config files and extra databases) that go beyond the
+      norm of its host CMS (Drupal, Joomla, WordPress).
+    </p>
+
+  </div>
+</div>
+<div class="alert alert-info">
+  <a ng-click="toggles.whatsBuildTech = !toggles.whatsBuildTech">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.whatsBuildTech, 'glyphicon-chevron-right': !toggles.whatsBuildTech}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      What are the basic build techniques?
+    </h4>
+  </a>
+
+  <div collapse="!toggles.whatsBuildTech">
+    <p>
+      Within the Civi community and related communities (PHP, Drupal, WordPress, etc.), two alternative
+      techniques are common for downloading all the pieces in a build:
+    </p>
+
+    <ul>
+      <li>
+        <b>Build document</b>: A developer creates a document (such as a <code>drush make</code> file,
+        <code>composer.json</code>, <code>bower.json</code>, <code>.gitmodules</code>, <code>bash</code> script,
+        or <code>puppet</code> manifest) which lists all the pieces that go into the build. To prepare
+        a new installation, one runs a tool which reads the document and downloads all the pieces.
+
+        <ul>
+          <li>
+            <b>Pro's</b>: Staying up-to-date with current code is easy. Collaborating with other developers
+            (who may share a library but use a different build) is easy. When updating a dependency, the change
+            is very concise (e.g. a 1-line edit to the build-document).
+          </li>
+          <li>
+            <b>Con's</b>: You must learn the language of the build-tool -- and there are different
+            build-tools in different communities. External errors -- which are outside your control -- can
+            unexpectedly break the build. When making a change to a dependency, you
+            <s>must</s> should collaborate with the original author.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <b>Aggregated code repository</b>:
+        A developer creates a source-code repository and <b>copies</b> the full code of each piece into
+        the repository. He performs upgrades by manually copying in newer pieces. To prepare a new installation,
+        the developer copies the entire repository.
+
+        <ul>
+          <li>
+            <b>Pro's</b>: Provides strong guarantees that you get the code you expect. When you have
+            an urgent bug with a dependency, you can directly patch without any administrative fuss.
+          </li>
+          <li>
+            <b>Con's</b>: Encourages adhoc forking -- making it difficult to upgrade or collaborate.
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>
+      The standard build-types included with buildkit are based on <b>build documents</b> because this
+      is most appropriate for active participation in a development-community. However, one can also create
+      build-types which use an <b>aggregated code repository</b>.
+    </p>
+
+  </div>
+</div>
+
+<div class="alert alert-info">
+  <a ng-click="toggles.whatsIncluded = !toggles.whatsIncluded">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.whatsIncluded, 'glyphicon-chevron-right': !toggles.whatsIncluded}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      What's included?
+    </h4>
+  </a>
+
+  <div collapse="!toggles.whatsIncluded">
+    <ul>
+      <li>
+        <u>Tools</u>: Commands which you can use interactively (or in scripts)
+        <ul>
+          <li><code>civibuild</code> - CLI tool which builds a complete source tree (with CMS+Civi+addons), provisions
+            httpd/sql, generates config files, etc.
+          </li>
+          <li><code>civicrm-upgrade-test</code> - Scripts and data files for testing upgrades</li>
+          <li><code>civix</code> - Code-generator for CiviCRM extensions</li>
+          <li><code>composer</code> - Dependency manager for PHP packages</li>
+          <li><code>drush</code> - CLI administration tool for Drupal</li>
+          <li><code>git-scan</code> - Git extension for working with many git repositories</li>
+          <li><code>hub</code> - Git extension for easily working with GitHub (Note: Requires Ruby/Rake)</li>
+          <li><code>wp</code> - CLI administration tool for WordPress</li>
+          <li><code>amp</code> - Abstracted interface for provisioning local httpd/sql service (Apache/nginx/MySQL)</li>
+        </ul>
+      </li>
+      <li>
+        <u>Build Types</u>: Pre-configured builds which combine Civi with a CMS
+        <ul>
+          <li>
+            <code>drupal-clean</code> - A minimalist build with Drupal 7 and CiviCRM
+          </li>
+          <li>
+            <code>drupal-demo</code> - A richer build based on Drupal 7 + CiviCRM (like <a
+            href="http://drupal.demo.civicrm.org" target="_blank">http://drupal.demo.civicrm.org</a>)
+          </li>
+          <li>
+            <code>wp-demo</code> - A richer build based on WordPress + CiviCRM (like <a
+            href="http://wordpress.demo.civicrm.org" target="_blank">http://wordpress.demo.civicrm.org</a>)
+          </li>
+          <li>
+            (And other experimental items)
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+<div class="alert alert-info">
+  <a ng-click="toggles.butWhatAbout = !toggles.butWhatAbout">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.butWhatAbout, 'glyphicon-chevron-right': !toggles.butWhatAbout}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      But what about (drush/Vagrant/Docker/puppet/chef/...)?
+    </h4>
+  </a>
+
+  <div collapse="!toggles.butWhatAbout">
+    <ul>
+      <li>
+        <b>drush</b>: Drush is awesome. The <code>drupal-clean</code> and <code>drupal-demo</code> build-types are
+        based on drush. Of course, drush doesn't work with WordPress or Joomla, and it doesn't install
+        CiviCRM from source. Thus, by itself, drush doesn't address the needs of buildkit.
+      </li>
+      <li>
+        <b>Vagrant / Docker</b>: Vagrant and Docker are awesome. Buildkit includes an experimental Vagrantfile.
+        It's mentioned in the <a ng-click="gotoPage('/tutorials')">Tutorials</a>. Generally, you can use
+        buildkit to help define your VM.
+      </li>
+      <li>
+        <b>Puppet / Chef</b>: System-level configuration tools deal with a number issues -- such as installing
+        Apache, installing MySQL, creating system users, editing /etc/hosts. These issues are not addressed by buildkit,
+        so I don't think there's much conflict. Arguably, there's some overlap because buildkit uses <code>amp</code>
+        to administer databases and vhosts. One could rewrite buildkit in puppet or chef (instead of bash/php), but
+        you would lose real-world portability and require greater access-rights.
+      </li>
+    </ul>
+  </div>
+</div>
