@@ -414,6 +414,19 @@ angular.module('ciuiApp')
         "}";
     };
 
+    $scope.ampExample1 = function() {
+      return "amp config:set \\\n" +
+        "  --mysql_type=dsn \\\n" +
+        "  --mysql_dsn='mysql://admin:secret@localhost:3306/' \\\n" +
+        "  --httpd_type=apache";
+    };
+
+    $scope.ampExample2 = function() {
+      return "amp config:set \\\n" +
+        "  --mysql_type=mycnf \\\n" +
+        "  --httpd_type=none";
+    };
+
     $scope.tabList = function() {
       var steps = ['summary'];
       if ($scope.isJenkins()) steps.push('getJenkins');
