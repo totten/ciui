@@ -13,9 +13,17 @@ angular
     'ui.bootstrap',
     'ngRoute'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
+    $locationProvider
+      .html5Mode(true)
+      .hashPrefix('!')
+    ;
     $routeProvider
-      .when('/', {
+      .when('/welcome', {
+        templateUrl: 'views/welcome.html',
+        controller: 'WelcomeCtrl'
+      })
+      .when('/tutorials', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
@@ -28,6 +36,18 @@ angular
         controller: 'TodoCtrl'
       })
       .otherwise({
-        redirectTo: '/'
-      });
+        redirectTo: '/tutorials'
+      })
+    ;
+  })
+  .run(function ($rootScope, $location) {
+    $rootScope.mainTab = {};
+    $rootScope.mainTab[$location.path()] = 1;
+    $rootScope.gotoPage = function (href) {
+      for (var key in $rootScope.mainTab) {
+        $rootScope.mainTab[key] = false;
+      }
+      $rootScope.mainTab[href] = true;
+      $location.path(href);
+    };
   });

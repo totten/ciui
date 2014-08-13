@@ -24,14 +24,18 @@
     <!-- Add your site or application content here -->
     <div class="container">
       <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a ng-href="#">Tutorials</a></li>
-          <!--
-          <li><a ng-href="#/about">About</a></li>
-          <li><a ng-href="#">Contact</a></li>
-          -->
-          <li><a ng-href="#/todo">TODO</a></li>
-        </ul>
+
+        <tabset type="pills" class="pull-right">
+          <tab select="gotoPage('/welcome')" active="mainTab['/welcome']">
+            <tab-heading>Welcome</tab-heading>
+          </tab>
+          <tab select="gotoPage('/tutorials')" active="mainTab['/tutorials']">
+            <tab-heading>Tutorials</tab-heading>
+          </tab>
+          <tab select="gotoPage('/todo')" active="mainTab['/todo']">
+            <tab-heading>TODO</tab-heading>
+          </tab>
+        </tabset>
         <h3 class="text-muted">Buildkit Tutorials</h3>
       </div>
 
@@ -61,6 +65,7 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/directives/prettyprint.js"></script>
+        <script src="scripts/controllers/welcome.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/todo.js"></script>
