@@ -1,0 +1,133 @@
+<div ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'github'">
+  <h4>Configure Access to the GitHub API</h4>
+
+  <p>
+    The GitHub Pull-Request Builder requires some initial configuration
+    so that it can submit API requests to Github. For directions,
+    see "Installation" at:
+  </p>
+
+  <p class="text-center">
+    <code><a href="https://wiki.jenkins-ci.org/display/JENKINS/GitHub+pull+request+builder+plugin" target="_blank">https://wiki.jenkins-ci.org/display/JENKINS/GitHub+pull+request+builder+plugin</a></code>
+  </p>
+
+  <p class="alert alert-warning">
+    You may wish to read the full page for perspective, but <b>only</b> the "Installation" directions
+    are relevant right now.
+  </p>
+
+</div>
+
+<div ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'gerrit'">
+  <h4>Gerrit</h4>
+
+  UNEVALUATED: https://wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger
+</div>
+
+<h4>Create a new job for executing tests</h4>
+
+<ol>
+  <li>Navigate to "New Item" (left-hand menu)</li>
+  <li ng-show="cfg.algo == 'sched'">
+    Give the item a name, such as "<em>ScheduledTest-{{buildkitType()}}</em>"
+  </li>
+  <li ng-show="cfg.algo == 'review'">
+    Give the item a name, such as "<em>CodeReviewTest-{{cfg.github.url | basename }}</em>"
+  </li>
+  <li>
+    Choose "<em>Build a free-style software project</em>"
+  </li>
+  <li>
+    Click "OK"
+  </li>
+</ol>
+
+<h4>Configure the new job</h4>
+
+<ol>
+  <li ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'github'">
+    Under "<em>Github Project</em>", enter the URL of your GitHub project (e.g.
+    <code>{{cfg.github.url}}</code>).
+  </li>
+  <li>
+    Under "<em>Source Code Management</em>", choose "None".
+    <div class="alert alert-info">
+      In other circumstances, this feature would allow Jenkins to download code
+      directly from your source-code repository. This is an excellent feature
+      for simple projects and low-level unit-tests. However, when doing integration
+      tests with a complex build (including CMS + Civi + add-ons), it takes some
+      work to automate the build. If you're going to invest in automating a complex
+      build, it's better to put the investment into bash script or drush-make file
+      (which can be reused and test on local machines) rather than in the Jenkins UI.
+    </div>
+  </li>
+  <li ng-show="cfg.algo == 'sched'">
+    Under "<em>Build Triggers</em>", choose "<em>Build Periodically</em>" and enter
+    a schedule. A good schedule might be once every 6 hours or once per day. (Consult the on-screen help for details.)
+  </li>
+  <li ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'github'">
+    Under "<em>Build Triggers</em>", choose "<em>GitHub Pull Request Builder</em>".
+    <ul>
+      <li>
+        Add some administrators. Jenkins will monitor discussions in GitHub to
+        see if the admins make any special requests or instructions
+        (such as "test this please", "ok to test", or "add to whitelist").
+      </li>
+      <li>
+        For now, do <b>not</b> enable "<em>Use github hooks for build triggering</em>".
+        GitHub hooks will improve performance but require more setup. You can
+        always come back and enable hooks later.
+      </li>
+      <li>
+        Explore the "<em>Advanced</em>" options.
+      </li>
+    </ul>
+  </li>
+  <li ng-show="cfg.algo == 'review' && cfg.codeReview.type != 'github'">
+    TODO not github
+  </li>
+  <li>
+    Under "<em>Build</em>", choose "<em>Add build step => Execute shell</em>" and enter:
+    <pre class="prettyprint lang-bash" prettyprint-code="createExampleCode()"></pre>
+    <p class="alert alert-warning">
+      When executing tests, each Jenkins node maintains a <em>pool of executors</em>. If
+      a node has 3 executors, then it can execute up to 3 concurrent tests. If each test tries to
+      write to the same files -- or if each test uses HTTP service on the same URL -- then we
+      would suffer conflicts. To address that risk, this script uses <code>EXECUTOR_NUMBER</code> to
+      calculate a unique <code>BLDNAME</code> and <code>BLDURL</code>. Thus, if there are 3 executors, then
+      there may be 3 builds (<code>jenkins-0</code>, <code>jenkins-1</code>, <code>jenkins-2</code>) with 3 URLs
+      (<code>http://localhost:8100</code>, <code>http://localhost:8101</code>, <code>http://localhost:8102</code>).
+    </p>
+
+    <p ng-show="cfg.vagrant" class="alert alert-warning">
+      You previously indicated that you want to use Vagrant. All commands must run
+      <em>inside</em> the Vagrantbox. Configuring Jenkins to work with Vagrant
+      (or any other virtualization scheme) is outside the scope of this document.
+    </p>
+  </li>
+  <li>
+    Under "<em>Post-Build Actions</em>", choose "<em>Add post-build action => Publish xUnit test result report</em>".
+    Then choose "<em>Add => JUnit</em>" and set the path to <code>junit/*.xml</code>.
+  </li>
+  <li>
+    Click "Save"
+  </li>
+
+</ol>
+
+<h4>(WIP) Prepare for WebTests</h4>
+
+<p>
+  If you use CiviCRM's WebTest suite (or any other high-level tests that require a full HTTP stack), then you must
+  configure Apache to server HTTP requests.
+</p>
+
+<p>
+  TODO
+</p>
+
+<code>for N in 0 1 2 3 4; do </code><br/>
+<code>civibuild create jenkins-${N} --type empty --url http://localhost:$((8100 + $N))</code><br/>
+<code>done</code><br/>
+
+Make sure that the suggested Apache config files from ~/.amp/apache.d are loaded.

@@ -67,7 +67,8 @@
           <span ng-show="cfg.algo == 'pano'">Build Sites</span>
           <span ng-show="isJenkins()">Configure Jenkins</span>
         </tab-heading>
-        <div class="alert" ng-include="'views/build-site.html'"></div>
+        <div class="alert" ng-include="'views/build-site.html'" ng-show="!isJenkins()"></div>
+        <div class="alert" ng-include="'views/config-jenkins.html'" ng-show="isJenkins()"></div>
         <div class="nextbar" ng-show="hasNext()">
           <button class="btn btn-success" ng-click="goNext()">Next</button>
         </div>
