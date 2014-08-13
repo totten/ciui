@@ -40,11 +40,23 @@ angular
     $rootScope.mainTab = {};
     $rootScope.mainTab[$location.path()] = 1;
     $rootScope.gotoPage = function (href) {
-      if ($location.path() == href) return;
+      if ($location.path() == href) {
+        return;
+      }
       for (var key in $rootScope.mainTab) {
         $rootScope.mainTab[key] = false;
       }
       $rootScope.mainTab[href] = true;
       $location.url(href);
+    };
+  })
+  .filter('basename', function () {
+    return function (input) {
+      if (angular.isString(input)) {
+        return input.split("/").pop();
+      }
+      else {
+        return input;
+      }
     };
   });
