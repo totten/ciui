@@ -1,4 +1,4 @@
-<div ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'github'">
+<div ng-show="cfg.useCase == 'review' && cfg.codeReview.type == 'github'">
   <h4>Configure Access to the GitHub API</h4>
 
   <p>
@@ -18,7 +18,7 @@
 
 </div>
 
-<div ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'gerrit'">
+<div ng-show="cfg.useCase == 'review' && cfg.codeReview.type == 'gerrit'">
   <h4>Gerrit</h4>
 
   UNEVALUATED: https://wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger
@@ -28,10 +28,10 @@
 
 <ol>
   <li>Navigate to "New Item" (left-hand menu)</li>
-  <li ng-show="cfg.algo == 'sched'">
+  <li ng-show="cfg.useCase == 'sched'">
     Give the item a name, such as "<em>ScheduledTest-{{buildkitType()}}</em>"
   </li>
-  <li ng-show="cfg.algo == 'review'">
+  <li ng-show="cfg.useCase == 'review'">
     Give the item a name, such as "<em>CodeReviewTest-{{cfg.github.url | basename }}</em>"
   </li>
   <li>
@@ -45,7 +45,7 @@
 <h4>Configure the new job</h4>
 
 <ol>
-  <li ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'github'">
+  <li ng-show="cfg.useCase == 'review' && cfg.codeReview.type == 'github'">
     Under "<em>Github Project</em>", enter the URL of your GitHub project (e.g.
     <code>{{cfg.github.url}}</code>).
   </li>
@@ -61,11 +61,11 @@
       (which can be reused and test on local machines) rather than in the Jenkins UI.
     </div>
   </li>
-  <li ng-show="cfg.algo == 'sched'">
+  <li ng-show="cfg.useCase == 'sched'">
     Under "<em>Build Triggers</em>", choose "<em>Build Periodically</em>" and enter
     a schedule. A good schedule might be once every 6 hours or once per day. (Consult the on-screen help for details.)
   </li>
-  <li ng-show="cfg.algo == 'review' && cfg.codeReview.type == 'github'">
+  <li ng-show="cfg.useCase == 'review' && cfg.codeReview.type == 'github'">
     Under "<em>Build Triggers</em>", choose "<em>GitHub Pull Request Builder</em>".
     <ul>
       <li>
@@ -83,7 +83,7 @@
       </li>
     </ul>
   </li>
-  <li ng-show="cfg.algo == 'review' && cfg.codeReview.type != 'github'">
+  <li ng-show="cfg.useCase == 'review' && cfg.codeReview.type != 'github'">
     TODO not github
   </li>
   <li>

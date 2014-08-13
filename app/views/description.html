@@ -10,12 +10,12 @@
   Drupal SimpleTest only works with Drupal.
 </p>
 
-<div ng-show="cfg.algo == 'inst'" ng-include="'views/summary-inst.html'"></div>
-<div ng-show="cfg.algo == 'multiver'" ng-include="'views/summary-multiver.html'"></div>
-<div ng-show="cfg.algo == 'sched'" ng-include="'views/summary-sched.html'"></div>
-<div ng-show="cfg.algo == 'review'" ng-include="'views/summary-review.html'"></div>
+<div ng-show="cfg.useCase == 'inst'" ng-include="'views/summary-inst.html'"></div>
+<div ng-show="cfg.useCase == 'multiver'" ng-include="'views/summary-multiver.html'"></div>
+<div ng-show="cfg.useCase == 'sched'" ng-include="'views/summary-sched.html'"></div>
+<div ng-show="cfg.useCase == 'review'" ng-include="'views/summary-review.html'"></div>
 
-<div class="alert alert-info" ng-show="cfg.algo != 'multiver' && !isCustom() && !isBogre()">
+<div class="alert alert-info" ng-show="cfg.useCase != 'multiver' && !isCustom() && !isBogre()">
   <a ng-click="toggles.aboutBuildTypes = !toggles.aboutBuildTypes">
     <i class="pull-right glyphicon"
        ng-class="{'glyphicon-chevron-down': toggles.aboutBuildTypes, 'glyphicon-chevron-right': !toggles.aboutBuildTypes}"></i>
@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div class="alert alert-info" ng-show="cfg.algo != 'multiver' && isCustom()">
+<div class="alert alert-info" ng-show="cfg.useCase != 'multiver' && isCustom()">
   <a ng-click="toggles.aboutBuildTypes = !toggles.aboutBuildTypes">
     <i class="pull-right glyphicon"
        ng-class="{'glyphicon-chevron-down': toggles.aboutBuildTypes, 'glyphicon-chevron-right': !toggles.aboutBuildTypes}"></i>
@@ -85,10 +85,10 @@
       </li>
       <li>
         With <code>cron</code>, one can implement
-        <span ng-show="cfg.algo == 'sched'"><code>scheduledTest()</code>,</span>
-        <span ng-show="cfg.algo == 'review'"><code>onSubmitCodeReview()</code>,</span>
+        <span ng-show="cfg.useCase == 'sched'"><code>scheduledTest()</code>,</span>
+        <span ng-show="cfg.useCase == 'review'"><code>onSubmitCodeReview()</code>,</span>
         <code>downloadApplication()</code>,
-        <span ng-show="cfg.algo == 'review'"><code>applyPatch()</code>,</span>
+        <span ng-show="cfg.useCase == 'review'"><code>applyPatch()</code>,</span>
         <code>installApplication()</code>,
         <code>executeTests()</code>,
         and

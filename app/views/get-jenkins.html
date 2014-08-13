@@ -25,13 +25,13 @@
       Github Pull Request Builder
     </a>
     <span class="text-muted"
-          ng-show="cfg.algo != 'review' || cfg.codeReview.type != 'github'">(if you use GitHub)</span>
+          ng-show="cfg.useCase != 'review' || cfg.codeReview.type != 'github'">(if you use GitHub)</span>
   </li>
   <li>
     <a target="_blank" href="https://wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger">
       Gerrit Trigger Plugin
     </a>
     <span class="text-muted"
-          ng-show="cfg.algo != 'review' || cfg.codeReview.type != 'gerrit'">(if you use Gerrit)</span>
+          ng-show="cfg.useCase != 'review' || cfg.codeReview.type != 'gerrit'">(if you use Gerrit)</span>
   </li>
 </ul>

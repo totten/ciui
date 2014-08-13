@@ -10,7 +10,7 @@
 angular.module('ciuiApp')
   .controller('MainCtrl', function($scope, $routeParams) {
     var cfg = {
-      algo: $routeParams['algo'] || 'inst',
+      useCase: $routeParams['useCase'] || 'inst',
       cms: $routeParams['cms'] || 'drupal',
       downloader: 'bash',
       vagrant: false,
@@ -73,8 +73,8 @@ angular.module('ciuiApp')
     $scope.tabToggles = {};
     $scope.tabToggles[$routeParams['tab'] || 'summary'] = true;
 
-    $scope.algoName = function() {
-      switch (cfg.algo) {
+    $scope.useCaseName = function() {
+      switch (cfg.useCase) {
         case 'inst':
           return 'basicInstall';
         case 'sched':
@@ -135,11 +135,11 @@ angular.module('ciuiApp')
     };
 
     $scope.isJenkins = function() {
-      return cfg.algo == 'sched' || cfg.algo == 'review';
+      return cfg.useCase == 'sched' || cfg.useCase == 'review';
     };
 
     $scope.buildkitName = function() {
-      if (cfg.algo == 'inst') {
+      if (cfg.useCase == 'inst') {
         return cfg.buildkit.name;
       } else if ($scope.isJenkins()) {
         return "$BLDNAME";
@@ -157,7 +157,7 @@ angular.module('ciuiApp')
     };
 
     $scope.buildkitUrl = function() {
-      if (cfg.algo == 'inst') {
+      if (cfg.useCase == 'inst') {
         return cfg.buildkit.url;
       } else if ($scope.isJenkins()) {
         return "$BLDURL";
@@ -347,12 +347,12 @@ angular.module('ciuiApp')
           "fi\n";
         r = r + "\n";
       }
-      if (cfg.algo == 'multiver') {
+      if (cfg.useCase == 'multiver') {
         r = r + $scope.createPanoramaBuild();
       } else {
         r = r + $scope.downloadApplication() + "\n"
           + "\n";
-        if (cfg.algo == 'review') {
+        if (cfg.useCase == 'review') {
           r = r + $scope.applyPatch() + "\n"
             + "\n";
         }
@@ -418,7 +418,7 @@ angular.module('ciuiApp')
       var steps = ['summary'];
       if ($scope.isJenkins()) steps.push('getJenkins');
       steps.push('getBuildkit');
-      if (cfg.algo != 'multiver' && $scope.isCustom()) steps.push('defineBuildType');
+      if (cfg.useCase != 'multiver' && $scope.isCustom()) steps.push('defineBuildType');
       steps.push('buildSite');
       return steps;
     };

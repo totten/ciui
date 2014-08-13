@@ -5,26 +5,26 @@
       <i class="pull-right glyphicon"
          ng-class="{'glyphicon-chevron-down': toggles.useCase, 'glyphicon-chevron-right': !toggles.useCase}"></i>
     </accordion-heading>
-    <label for="algo-inst">
-      <input type="radio" name="algo" value="inst" id="algo-inst" ng-model="cfg.algo"/>
+    <label for="useCase-inst">
+      <input type="radio" name="useCase" value="inst" id="useCase-inst" ng-model="cfg.useCase"/>
       <span tooltip="Download and install CiviCRM + CMS">Basic Build</span>
     </label> <br/>
-    <label for="algo-multiver">
-      <input type="radio" name="algo" value="multiver" id="algo-multiver" ng-model="cfg.algo"/>
+    <label for="useCase-multiver">
+      <input type="radio" name="useCase" value="multiver" id="useCase-multiver" ng-model="cfg.useCase"/>
       <span tooltip="Download and install several major versions of CiviCRM">Multi-Version Build</span>
     </label> <br/>
-    <label for="algo-sched">
-      <input type="radio" name="algo" value="sched" id="algo-sched" ng-model="cfg.algo"/>
+    <label for="useCase-sched">
+      <input type="radio" name="useCase" value="sched" id="useCase-sched" ng-model="cfg.useCase"/>
       <span tooltip="Automatically run tests every few hours">Scheduled Test (with Jenkins)</span>
     </label> <br/>
-    <label for="algo-review">
-      <input type="radio" name="algo" value="review" id="algo-review" ng-model="cfg.algo"/>
+    <label for="useCase-review">
+      <input type="radio" name="useCase" value="review" id="useCase-review" ng-model="cfg.useCase"/>
       <span tooltip="Automatically run tests when new code is submitted">Code Review Test (with Jenkins)</span>
     </label> <br/>
 
   </accordion-group>
 
-  <accordion-group is-open="toggles.buildType" ng-hide="cfg.algo == 'multiver'">
+  <accordion-group is-open="toggles.buildType" ng-hide="cfg.useCase == 'multiver'">
     <accordion-heading>
       Build Type
       <i class="pull-right glyphicon"
@@ -98,21 +98,21 @@
          ng-class="{'glyphicon-chevron-down': toggles.buildOptions, 'glyphicon-chevron-right': !toggles.buildOptions}"></i>
     </accordion-heading>
 
-    <div ng-show="cfg.algo == 'inst'">
+    <div ng-show="cfg.useCase == 'inst'">
       <label for="buildkit-name">
         Name:<br/>
         <input type="text" size="30" id="buildkit-name" ng-model="cfg.buildkit.name"/>
       </label>
     </div>
 
-    <div ng-show="cfg.algo == 'inst'">
+    <div ng-show="cfg.useCase == 'inst'">
       <label for="buildkit-url">
         URL:<br/>
-        <input type="text" size="30" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.algo == 'multiver'"/>
+        <input type="text" size="30" id="buildkit-url" ng-model="cfg.buildkit.url" ng-disabled="cfg.useCase == 'multiver'"/>
       </label>
     </div>
 
-    <div ng-hide="cfg.algo == 'multiver' || isBogre()">
+    <div ng-hide="cfg.useCase == 'multiver' || isBogre()">
       <label for="buildkit-civiVer">
         Civi Version:<br/>
         <select id="buildkit-civiVer" ng-model="cfg.buildkit.civiVer">
@@ -132,7 +132,7 @@
 
   </accordion-group>
 
-  <accordion-group is-open="toggles.testSuite" ng-show="cfg.algo == 'sched' || cfg.algo=='review'">
+  <accordion-group is-open="toggles.testSuite" ng-show="cfg.useCase == 'sched' || cfg.useCase=='review'">
     <accordion-heading>
       Test Suite
       <i class="pull-right glyphicon"
@@ -191,7 +191,7 @@
     </div>
   </accordion-group>
 
-  <accordion-group is-open="toggles.codeReview" ng-show="cfg.algo=='review'">
+  <accordion-group is-open="toggles.codeReview" ng-show="cfg.useCase=='review'">
     <accordion-heading>
       Code Review
       <i class="pull-right glyphicon"

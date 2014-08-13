@@ -49,12 +49,12 @@
         </div>
       </tab>
 
-      <tab active="tabToggles.defineBuildType" ng-show="cfg.algo != 'multiver' && isCustom()">
+      <tab active="tabToggles.defineBuildType" ng-show="cfg.useCase != 'multiver' && isCustom()">
         <tab-heading>
           <i class="glyphicon glyphicon-wrench"></i>
           Define Build Type
         </tab-heading>
-        <div class="alert" ng-show="cfg.algo != 'multiver' && isCustom()" ng-include="'views/define-build-type.html'"></div>
+        <div class="alert" ng-show="cfg.useCase != 'multiver' && isCustom()" ng-include="'views/define-build-type.html'"></div>
         <div class="nextbar" ng-show="hasNext()">
           <button class="btn btn-success" ng-click="goNext()">Next</button>
         </div>
@@ -63,8 +63,8 @@
       <tab active="tabToggles.buildSite">
         <tab-heading>
           <i class="glyphicon glyphicon-cog"></i>
-          <span ng-show="cfg.algo == 'inst'">Build a Site</span>
-          <span ng-show="cfg.algo == 'multiver'">Build Sites</span>
+          <span ng-show="cfg.useCase == 'inst'">Build a Site</span>
+          <span ng-show="cfg.useCase == 'multiver'">Build Sites</span>
           <span ng-show="isJenkins()">Configure Jenkins</span>
         </tab-heading>
         <div class="alert" ng-include="'views/build-site.html'" ng-show="!isJenkins()"></div>
