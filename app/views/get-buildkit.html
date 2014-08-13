@@ -1,3 +1,24 @@
+<p>
+  Buildkit can be installed on any system where you want to build/test Civi.
+  So you might install buildkit on a local dev machine, inside
+  a Vagrantbox, or on a dedicated test server.
+</p>
+
+<p>
+  Generally, it is best to install buildkit once on a server. Buildkit
+  includes caches and commands that will allow you to build multiple
+  sites from a single installation. After configuring buildkit's <code>amp</code>
+  tool, you will be able to create additional sites without
+  directly configuring MySQL or Apache.
+</p>
+
+<p ng-hide="cfg.vagrant" class="row alert alert-info">
+  Please pay attention to <code>amp config</code> and <code>amp test</code>.
+  They may ask you to perform some setup tasks (such as editing the
+  Apache configuration and restarting Apache). <code>amp test</code> should
+  succeed before continuing.
+</p>
+
 <div class="prettyprint-options-box">
   <div class="pull-right">
     <label for="sudo">
@@ -18,23 +39,11 @@
   <div>
     <label for="buildkit-dir-insitu">
       Install to:
-      <input id="buildkit-dir-insitu" ng-model="cfg.buildkit.dir" />
+      <input id="buildkit-dir-insitu" ng-model="cfg.buildkit.dir"/>
     </label>
   </div>
 </div>
 
 <pre class="row prettyprint lang-bash" prettyprint-code="installBuildkit()"></pre>
 
-<h4>Discussion</h4>
 
-<p>
-  Buildkit can be installed anywhere you want to build/test Civi.
-  So you might install buildkit on a local dev machine, inside
-  a Vagrantbox, or on a dedicated test server.
-</p>
-
-<p ng-hide="cfg.vagrant" class="alert alert-warning">
-  Please pay attention to <code>amp config</code> and <code>amp test</code>.
-  They may ask you to perform some setup tasks (such as editing the
-  Apache configuration and restarting Apache).
-</p>

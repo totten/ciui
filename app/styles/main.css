@@ -74,7 +74,7 @@ body {
 }
 
 .prettyprint-options-box {
-    margin: 0em -15px;
+    margin: 5px -15px 0px -15px;
     padding: 5px 15px;
     background: #eec;
 }
