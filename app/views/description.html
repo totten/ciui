@@ -52,6 +52,38 @@
 </div>
 
 <div class="alert alert-info" ng-show="isJenkins()">
+  <a ng-click="toggles.aboutTestSuites = !toggles.aboutTestSuites">
+    <i class="pull-right glyphicon"
+       ng-class="{'glyphicon-chevron-down': toggles.aboutTestSuites, 'glyphicon-chevron-right': !toggles.aboutTestSuites}"></i>
+    <h4>
+      <i class="pull-left glyphicon glyphicon-question-sign"></i>&nbsp;
+      About Test Suites
+    </h4>
+  </a>
+
+  <div collapse="!toggles.aboutTestSuites">
+    There are several tools for implementing test-suites in LAMP applications -- such as PHPUnit, Selenium,
+    Drupal SimpleTest, and Behat/Mink. In the core CiviCRM project, the major test suites are:
+
+    <ul>
+      <li>
+        CiviCRM's PHPUnit suites (CRM_AllTests, api_v3_AllTests, WebTest_AllTests). These require some PHPUnit
+        extensions (for DB-testing and browser-testing).
+      </li>
+      <li>
+        CiviCRM's Upgrade-Test suite which uses shell scripts to load & upgrade a series of example databases.
+      </li>
+    </ul>
+
+    Of course, one needn't work with CiviCRM in isolation -- one may also work with additional test-suites for
+    other components (e.g. using vanilla phpunit with a PHP library or using Drupal SimpleTest with a Drupal module).
+    However, even if you use a different
+    tool, the differences should focus on the <code>executeTests()</code> step -- and it may help to look at
+    "Configure Jenkins" to see some examples of how <code>executeTests()</code> fits in with the other steps.
+  </div>
+</div>
+
+<div class="alert alert-info" ng-show="isJenkins()">
   <a ng-click="toggles.aboutJenkins = !toggles.aboutJenkins">
     <i class="pull-right glyphicon"
        ng-class="{'glyphicon-chevron-down': toggles.aboutJenkins, 'glyphicon-chevron-right': !toggles.aboutJenkins}"></i>
