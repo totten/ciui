@@ -274,7 +274,7 @@ angular.module('ciuiApp')
         r = r + '## Execute tests (with CiviCRM\'s PHPUnit)\n';
         r = r + 'pushd "' + $scope.civiRoot() + '/tools"\n';
         r = r + '  set +e\n';
-        r = r + '    ./scripts/phpunit \\\n' +
+        r = r + '    ./scripts/phpunit --tap \\\n' +
           '      --log-junit="' + $scope.junitDir() + '/civi-phpunit.xml" \\\n' +
           '      "' + cfg.civiPhpunit.test + '"\n';
         r = r + '    EXITCODE=$(($? || $EXITCODE))\n';
