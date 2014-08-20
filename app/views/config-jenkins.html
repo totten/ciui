@@ -106,6 +106,17 @@
     </p>
   </li>
   <li>
+    Under "<em>Post-Build Actions</em>", choose "<em>Add post-build action => Publish HTML reports</em>".
+    Then choose "<em>Add</em>" and set:
+    <ul>
+      <li><b>HTML directory to archive</b>: <code>{{cfg.buildkit.htmlDir}}</code></li>
+      <li><b>Index page[s]</b>: <code>index.html</code></li>
+      <li><b>Report title</b>: <code>Civibuild</code></li>
+      <li><b>Keep past HTML reports</b>: Yes</li>
+      <li><b>Allow missing report</b>: No</li>
+    </ul>
+  </li>
+  <li>
     Under "<em>Post-Build Actions</em>", choose "<em>Add post-build action => Publish xUnit test result report</em>".
     Then choose "<em>Add => JUnit</em>" and set the path to <code>junit/*.xml</code>.
   </li>

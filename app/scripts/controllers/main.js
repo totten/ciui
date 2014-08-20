@@ -21,6 +21,7 @@ angular.module('ciuiApp')
         type: $routeParams['buildkit.type'] || 'drupal-clean',
         civiVer: $routeParams['buildkit.civiVer'] || 'master',
         customType: 'my-custom-type',
+        htmlDir: 'civibuild-html',
         url: 'http://localhost:8000',
         name: $routeParams['buildkit.name'] || 'mytestbuild'
       },
@@ -104,6 +105,10 @@ angular.module('ciuiApp')
       } else {
         return $scope.cmsRoot() + '/wp-content/plugins/civicrm/civicrm';
       }
+    };
+
+    $scope.htmlDir = function() {
+      return '$WORKSPACE/' + cfg.buildkit.htmlDir;
     };
 
     $scope.junitDir = function() {
@@ -261,26 +266,29 @@ angular.module('ciuiApp')
     };
 
     $scope.executeTests = function() {
-      var r = '';
+      var rs = [];
 
       if (cfg.civiPhpunit.enable) {
+        var r = '';
         r = r + "## Execute tests (with CiviCRM's PHPUnit)\n";
         r = r + 'pushd \"' + $scope.civiRoot() + "/tools\"\n";
         r = r + "  ./scripts/phpunit \\\n" +
           "    --log-junit=\"" + $scope.junitDir() + "/civi-phpunit.xml\" \\\n" +
           "    \"" + cfg.civiPhpunit.test + "\"\n";
         r = r + "popd\n";
-        r = r + "\n";
+        rs.push(r);
       }
       if (cfg.civiUpgradeTest.enable && $scope.isDrupal()) {
+        var r = '';
         r = r + "## Execute tests (with CiviCRM's UpgradeTest)\n";
         r = r + "civibuild upgrade-test \"" + $scope.buildkitName() + "\" " + cfg.civiUpgradeTest.versions + "\n";
         //r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
         r = r + "cp \"" + cfg.buildkit.dir + "/app/debug/" + $scope.buildkitName() + "/civicrm-upgrade-test.xml\" \\\n" +
           "  \"" + $scope.junitDir() + "/\"\n";
-        r = r + "\n";
+        rs.push(r);
       }
       if (cfg.simpleTest.enable && $scope.isDrupal()) {
+        var r = '';
         r = r + "## Execute tests (with Drupal's SimpleTest)\n";
         r = r + "pushd \"" + $scope.cmsRoot() + "\"\n";
         r = r + "  drush -y en \"simpletest\"\n";
@@ -306,13 +314,28 @@ angular.module('ciuiApp')
         }
         //
         r = r + "popd\n";
-        r = r + "\n";
+        rs.push(r);
       }
-      return r;
+      return rs.join("\n");
     };
 
-    $scope.reportResults = function() {
-      var r = "## Report results\n";
+    $scope.documentBuild = function() {
+      var r = "## Report details about this build of the application\n";
+      if (cfg.useCase == 'sched') {
+        r = r + "civibuild show \"$BLDNAME\" \\\n" +
+          "  --html \"" + $scope.htmlDir() + "\" \\\n" +
+          "  --last-scan \"$WORKSPACE/last-scan.json\" \\\n" +
+          "  --new-scan \"$WORKSPACE/new-scan.json\"\n" +
+          "cp \"$WORKSPACE/new-scan.json\" \"$WORKSPACE/last-scan.json\"\n";
+      } else {
+        r = r + "civibuild show \"$BLDNAME\" \\\n" +
+          "  --html \"" + $scope.htmlDir() + "\"\n";
+      }
+      return r;
+    }
+
+    $scope.documentResults = function() {
+      var r = "## Report test results\n";
       r = r + "# Jenkins should be configured to read JUnit XML from " + $scope.junitDir();
       return r;
     }
@@ -338,13 +361,11 @@ angular.module('ciuiApp')
 
       if ($scope.isJenkins()) {
         r = r + "## Reset (cleanup after previous tests)\n" +
-          "if [ -d \"" + $scope.junitDir() + "\" ]; then\n" +
-          "  rm -rf \"" + $scope.junitDir() + "\"\n" +
-          "fi\n" +
+          "[ -d \"" + $scope.junitDir() + "\" ] && rm -rf \"" + $scope.junitDir() + "\"\n" +
+          "[ -d \"" + $scope.htmlDir() + "\" ] && rm -rf \"" + $scope.htmlDir() + "\"\n" +
+          "[ -d \"" + $scope.webRoot() + "\" ] && civibuild destroy \"" + $scope.buildkitName() + "\"\n" +
           "mkdir \"" + $scope.junitDir() + "\"\n" +
-          "if [ -d \"" + $scope.webRoot() + "\" ]; then\n" +
-          "  civibuild destroy \"" + $scope.buildkitName() + "\"\n" +
-          "fi\n";
+          "mkdir \"" + $scope.htmlDir() + "\"\n";
         r = r + "\n";
       }
       if (cfg.useCase == 'multiver') {
@@ -360,8 +381,9 @@ angular.module('ciuiApp')
           + "\n";
       }
       if ($scope.isJenkins()) {
-        r = r + $scope.executeTests()
-          + $scope.reportResults() + "\n"
+        r = r + $scope.documentBuild() + "\n"
+          + $scope.executeTests() + "\n"
+          + $scope.documentResults() + "\n"
           + "\n";
       }
       return r;
@@ -404,11 +426,15 @@ angular.module('ciuiApp')
         "  // Setup databases and config files for the application\n" +
         "  installApplication();\n" +
         "  \n" +
+        "  // Report details about this build of the application\n" +
+        "  // (to facilitate future investigation)\n" +
+        "  documentBuild();\n" +
+        "  \n" +
         "  // Execute any test suites\n" +
         "  executeTests();\n" +
         "  \n" +
         "  // Report the results of the test suites\n" +
-        "  reportResults();\n" +
+        "  documentResults();\n" +
         "}";
     };
 
@@ -426,11 +452,15 @@ angular.module('ciuiApp')
         "  // Setup databases and config files for the application\n" +
         "  installApplication();\n" +
         "  \n" +
+        "  // Report the details about this build of the application\n" +
+        "  // (to facilitate future investigation)\n" +
+        "  documentBuild();\n" +
+        "  \n" +
         "  // Execute any test suites\n" +
         "  executeTests();\n" +
         "  \n" +
         "  // Report the results of the test suites\n" +
-        "  reportResults();\n" +
+        "  documentResults();\n" +
         "}";
     };
 
