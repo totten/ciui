@@ -274,10 +274,10 @@ angular.module('ciuiApp')
         r = r + '## Execute tests (with CiviCRM\'s PHPUnit)\n';
         r = r + 'pushd "' + $scope.civiRoot() + '/tools"\n';
         r = r + '  set +e\n';
-        r = r + '  ./scripts/phpunit \\\n' +
-          '    --log-junit=\"' + $scope.junitDir() + '/civi-phpunit.xml\" \\\n' +
-          '    \"' + cfg.civiPhpunit.test + '\"\n';
-        r = r + '  EXITCODE=$(($? || $EXITCODE))\n';
+        r = r + '    ./scripts/phpunit \\\n' +
+          '      --log-junit=\"' + $scope.junitDir() + '/civi-phpunit.xml\" \\\n' +
+          '      \"' + cfg.civiPhpunit.test + '\"\n';
+        r = r + '    EXITCODE=$(($? || $EXITCODE))\n';
         r = r + '  set -e\n';
         r = r + 'popd\n';
         rs.push(r);
@@ -286,12 +286,11 @@ angular.module('ciuiApp')
         r = '';
         r = r + '## Execute tests (with CiviCRM\'s UpgradeTest)\n';
         r = r + 'set +e\n';
-        r = r + 'civibuild upgrade-test "' + $scope.buildkitName() + '" ' + cfg.civiUpgradeTest.versions + '\n';
-        //r = r + 'cp ... \"" + $scope.junitDir() + '\"\n';
+        r = r + '  civibuild upgrade-test "' + $scope.buildkitName() + '" ' + cfg.civiUpgradeTest.versions + '\n';
+        r = r + '  EXITCODE=$(($? || $EXITCODE))\n';
+        r = r + 'set -e\n';
         r = r + 'cp "' + cfg.buildkit.dir + '/app/debug/' + $scope.buildkitName() + '/civicrm-upgrade-test.xml" \\\n' +
           '  "' + $scope.junitDir() + '/"\n';
-        r = r + 'EXITCODE=$(($? || $EXITCODE))\n';
-        r = r + 'set -e\n';
         rs.push(r);
       }
       if (cfg.simpleTest.enable && $scope.isDrupal()) {
@@ -300,27 +299,27 @@ angular.module('ciuiApp')
         r = r + 'pushd "' + $scope.cmsRoot() + '"\n';
         r = r + '  drush -y en \"simpletest\"\n';
         r = r + '  set +e\n';
-        r = r + '  ## consider: sudo -u www-data \\\n';
-        r = r + '  php scripts/run-tests.sh \\\n' +
-          '    --url \"' + $scope.buildkitUrl() + '\" \\\n' +
-          '    --xml \"' + $scope.junitDir() + '\" \\\n';
+        r = r + '    ## consider: sudo -u www-data \\\n';
+        r = r + '    php scripts/run-tests.sh \\\n' +
+          '      --url \"' + $scope.buildkitUrl() + '\" \\\n' +
+          '      --xml \"' + $scope.junitDir() + '\" \\\n';
         switch (cfg.simpleTest.mode) {
           case 'all':
-            r = r + '    --all\n';
+            r = r + '      --all\n';
             break;
           case 'file':
-            r = r + '    --file \"' + cfg.simpleTest.testFile + '\"\n';
+            r = r + '      --file \"' + cfg.simpleTest.testFile + '\"\n';
             break;
           case 'class':
-            r = r + '    --class \"' + cfg.simpleTest.testClass + '\"\n';
+            r = r + '      --class \"' + cfg.simpleTest.testClass + '\"\n';
             break;
           case 'group':
-            r = r + '    \"' + cfg.simpleTest.testGroup + '\"\n';
+            r = r + '      \"' + cfg.simpleTest.testGroup + '\"\n';
             break;
           default:
             r = r + '    FIXME(unrecognized-test)\n';
         }
-        r = r + '  EXITCODE=$(($? || $EXITCODE))\n';
+        r = r + '    EXITCODE=$(($? || $EXITCODE))\n';
         r = r + '  set -e\n';
         r = r + 'popd\n';
         rs.push(r);
