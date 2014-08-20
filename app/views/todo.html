@@ -27,4 +27,10 @@
     For useCase==review, the build is compared to an empty baseline.
     Find a better baseline (e.g. the most recent scheduled build?).
   </li>
+  <li>
+    <u>CIVIVER</u>:
+    Figure out how to communicate CIVIVER. For UpgradeTest, it helps to use
+    <code>civibuild upgrade-test @$CIVIVER</code>. For CodeReview, it helps to
+    use <code>CIVIVER=$ghprbTargetBranch</code> and <code>civibuild download --civi-ver $CIVIVER ...</code>.
+  </li>
 </ul>
