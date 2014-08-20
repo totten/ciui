@@ -174,29 +174,29 @@ angular.module('ciuiApp')
     $scope.createPanoramaBuild = function() {
       var r = '';
       r = r + '## Download and install Drupal with Civi 4.4\n' +
-        'civibuild create \"d44\" \\\n' +
-        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
+        'civibuild create "d44" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass "' + cfg.buildkit.adminPass + '" \\\n' : '' ) +
         '  --civi-ver "4.4" \\\n' +
         '  --type "drupal-demo" \\\n' +
         '  --url "http://d44.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install Drupal with Civi (master)\n' +
-        'civibuild create \"dmaster\" \\\n' +
-        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
+        'civibuild create "dmaster" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass "' + cfg.buildkit.adminPass + '" \\\n' : '' ) +
         '  --civi-ver "master" \\\n' +
         '  --type "drupal-demo" \\\n' +
         '  --url "http://dmaster.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install WordPress with Civi 4.4\n' +
-        'civibuild create \"wp44\" \\\n' +
-        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
+        'civibuild create "wp44" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass "' + cfg.buildkit.adminPass + '" \\\n' : '' ) +
         '  --civi-ver "4.4" \\\n' +
         '  --type "wp-demo" \\\n' +
         '  --url "http://wp44.localhost"\n';
       r = r + '\n';
       r = r + '## Download and install WordPress with Civi (master)\n' +
-        'civibuild create \"wpmaster\" \\\n' +
-        (cfg.buildkit.adminPass ? '  --admin-pass \"' + cfg.buildkit.adminPass + '\" \\\n' : '' ) +
+        'civibuild create "wpmaster" \\\n' +
+        (cfg.buildkit.adminPass ? '  --admin-pass "' + cfg.buildkit.adminPass + '" \\\n' : '' ) +
         '  --civi-ver "master" \\\n' +
         '  --type "drupal-clean" \\\n' +
         '  --url "http://wpmaster.localhost"\n';
@@ -207,9 +207,9 @@ angular.module('ciuiApp')
       var env = [];
 
       if ($scope.isBogre()) {
-        env.push('BOGRE_URL=\"' + cfg.bogre.url + '\"');
+        env.push('BOGRE_URL="' + cfg.bogre.url + '"');
         if (cfg.bogre.subdir) {
-          env.push('BOGRE_SUBDIR=\"' + cfg.bogre.subdir + '\"');
+          env.push('BOGRE_SUBDIR="' + cfg.bogre.subdir + '"');
         }
       }
 
@@ -237,8 +237,8 @@ angular.module('ciuiApp')
         case 'github':
           return '## Apply patch (from Github)\n' +
             'pushd "' + $scope.codeReviewPath() + '"\n' +
-            '  git fetch origin \"+refs/pull/*:refs/remotes/origin/pr/*\"\n' +
-            '  git checkout \"$sha1\"\n' +
+            '  git fetch origin "+refs/pull/*:refs/remotes/origin/pr/*"\n' +
+            '  git checkout "$sha1"\n' +
             'popd';
 
         case 'gerrit':
@@ -255,10 +255,10 @@ angular.module('ciuiApp')
     $scope.installApplication = function() {
       var lines = [
         'civibuild install "' + $scope.buildkitName() + '"',
-        '--url \"' + $scope.buildkitUrl() + '\"'
+        '--url "' + $scope.buildkitUrl() + '"'
         ];
       if (cfg.buildkit.adminPass) {
-        lines.push('--admin-pass \"' + cfg.buildkit.adminPass + '\"');
+        lines.push('--admin-pass "' + cfg.buildkit.adminPass + '"');
       }
 
       return '## Install application (with civibuild)\n' +
@@ -275,8 +275,8 @@ angular.module('ciuiApp')
         r = r + 'pushd "' + $scope.civiRoot() + '/tools"\n';
         r = r + '  set +e\n';
         r = r + '    ./scripts/phpunit \\\n' +
-          '      --log-junit=\"' + $scope.junitDir() + '/civi-phpunit.xml\" \\\n' +
-          '      \"' + cfg.civiPhpunit.test + '\"\n';
+          '      --log-junit="' + $scope.junitDir() + '/civi-phpunit.xml" \\\n' +
+          '      "' + cfg.civiPhpunit.test + '"\n';
         r = r + '    EXITCODE=$(($? || $EXITCODE))\n';
         r = r + '  set -e\n';
         r = r + 'popd\n';
@@ -297,24 +297,24 @@ angular.module('ciuiApp')
         r = '';
         r = r + '## Execute tests (with Drupal\'s SimpleTest)\n';
         r = r + 'pushd "' + $scope.cmsRoot() + '"\n';
-        r = r + '  drush -y en \"simpletest\"\n';
+        r = r + '  drush -y en "simpletest"\n';
         r = r + '  set +e\n';
         r = r + '    ## consider: sudo -u www-data \\\n';
         r = r + '    php scripts/run-tests.sh \\\n' +
-          '      --url \"' + $scope.buildkitUrl() + '\" \\\n' +
-          '      --xml \"' + $scope.junitDir() + '\" \\\n';
+          '      --url "' + $scope.buildkitUrl() + '" \\\n' +
+          '      --xml "' + $scope.junitDir() + '" \\\n';
         switch (cfg.simpleTest.mode) {
           case 'all':
             r = r + '      --all\n';
             break;
           case 'file':
-            r = r + '      --file \"' + cfg.simpleTest.testFile + '\"\n';
+            r = r + '      --file "' + cfg.simpleTest.testFile + '"\n';
             break;
           case 'class':
-            r = r + '      --class \"' + cfg.simpleTest.testClass + '\"\n';
+            r = r + '      --class "' + cfg.simpleTest.testClass + '"\n';
             break;
           case 'group':
-            r = r + '      \"' + cfg.simpleTest.testGroup + '\"\n';
+            r = r + '      "' + cfg.simpleTest.testGroup + '"\n';
             break;
           default:
             r = r + '    FIXME(unrecognized-test)\n';
@@ -330,14 +330,14 @@ angular.module('ciuiApp')
     $scope.documentBuild = function() {
       var r = '## Report details about this build of the application\n';
       if (cfg.useCase === 'sched') {
-        r = r + 'civibuild show \"$BLDNAME\" \\\n' +
-          '  --html \"' + $scope.htmlDir() + '\" \\\n' +
-          '  --last-scan \"$WORKSPACE/last-scan.json\" \\\n' +
-          '  --new-scan \"$WORKSPACE/new-scan.json\"\n' +
-          'cp \"$WORKSPACE/new-scan.json\" \"$WORKSPACE/last-scan.json\"\n';
+        r = r + 'civibuild show "$BLDNAME" \\\n' +
+          '  --html "' + $scope.htmlDir() + '" \\\n' +
+          '  --last-scan "$WORKSPACE/last-scan.json" \\\n' +
+          '  --new-scan "$WORKSPACE/new-scan.json"\n' +
+          'cp "$WORKSPACE/new-scan.json" "$WORKSPACE/last-scan.json"\n';
       } else {
-        r = r + 'civibuild show \"$BLDNAME\" \\\n' +
-          '  --html \"' + $scope.htmlDir() + '\"\n';
+        r = r + 'civibuild show "$BLDNAME" \\\n' +
+          '  --html "' + $scope.htmlDir() + '"\n';
       }
       return r;
     };
@@ -351,12 +351,12 @@ angular.module('ciuiApp')
     $scope.createExampleCode = function() {
       var env = [];
       if (!cfg.vagrant) {
-        env.push('export PATH=\"' + cfg.buildkit.dir + '/bin:$PATH\"\n');
+        env.push('export PATH="' + cfg.buildkit.dir + '/bin:$PATH"\n');
       }
       if ($scope.isJenkins()) {
         env.unshift('set -e\n');
-        env.push('BLDNAME=\"jenkins-${EXECUTOR_NUMBER}\"\n');
-        env.push('BLDURL=\"http://localhost:$((8100 + $EXECUTOR_NUMBER))\"\n');
+        env.push('BLDNAME="jenkins-${EXECUTOR_NUMBER}"\n');
+        env.push('BLDURL="http://localhost:$((8100 + $EXECUTOR_NUMBER))"\n');
         env.push('EXITCODE=0\n');
       }
 
@@ -371,11 +371,11 @@ angular.module('ciuiApp')
 
       if ($scope.isJenkins()) {
         r = r + '## Reset (cleanup after previous tests)\n' +
-          '[ -d \"' + $scope.junitDir() + '\" ] && rm -rf \"' + $scope.junitDir() + '\"\n' +
-          '[ -d \"' + $scope.htmlDir() + '\" ] && rm -rf \"' + $scope.htmlDir() + '\"\n' +
-          '[ -d \"' + $scope.webRoot() + '\" ] && civibuild destroy \"' + $scope.buildkitName() + '\"\n' +
-          'mkdir \"' + $scope.junitDir() + '\"\n' +
-          'mkdir \"' + $scope.htmlDir() + '\"\n';
+          '[ -d "' + $scope.junitDir() + '" ] && rm -rf "' + $scope.junitDir() + '"\n' +
+          '[ -d "' + $scope.htmlDir() + '" ] && rm -rf "' + $scope.htmlDir() + '"\n' +
+          '[ -d "' + $scope.webRoot() + '" ] && civibuild destroy "' + $scope.buildkitName() + '"\n' +
+          'mkdir "' + $scope.junitDir() + '"\n' +
+          'mkdir "' + $scope.htmlDir() + '"\n';
         r = r + '\n';
       }
       if (cfg.useCase === 'multiver') {
@@ -403,23 +403,23 @@ angular.module('ciuiApp')
     $scope.installBuildkit = function() {
       var r = '';
       if (cfg.sudo) {
-        r = r + 'sudo mkdir \"' + cfg.buildkit.dir + '\"\n';
+        r = r + 'sudo mkdir "' + cfg.buildkit.dir + '"\n';
         if ($scope.isJenkins()) {
-          r = r + 'sudo chown \"jenkins\" \"' + cfg.buildkit.dir + '\"\n';
-          r = r + 'sudo -u \"jenkins\" -H bash\n';
+          r = r + 'sudo chown "jenkins" "' + cfg.buildkit.dir + '"\n';
+          r = r + 'sudo -u "jenkins" -H bash\n';
         } else {
-          r = r + 'sudo chown $USER \"' + cfg.buildkit.dir + '\"\n';
+          r = r + 'sudo chown $USER "' + cfg.buildkit.dir + '"\n';
         }
       }
-      r = r + 'git clone \"https://github.com/civicrm/civicrm-buildkit.git\" \"' + cfg.buildkit.dir + '\"\n';
+      r = r + 'git clone "https://github.com/civicrm/civicrm-buildkit.git" "' + cfg.buildkit.dir + '"\n';
       if (!cfg.vagrant) {
         r = r +
-          'export PATH=\"' + cfg.buildkit.dir + '/bin:$PATH\"\n' +
+          'export PATH="' + cfg.buildkit.dir + '/bin:$PATH"\n' +
           'civi-download-tools\n' +
           'amp config\n' +
           'amp test\n';
       } else {
-        r = r + 'cd \"' + cfg.buildkit.dir + '/vagrant/precise32-standalone\"\n' +
+        r = r + 'cd "' + cfg.buildkit.dir + '/vagrant/precise32-standalone"\n' +
           'vagrant up\n' +
           'vagrant ssh\n';
       }
