@@ -12,13 +12,6 @@
   directly configuring MySQL or Apache.
 </p>
 
-<p ng-hide="cfg.vagrant" class="row alert alert-info">
-  Please pay attention to <code>amp config</code> and <code>amp test</code>.
-  They may ask you to perform some setup tasks (such as editing the
-  Apache configuration and restarting Apache). <code>amp test</code> should
-  succeed before continuing.
-</p>
-
 <div class="prettyprint-options-box">
   <div class="pull-right">
     <label for="sudo">
@@ -46,10 +39,16 @@
 
 <pre class="row prettyprint lang-bash" prettyprint-code="installBuildkit()"></pre>
 
+<p ng-hide="cfg.vagrant" class="row alert alert-info">
+  Please pay attention to <code>amp config</code> and <code>amp test</code>.
+  They may ask you to perform some setup tasks (such as editing the
+  Apache configuration and restarting Apache). <code>amp test</code> should
+  succeed before continuing.
+</p>
 
-<div ng-show='isJenkins()' class="row alert alert-warning">
+<div ng-show='isJenkins() && !cfg.vagrant' class="row alert alert-warning">
   <code>amp config</code> is an interactive config tool, which is useful for local installs or
-  experimentation. If you need to automate installation of buildkit, you can use <code>amp config:set</code>, e.g.
+  experimentation. If you need to automate installation of buildkit, use <code>amp config:set</code>, e.g.
 
   <ul>
     <li><u>Example</u>:
