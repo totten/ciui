@@ -272,19 +272,25 @@ angular.module('ciuiApp')
         var r = '';
         r = r + "## Execute tests (with CiviCRM's PHPUnit)\n";
         r = r + 'pushd \"' + $scope.civiRoot() + "/tools\"\n";
+        r = r + "  set +e\n";
         r = r + "  ./scripts/phpunit \\\n" +
           "    --log-junit=\"" + $scope.junitDir() + "/civi-phpunit.xml\" \\\n" +
           "    \"" + cfg.civiPhpunit.test + "\"\n";
+        r = r + "  EXITCODE=$(($? || $EXITCODE))\n";
+        r = r + "  set -e\n";
         r = r + "popd\n";
         rs.push(r);
       }
       if (cfg.civiUpgradeTest.enable && $scope.isDrupal()) {
         var r = '';
         r = r + "## Execute tests (with CiviCRM's UpgradeTest)\n";
+        r = r + "set +e\n";
         r = r + "civibuild upgrade-test \"" + $scope.buildkitName() + "\" " + cfg.civiUpgradeTest.versions + "\n";
         //r = r + "cp ... \"" + $scope.junitDir() + "\"\n";
         r = r + "cp \"" + cfg.buildkit.dir + "/app/debug/" + $scope.buildkitName() + "/civicrm-upgrade-test.xml\" \\\n" +
           "  \"" + $scope.junitDir() + "/\"\n";
+        r = r + "EXITCODE=$(($? || $EXITCODE))\n";
+        r = r + "set -e\n";
         rs.push(r);
       }
       if (cfg.simpleTest.enable && $scope.isDrupal()) {
@@ -292,10 +298,11 @@ angular.module('ciuiApp')
         r = r + "## Execute tests (with Drupal's SimpleTest)\n";
         r = r + "pushd \"" + $scope.cmsRoot() + "\"\n";
         r = r + "  drush -y en \"simpletest\"\n";
+        r = r + "  set +e\n";
         r = r + "  ## consider: sudo -u www-data \\\n";
         r = r + "  php scripts/run-tests.sh \\\n" +
           "    --url \"" + $scope.buildkitUrl() + "\" \\\n" +
-          "    --xml \"" + $scope.junitDir() + "/drupal-simpletest.xml\" \\\n";
+          "    --xml \"" + $scope.junitDir() + "\" \\\n";
         switch (cfg.simpleTest.mode) {
           case 'all':
             r = r + "    --all\n";
@@ -312,7 +319,8 @@ angular.module('ciuiApp')
           default:
             r = r + "    FIXME(unrecognized-test)\n";
         }
-        //
+        r = r + "  EXITCODE=$(($? || $EXITCODE))\n";
+        r = r + "  set -e\n";
         r = r + "popd\n";
         rs.push(r);
       }
@@ -346,8 +354,10 @@ angular.module('ciuiApp')
         env.push("export PATH=\"" + cfg.buildkit.dir + "/bin:$PATH\"\n");
       }
       if ($scope.isJenkins()) {
-        env.push("export BLDNAME=\"jenkins-${EXECUTOR_NUMBER}\"\n");
-        env.push("export BLDURL=\"http://localhost:$((8100 + $EXECUTOR_NUMBER))\"\n");
+        env.unshift("set -e\n");
+        env.push("BLDNAME=\"jenkins-${EXECUTOR_NUMBER}\"\n");
+        env.push("BLDURL=\"http://localhost:$((8100 + $EXECUTOR_NUMBER))\"\n");
+        env.push("EXITCODE=0\n");
       }
 
       var r = '';
@@ -384,6 +394,7 @@ angular.module('ciuiApp')
         r = r + $scope.documentBuild() + "\n"
           + $scope.executeTests() + "\n"
           + $scope.documentResults() + "\n"
+          + "exit $EXITCODE\n"
           + "\n";
       }
       return r;
