@@ -350,11 +350,14 @@ angular.module('ciuiApp')
 
     $scope.createExampleCode = function() {
       var env = [];
+      if ($scope.isJenkins()) {
+        env.push('#!/bin/bash\n');
+        env.push('set -ex\n');
+      }
       if (!cfg.vagrant) {
         env.push('export PATH="' + cfg.buildkit.dir + '/bin:$PATH"\n');
       }
       if ($scope.isJenkins()) {
-        env.unshift('set -e\n');
         env.push('BLDNAME="jenkins-${EXECUTOR_NUMBER}"\n');
         env.push('BLDURL="http://localhost:$((8100 + $EXECUTOR_NUMBER))"\n');
         env.push('EXITCODE=0\n');
