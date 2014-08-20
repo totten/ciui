@@ -337,7 +337,7 @@ angular.module('ciuiApp')
       }
 
       if ($scope.isJenkins()) {
-        r = r + "## Cleanup (previous tests)\n" +
+        r = r + "## Reset (cleanup after previous tests)\n" +
           "if [ -d \"" + $scope.junitDir() + "\" ]; then\n" +
           "  rm -rf \"" + $scope.junitDir() + "\"\n" +
           "fi\n" +
@@ -395,21 +395,41 @@ angular.module('ciuiApp')
 
     $scope.scheduledTestPseudocode = function() {
       return "function scheduledTest() {\n" +
-        "  cleanup();\n" +
+        "  // Reset (e.g. cleanup any old build artifacts)\n" +
+        "  reset();\n" +
+        "  \n" +
+        "  // Download all code for the CMS, CRM, add-ons, etc\n" +
         "  downloadApplication();\n" +
+        "  \n" +
+        "  // Setup databases and config files for the application\n" +
         "  installApplication();\n" +
+        "  \n" +
+        "  // Execute any test suites\n" +
         "  executeTests();\n" +
+        "  \n" +
+        "  // Report the results of the test suites\n" +
         "  reportResults();\n" +
         "}";
     };
 
     $scope.onSubmitCodeReviewPseudocode = function() {
       return "function onSubmitCodeReview() {\n" +
-        "  cleanup();\n" +
+        "  // Reset (e.g. cleanup any old build artifacts)\n" +
+        "  reset();\n" +
+        "  \n" +
+        "  // Download all code for the CMS, CRM, add-ons, etc\n" +
         "  downloadApplication();\n" +
+        "  \n" +
+        "  // Fetch and apply the proposed patch\n" +
         "  applyPatch();\n" +
+        "  \n" +
+        "  // Setup databases and config files for the application\n" +
         "  installApplication();\n" +
+        "  \n" +
+        "  // Execute any test suites\n" +
         "  executeTests();\n" +
+        "  \n" +
+        "  // Report the results of the test suites\n" +
         "  reportResults();\n" +
         "}";
     };
