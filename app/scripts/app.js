@@ -13,7 +13,7 @@ angular
     'ui.bootstrap',
     'ngRoute'
   ])
-  .config(function ($routeProvider, $locationProvider) {
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/welcome', {
         templateUrl: 'views/welcome.html',
@@ -53,7 +53,7 @@ angular
   .filter('basename', function () {
     return function (input) {
       if (angular.isString(input)) {
-        return input.split("/").pop();
+        return input.split('/').pop();
       }
       else {
         return input;

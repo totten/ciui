@@ -9,5 +9,5 @@
  */
 angular.module('ciuiApp')
   .controller('LinkCtrl', function ($scope, $location) {
-    $scope.exampleUrl = $location.absUrl().replace('/link', "/tutorials?useCase=review&codeReview.path=sites/all/modules/othermodule");
+    $scope.exampleUrl = $location.absUrl().replace('/link', '/tutorials?useCase=review&codeReview.path=sites/all/modules/othermodule');
   });

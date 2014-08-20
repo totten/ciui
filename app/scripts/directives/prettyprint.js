@@ -8,11 +8,6 @@
  */
 angular.module('ciuiApp')
   .directive('prettyprint', function ($parse) {
-    function replaceText(str) {
-      var str1 = String(str);
-      return str1.replace(/\n/g, "<br/>");
-    }
-
     return {
       restrict: 'C',
       link: function postLink(scope, element, attrs) {
