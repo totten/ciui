@@ -121,3 +121,9 @@ span[tooltip], em[tooltip] {
 span[tooltip]:hover, em[tooltip]:hover {
     border-bottom: 1px dashed #444;
 }
+
+.github-icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0 0.2em 0 0;
+}
