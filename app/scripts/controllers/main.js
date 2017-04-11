@@ -50,11 +50,11 @@ angular.module('ciuiApp')
 
       codeReview: {
         type: $routeParams['codeReview.type'] || 'github',
-        path: $routeParams['codeReview.path'] || 'sites/all/modules/mymodule'
+        path: $routeParams['codeReview.path'] || 'sites/all/modules/civicrm'
       },
 
       github: {
-        url: $routeParams['github.url'] || 'https://github.com/myuser/myproject'
+        url: $routeParams['github.url'] || 'https://github.com/civicrm/civicrm-core'
       },
 
       gerrit: {
