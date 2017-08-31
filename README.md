@@ -1,5 +1,9 @@
 # CIUI: Interactive docs for buildkit setup
 
+### Deprecation
+
+This project is deprecated in favor of https://github.com/civicrm/civicrm-dev-docs
+
 ### Setup
 
 ```
